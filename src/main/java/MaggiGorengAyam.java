@@ -15,6 +15,9 @@ public class MaggiGorengAyam {
                 LINE;
         System.out.println(banner);
 
+        String[] tasks = new String[100];
+        int taskCount = 0;
+
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
@@ -24,8 +27,18 @@ public class MaggiGorengAyam {
                 System.out.println(LINE);
                 break;
             }
+            if (command.equals("list")) {
+                System.out.println(LINE);
+                for (int i = 0; i < taskCount; i++) {
+                    System.out.println(" " + (i + 1) + ". " + tasks[i]);
+                }
+                System.out.println(LINE);
+                continue;
+            }
+            tasks[taskCount] = command;
+            taskCount++;
             System.out.println(LINE);
-            System.out.println(" " + command);
+            System.out.println(" added: " + command);
             System.out.println(LINE);
         }
         scanner.close();

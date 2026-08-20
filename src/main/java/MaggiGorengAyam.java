@@ -47,6 +47,15 @@ public class MaggiGorengAyam {
                 System.out.println(LINE);
                 continue;
             }
+            if (command.startsWith("unmark ")) {
+                int index = Integer.parseInt(command.substring(7).trim()) - 1;
+                isDone[index] = false;
+                System.out.println(LINE);
+                System.out.println(" OK, I've marked this task as not done yet:");
+                System.out.println("   [ ] " + tasks[index]);
+                System.out.println(LINE);
+                continue;
+            }
             tasks[taskCount] = command;
             taskCount++;
             System.out.println(LINE);

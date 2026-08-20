@@ -1,8 +1,9 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class MaggiGorengAyam {
     private static final String LINE = "____________________________________________________________";
-    private static final int MAX_TASKS = 100;
 
     public static void main(String[] args) {
         String banner = LINE + "\n" +
@@ -16,8 +17,9 @@ public class MaggiGorengAyam {
                 LINE;
         System.out.println(banner);
 
-        Task[] tasks = new Task[MAX_TASKS];
-        int taskCount = 0;
+        // An ArrayList grows as needed, so there is no fixed task-count limit
+        // to enforce (unlike the fixed-size array this replaced).
+        List<Task> tasks = new ArrayList<>();
 
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
@@ -32,28 +34,34 @@ public class MaggiGorengAyam {
                 if (command.equals("list")) {
                     System.out.println(LINE);
                     System.out.println(" Here are the tasks in your list:");
-                    for (int i = 0; i < taskCount; i++) {
-                        System.out.println(" " + (i + 1) + "." + tasks[i]);
+                    for (int i = 0; i < tasks.size(); i++) {
+                        System.out.println(" " + (i + 1) + "." + tasks.get(i));
                     }
                     System.out.println(LINE);
                     continue;
                 }
                 if (command.equals("mark") || command.startsWith("mark ")) {
-                    int index = parseTaskIndex(command.substring(4).trim(), taskCount, "mark");
-                    tasks[index].markAsDone();
+                    int index = parseTaskIndex(command.substring(4).trim(), tasks.size(), "mark");
+                    tasks.get(index).markAsDone();
                     System.out.println(LINE);
                     System.out.println(" Nice! I've marked this task as done:");
-                    System.out.println("   " + tasks[index]);
+                    System.out.println("   " + tasks.get(index));
                     System.out.println(LINE);
                     continue;
                 }
                 if (command.equals("unmark") || command.startsWith("unmark ")) {
-                    int index = parseTaskIndex(command.substring(6).trim(), taskCount, "unmark");
-                    tasks[index].markAsNotDone();
+                    int index = parseTaskIndex(command.substring(6).trim(), tasks.size(), "unmark");
+                    tasks.get(index).markAsNotDone();
                     System.out.println(LINE);
                     System.out.println(" OK, I've marked this task as not done yet:");
-                    System.out.println("   " + tasks[index]);
+                    System.out.println("   " + tasks.get(index));
                     System.out.println(LINE);
+                    continue;
+                }
+                if (command.equals("delete") || command.startsWith("delete ")) {
+                    int index = parseTaskIndex(command.substring(6).trim(), tasks.size(), "delete");
+                    Task removed = tasks.remove(index);
+                    printRemoved(removed, tasks.size());
                     continue;
                 }
                 if (command.equals("todo") || command.startsWith("todo ")) {
@@ -61,10 +69,8 @@ public class MaggiGorengAyam {
                     if (description.isEmpty()) {
                         throw new MaggiGorengAyamException("What TODO you want bro, I'll give you maggi goreng ayam");
                     }
-                    ensureRoomForNewTask(taskCount);
-                    tasks[taskCount] = new ToDo(description);
-                    taskCount++;
-                    printAdded(tasks[taskCount - 1], taskCount);
+                    tasks.add(new ToDo(description));
+                    printAdded(tasks.get(tasks.size() - 1), tasks.size());
                     continue;
                 }
                 if (command.equals("deadline") || command.startsWith("deadline ")) {
@@ -85,10 +91,8 @@ public class MaggiGorengAyam {
                     if (by.isEmpty()) {
                         throw new MaggiGorengAyamException("No deadline?? say that to your gf thanks");
                     }
-                    ensureRoomForNewTask(taskCount);
-                    tasks[taskCount] = new Deadline(description, by);
-                    taskCount++;
-                    printAdded(tasks[taskCount - 1], taskCount);
+                    tasks.add(new Deadline(description, by));
+                    printAdded(tasks.get(tasks.size() - 1), tasks.size());
                     continue;
                 }
                 if (command.equals("event") || command.startsWith("event ")) {
@@ -121,10 +125,8 @@ public class MaggiGorengAyam {
                     if (to.isEmpty()) {
                         throw new MaggiGorengAyamException("To what?? Specify an end time after '/to'.");
                     }
-                    ensureRoomForNewTask(taskCount);
-                    tasks[taskCount] = new Event(description, from, to);
-                    taskCount++;
-                    printAdded(tasks[taskCount - 1], taskCount);
+                    tasks.add(new Event(description, from, to));
+                    printAdded(tasks.get(tasks.size() - 1), tasks.size());
                     continue;
                 }
                 throw new MaggiGorengAyamException("Huhhh???");
@@ -138,8 +140,8 @@ public class MaggiGorengAyam {
     }
 
     /**
-     * Parses a 1-indexed task number typed after a "mark"/"unmark" command
-     * and converts it to a valid 0-based index into {@code tasks}.
+     * Parses a 1-indexed task number typed after a "mark"/"unmark"/"delete"
+     * command and converts it to a valid 0-based index into {@code tasks}.
      */
     private static int parseTaskIndex(String arg, int taskCount, String commandName)
             throws MaggiGorengAyamException {
@@ -160,15 +162,17 @@ public class MaggiGorengAyam {
         return number - 1;
     }
 
-    private static void ensureRoomForNewTask(int taskCount) throws MaggiGorengAyamException {
-        if (taskCount >= MAX_TASKS) {
-            throw new MaggiGorengAyamException("Sorry, the task list is full (max " + MAX_TASKS + " tasks).");
-        }
-    }
-
     private static void printAdded(Task task, int taskCount) {
         System.out.println(LINE);
         System.out.println(" Got it. I've added this task:");
+        System.out.println("   " + task);
+        System.out.println(" Now you have " + taskCount + " tasks in the list.");
+        System.out.println(LINE);
+    }
+
+    private static void printRemoved(Task task, int taskCount) {
+        System.out.println(LINE);
+        System.out.println(" Noted. I've removed this task:");
         System.out.println("   " + task);
         System.out.println(" Now you have " + taskCount + " tasks in the list.");
         System.out.println(LINE);

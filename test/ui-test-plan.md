@@ -810,13 +810,13 @@ ____________________________________________________________
 
 ---
 
-## TC17: Task list capacity boundary (exactly 100 tasks, then overflow)
+## TC17: Task list grows past the old fixed-size capacity
 
-**Aim:** Verify the fixed-size task array accepts tasks up to and including
-`MAX_TASKS` (100) without an off-by-one error, that the 101st add is rejected
-with the "task list is full" message, and that the rejected add does not
-corrupt the list (it still contains exactly the first 100 tasks, correctly
-numbered, with no partial/blank entry appended).
+**Aim:** Tasks are now stored in an `ArrayList<Task>` instead of a
+fixed-size array, so there is no longer a hard cap on the number of
+tasks. Verify that adding 105 tasks (5 more than the old `MAX_TASKS`
+of 100) all succeed with no "task list is full" error, and that
+`list` afterward shows all 105 tasks, correctly numbered.
 
 **Input:**
 ```
@@ -920,7 +920,11 @@ todo task97
 todo task98
 todo task99
 todo task100
-todo overflow task
+todo task101
+todo task102
+todo task103
+todo task104
+todo task105
 list
 bye
 ```
@@ -1437,7 +1441,29 @@ ____________________________________________________________
  Now you have 100 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Sorry, the task list is full (max 100 tasks).
+ Got it. I've added this task:
+   [T][ ] task101
+ Now you have 101 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [T][ ] task102
+ Now you have 102 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [T][ ] task103
+ Now you have 103 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [T][ ] task104
+ Now you have 104 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [T][ ] task105
+ Now you have 105 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
@@ -1541,6 +1567,11 @@ ____________________________________________________________
  98.[T][ ] task98
  99.[T][ ] task99
  100.[T][ ] task100
+ 101.[T][ ] task101
+ 102.[T][ ] task102
+ 103.[T][ ] task103
+ 104.[T][ ] task104
+ 105.[T][ ] task105
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -1627,6 +1658,214 @@ ____________________________________________________________
  1.[T][ ] read book
  2.[D][ ] return book (by: Monday)
  3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC19: Delete a task
+
+**Aim:** Verify `delete <n>` removes the n-th task (1-indexed) from the
+list, prints the "Noted. I've removed this task" confirmation showing
+the removed task and the updated count, and that the task no longer
+appears afterward.
+
+**Input:**
+```
+todo read book
+deadline return book /by June 6th
+event project meeting /from Aug 6th 2pm /to 4pm
+todo join sports club
+todo borrow book
+mark 1
+mark 2
+mark 4
+list
+delete 3
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [T][ ] read book
+ Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [D][ ] return book (by: June 6th)
+ Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+ Now you have 3 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [T][ ] join sports club
+ Now you have 4 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [T][ ] borrow book
+ Now you have 5 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Nice! I've marked this task as done:
+   [T][X] read book
+____________________________________________________________
+____________________________________________________________
+ Nice! I've marked this task as done:
+   [D][X] return book (by: June 6th)
+____________________________________________________________
+____________________________________________________________
+ Nice! I've marked this task as done:
+   [T][X] join sports club
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks in your list:
+ 1.[T][X] read book
+ 2.[D][X] return book (by: June 6th)
+ 3.[E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+ 4.[T][X] join sports club
+ 5.[T][ ] borrow book
+____________________________________________________________
+____________________________________________________________
+ Noted. I've removed this task:
+   [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+ Now you have 4 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC20: `delete` error handling, re-indexing, and emptying the list
+
+**Aim:** Verify `delete` rejects a missing task number, a non-numeric
+task number, and an out-of-range number (`0`) the same way `mark`/
+`unmark` do, without changing the list; that deleting a task shifts
+later tasks' numbers down by one (deleting task 2 makes the old task 3
+the new task 2) rather than leaving a gap; and that repeatedly deleting
+down to zero tasks works, including `list` on an empty list (just the
+header/footer lines, no task rows) and correctly reporting "You have 0
+task(s) in the list" if `delete` is attempted again.
+
+**Input:**
+```
+todo t1
+todo t2
+todo t3
+todo t4
+delete 5
+delete abc
+delete 0
+list
+delete 2
+list
+delete 1
+delete 1
+list
+delete 1
+list
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [T][ ] t1
+ Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [T][ ] t2
+ Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [T][ ] t3
+ Now you have 3 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [T][ ] t4
+ Now you have 4 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Task number 5 does not exist. You have 4 task(s) in the list.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! The task number must be a whole number, e.g. 'delete 2'.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Task number 0 does not exist. You have 4 task(s) in the list.
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks in your list:
+ 1.[T][ ] t1
+ 2.[T][ ] t2
+ 3.[T][ ] t3
+ 4.[T][ ] t4
+____________________________________________________________
+____________________________________________________________
+ Noted. I've removed this task:
+   [T][ ] t2
+ Now you have 3 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks in your list:
+ 1.[T][ ] t1
+ 2.[T][ ] t3
+ 3.[T][ ] t4
+____________________________________________________________
+____________________________________________________________
+ Noted. I've removed this task:
+   [T][ ] t1
+ Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Noted. I've removed this task:
+   [T][ ] t3
+ Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks in your list:
+ 1.[T][ ] t4
+____________________________________________________________
+____________________________________________________________
+ Noted. I've removed this task:
+   [T][ ] t4
+ Now you have 0 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks in your list:
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!

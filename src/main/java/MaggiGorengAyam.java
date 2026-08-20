@@ -54,12 +54,44 @@ public class MaggiGorengAyam {
                 System.out.println(LINE);
                 continue;
             }
-            tasks[taskCount] = new Task(command);
-            taskCount++;
-            System.out.println(LINE);
-            System.out.println(" added: " + command);
-            System.out.println(LINE);
+            if (command.startsWith("todo ")) {
+                String description = command.substring(5).trim();
+                tasks[taskCount] = new ToDo(description);
+                taskCount++;
+                printAdded(tasks[taskCount - 1], taskCount);
+                continue;
+            }
+            if (command.startsWith("deadline ")) {
+                String rest = command.substring(9).trim();
+                String[] parts = rest.split(" /by ", 2);
+                String description = parts[0];
+                String by = parts.length > 1 ? parts[1] : "";
+                tasks[taskCount] = new Deadline(description, by);
+                taskCount++;
+                printAdded(tasks[taskCount - 1], taskCount);
+                continue;
+            }
+            if (command.startsWith("event ")) {
+                String rest = command.substring(6).trim();
+                String[] fromParts = rest.split(" /from ", 2);
+                String description = fromParts[0];
+                String[] toParts = (fromParts.length > 1 ? fromParts[1] : "").split(" /to ", 2);
+                String from = toParts[0];
+                String to = toParts.length > 1 ? toParts[1] : "";
+                tasks[taskCount] = new Event(description, from, to);
+                taskCount++;
+                printAdded(tasks[taskCount - 1], taskCount);
+                continue;
+            }
         }
         scanner.close();
+    }
+
+    private static void printAdded(Task task, int taskCount) {
+        System.out.println(LINE);
+        System.out.println(" Got it. I've added this task:");
+        System.out.println("   " + task);
+        System.out.println(" Now you have " + taskCount + " tasks in the list.");
+        System.out.println(LINE);
     }
 }

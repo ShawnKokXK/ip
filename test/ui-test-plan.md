@@ -10,6 +10,12 @@ full console output is compared against the expected output.
 - Entry point: `MaggiGorengAyam` (default package)
 - Sources: `src/main/java/*.java`
 - Compile: `javac -d out src/main/java/*.java`
+- The program saves tasks to, and loads them from, `data/maggigorengayam.txt`
+  (relative to the current working directory) so the task list survives
+  between runs. **Before every test case** (unless the test case says
+  otherwise), delete the `data/` directory if it exists, so the run starts
+  from a genuinely empty task list, matching the "independent session"
+  assumption below.
 - Run: `java -cp out MaggiGorengAyam`, feeding the test case's `Input` lines
   to stdin in order (one command per line), then closing stdin.
 
@@ -1866,6 +1872,132 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC21: Task list persists across separate program runs
+
+**Aim:** Verify that tasks (including done/not-done status) are saved to
+`data/maggigorengayam.txt` as they are added/marked, and are correctly
+loaded back when the program is started again in a fresh process, without
+the user re-entering anything.
+
+**Special setup for this test case only:** delete the `data/` directory
+before **Run 1**, but do **not** delete it between Run 1 and Run 2 — Run 2
+must see the file Run 1 left behind. This is the one test case in this plan
+where state intentionally carries over between runs.
+
+**Run 1 — Input:**
+```
+todo read book
+deadline return book /by June 6th
+mark 1
+bye
+```
+
+**Run 1 — Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [T][ ] read book
+ Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [D][ ] return book (by: June 6th)
+ Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Nice! I've marked this task as done:
+   [T][X] read book
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+**Run 2 — Input (fresh process, same `data/` directory from Run 1):**
+```
+list
+bye
+```
+
+**Run 2 — Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks in your list:
+ 1.[T][X] read book
+ 2.[D][ ] return book (by: June 6th)
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC22: Corrupted data file lines are skipped on load, not crashed on
+
+**Aim:** Verify that if `data/maggigorengayam.txt` contains lines that
+cannot be parsed (wrong format, unknown type letter, missing fields —
+e.g. from manual editing or a bug in some other tool), the program skips
+just those lines and loads whatever valid tasks remain, instead of
+crashing or refusing to start.
+
+**Special setup for this test case only:** delete the `data/` directory,
+then create `data/maggigorengayam.txt` by hand with exactly this content
+(a mix of one valid line and several invalid ones) before running the
+program:
+```
+T | 1 | good task
+GARBAGE LINE
+X | 0 | bad type
+D | 0 | incomplete
+```
+
+**Input:**
+```
+list
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks in your list:
+ 1.[T][X] good task
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!

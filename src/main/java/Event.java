@@ -16,4 +16,9 @@ public class Event extends Task {
                 + this.to
                 + ")";
     }
+
+    @Override
+    public String toSaveFormat() {
+        return "E | " + getStatusFlag() + " | " + description + " | " + from + " | " + to;
+    }
 }

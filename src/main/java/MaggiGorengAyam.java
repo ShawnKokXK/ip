@@ -1,9 +1,10 @@
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
 public class MaggiGorengAyam {
     private static final String LINE = "____________________________________________________________";
+    private static final String DATA_FILE_PATH = "data/maggigorengayam.txt";
 
     public static void main(String[] args) {
         String banner = LINE + "\n" +
@@ -17,9 +18,10 @@ public class MaggiGorengAyam {
                 LINE;
         System.out.println(banner);
 
-        // An ArrayList grows as needed, so there is no fixed task-count limit
-        // to enforce (unlike the fixed-size array this replaced).
-        List<Task> tasks = new ArrayList<>();
+        Storage storage = new Storage(DATA_FILE_PATH);
+        // Tasks saved by a previous run (if any) are loaded back in here;
+        // a missing/first-time data file just means an empty starting list.
+        List<Task> tasks = storage.load();
 
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
@@ -43,6 +45,9 @@ public class MaggiGorengAyam {
                 if (command.equals("mark") || command.startsWith("mark ")) {
                     int index = parseTaskIndex(command.substring(4).trim(), tasks.size(), "mark");
                     tasks.get(index).markAsDone();
+                    if (!saveTasks(storage, tasks)) {
+                        continue;
+                    }
                     System.out.println(LINE);
                     System.out.println(" Nice! I've marked this task as done:");
                     System.out.println("   " + tasks.get(index));
@@ -52,6 +57,9 @@ public class MaggiGorengAyam {
                 if (command.equals("unmark") || command.startsWith("unmark ")) {
                     int index = parseTaskIndex(command.substring(6).trim(), tasks.size(), "unmark");
                     tasks.get(index).markAsNotDone();
+                    if (!saveTasks(storage, tasks)) {
+                        continue;
+                    }
                     System.out.println(LINE);
                     System.out.println(" OK, I've marked this task as not done yet:");
                     System.out.println("   " + tasks.get(index));
@@ -61,6 +69,9 @@ public class MaggiGorengAyam {
                 if (command.equals("delete") || command.startsWith("delete ")) {
                     int index = parseTaskIndex(command.substring(6).trim(), tasks.size(), "delete");
                     Task removed = tasks.remove(index);
+                    if (!saveTasks(storage, tasks)) {
+                        continue;
+                    }
                     printRemoved(removed, tasks.size());
                     continue;
                 }
@@ -70,6 +81,9 @@ public class MaggiGorengAyam {
                         throw new MaggiGorengAyamException("What TODO you want bro, I'll give you maggi goreng ayam");
                     }
                     tasks.add(new ToDo(description));
+                    if (!saveTasks(storage, tasks)) {
+                        continue;
+                    }
                     printAdded(tasks.get(tasks.size() - 1), tasks.size());
                     continue;
                 }
@@ -92,6 +106,9 @@ public class MaggiGorengAyam {
                         throw new MaggiGorengAyamException("No deadline?? say that to your gf thanks");
                     }
                     tasks.add(new Deadline(description, by));
+                    if (!saveTasks(storage, tasks)) {
+                        continue;
+                    }
                     printAdded(tasks.get(tasks.size() - 1), tasks.size());
                     continue;
                 }
@@ -126,6 +143,9 @@ public class MaggiGorengAyam {
                         throw new MaggiGorengAyamException("To what?? Specify an end time after '/to'.");
                     }
                     tasks.add(new Event(description, from, to));
+                    if (!saveTasks(storage, tasks)) {
+                        continue;
+                    }
                     printAdded(tasks.get(tasks.size() - 1), tasks.size());
                     continue;
                 }
@@ -137,6 +157,26 @@ public class MaggiGorengAyam {
             }
         }
         scanner.close();
+    }
+
+    /**
+     * Saves the current task list to disk, reporting an OOPS message on
+     * failure (e.g. the data directory could not be created/written to)
+     * instead of letting an IOException crash the whole program.
+     *
+     * @return true if the save succeeded, false if it failed and an error
+     *         was already printed.
+     */
+    private static boolean saveTasks(Storage storage, List<Task> tasks) {
+        try {
+            storage.save(tasks);
+            return true;
+        } catch (IOException e) {
+            System.out.println(LINE);
+            System.out.println(" OOPS!!! I couldn't save the task list to disk: " + e.getMessage());
+            System.out.println(LINE);
+            return false;
+        }
     }
 
     /**

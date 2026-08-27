@@ -17,30 +17,54 @@ public class Storage {
     }
 
     /**
+     * The result of a {@link #load()} call: the tasks that were
+     * successfully parsed, plus a count of lines that were skipped because
+     * they could not be parsed (e.g. the file was hand-edited into an
+     * invalid state). Callers can use {@code skippedLineCount} to warn the
+     * user that some previously-saved tasks were silently lost, instead of
+     * that data loss going completely unnoticed.
+     */
+    public static class LoadResult {
+        public final List<Task> tasks;
+        public final int skippedLineCount;
+
+        public LoadResult(List<Task> tasks, int skippedLineCount) {
+            this.tasks = tasks;
+            this.skippedLineCount = skippedLineCount;
+        }
+    }
+
+    /**
      * Loads tasks from the data file. A missing file (e.g. the very first
      * run) is not an error: it just means there is nothing to load yet, so
-     * an empty list is returned. A line that cannot be parsed (e.g. the
-     * file was hand-edited into an invalid state) is skipped rather than
-     * failing the whole load, so a single bad line doesn't lose every
-     * other saved task.
+     * an empty result is returned. A line that cannot be parsed is skipped
+     * rather than failing the whole load, so a single bad line doesn't lose
+     * every other saved task; the number of lines skipped is reported back
+     * via {@link LoadResult#skippedLineCount} rather than being hidden.
+     *
+     * @throws IOException if the file exists but could not be read (e.g.
+     *         it is actually a directory, or permissions deny access) -
+     *         this is distinct from "no file yet", which is not an error.
      */
-    public List<Task> load() {
+    public LoadResult load() throws IOException {
         List<Task> tasks = new ArrayList<>();
+        int skippedLineCount = 0;
         File file = new File(filePath);
         if (!file.exists()) {
-            return tasks;
+            return new LoadResult(tasks, 0);
         }
-        try {
-            for (String line : Files.readAllLines(file.toPath())) {
-                Task task = parseLine(line);
-                if (task != null) {
-                    tasks.add(task);
-                }
+        for (String line : Files.readAllLines(file.toPath())) {
+            if (line.isBlank()) {
+                continue;
             }
-        } catch (IOException e) {
-            return new ArrayList<>();
+            Task task = parseLine(line);
+            if (task != null) {
+                tasks.add(task);
+            } else {
+                skippedLineCount++;
+            }
         }
-        return tasks;
+        return new LoadResult(tasks, skippedLineCount);
     }
 
     private Task parseLine(String line) {

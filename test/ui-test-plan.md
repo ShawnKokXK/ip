@@ -1964,8 +1964,10 @@ ____________________________________________________________
 **Aim:** Verify that if `data/maggigorengayam.txt` contains lines that
 cannot be parsed (wrong format, unknown type letter, missing fields —
 e.g. from manual editing or a bug in some other tool), the program skips
-just those lines and loads whatever valid tasks remain, instead of
-crashing or refusing to start.
+just those lines, loads whatever valid tasks remain instead of crashing
+or refusing to start, and — since silently losing saved tasks would
+otherwise go completely unnoticed — reports at startup how many lines
+were skipped.
 
 **Special setup for this test case only:** delete the `data/` directory,
 then create `data/maggigorengayam.txt` by hand with exactly this content
@@ -1996,8 +1998,199 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
+ OOPS!!! 3 saved task(s) in the data file could not be read and were skipped.
+____________________________________________________________
+____________________________________________________________
  Here are the tasks in your list:
  1.[T][X] good task
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC23: Blank input lines are ignored; whole-line whitespace is trimmed
+
+**Aim:** Verify that a blank line (empty, or whitespace-only) typed at the
+prompt produces no output and does not disturb the task list, and that
+leading/trailing whitespace around an otherwise-valid command line (not
+just around the description, which TC15 already covers) does not cause
+the command to be misread as unrecognized.
+
+**Input:**
+```
+
+   
+  todo buy milk  
+  list  
+   bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [T][ ] buy milk
+ Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks in your list:
+ 1.[T][ ] buy milk
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC24: `|` character rejected in task fields (save-format delimiter clash)
+
+**Aim:** Tasks are saved to disk as `|`-delimited lines (e.g.
+`D | 0 | return book | June 6th`), so a task field that itself contains
+`" | "` would be split into the wrong number of parts on the next load
+and silently dropped (see TC22's skipped-line warning). Verify that
+`todo`, `deadline`, and `event` each reject a `|` character anywhere in a
+user-supplied field — description, deadline, start time, end time — with
+a clear OOPS message, and add nothing to the list, rather than allowing
+data that would later be silently lost.
+
+**Input:**
+```
+todo buy a | b
+deadline return book /by June | 6th
+event meet friend /from Mon | 2pm /to 4pm
+event meet friend /from Mon 2pm /to 4 | pm
+list
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Sorry, the '|' character can't be used in a task description because it's used internally to save your tasks. Please remove it and try again.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Sorry, the '|' character can't be used in a deadline because it's used internally to save your tasks. Please remove it and try again.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Sorry, the '|' character can't be used in a start time because it's used internally to save your tasks. Please remove it and try again.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Sorry, the '|' character can't be used in a end time because it's used internally to save your tasks. Please remove it and try again.
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks in your list:
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC25: Load I/O failure falls back to an empty list instead of crashing
+
+**Aim:** Verify that if the data file cannot be read for a reason other
+than "it doesn't exist yet" (e.g. `data/maggigorengayam.txt` is actually a
+directory, simulating a permissions error or filesystem oddity), the
+program reports a graceful OOPS warning at startup and continues with an
+empty task list rather than crashing before the prompt loop even starts.
+
+**Special setup for this test case only:** delete the `data/` directory,
+then create `data/maggigorengayam.txt` **as a directory** (not a file)
+before running the program, e.g. `mkdir -p data/maggigorengayam.txt`.
+
+**Input:**
+```
+list
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! I couldn't load saved tasks from disk. Starting with an empty list.
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks in your list:
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC26: Save I/O failure keeps the task in memory instead of crashing
+
+**Aim:** Verify that if a task-list change cannot be saved to disk (e.g.
+`data/maggigorengayam.txt`'s directory `data/` cannot be created because a
+plain file of that name already exists in its place), the program reports
+a graceful OOPS warning instead of the normal "Got it"/"Noted"/etc.
+confirmation, and — critically — does not crash: the task is still applied
+to the in-memory list (confirmed here via `list`), it's only the on-disk
+copy that lags behind until a save succeeds.
+
+**Special setup for this test case only:** delete any existing `data/`
+directory, then create a plain **file** (not a directory) named `data` in
+the project root before running the program, so `data/maggigorengayam.txt`
+can never be created. Delete that `data` file again after this test case,
+since it would otherwise block every later test case's save from working.
+
+**Input:**
+```
+todo new task
+list
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! I couldn't save the task list to disk. Your change is only in memory for now.
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks in your list:
+ 1.[T][ ] new task
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!

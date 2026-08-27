@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,11 +22,29 @@ public class MaggiGorengAyam {
         Storage storage = new Storage(DATA_FILE_PATH);
         // Tasks saved by a previous run (if any) are loaded back in here;
         // a missing/first-time data file just means an empty starting list.
-        List<Task> tasks = storage.load();
+        List<Task> tasks;
+        try {
+            Storage.LoadResult result = storage.load();
+            tasks = result.tasks;
+            if (result.skippedLineCount > 0) {
+                System.out.println(LINE);
+                System.out.println(" OOPS!!! " + result.skippedLineCount
+                        + " saved task(s) in the data file could not be read and were skipped.");
+                System.out.println(LINE);
+            }
+        } catch (IOException e) {
+            System.out.println(LINE);
+            System.out.println(" OOPS!!! I couldn't load saved tasks from disk. Starting with an empty list.");
+            System.out.println(LINE);
+            tasks = new ArrayList<>();
+        }
 
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
-            String command = scanner.nextLine();
+            String command = scanner.nextLine().trim();
+            if (command.isEmpty()) {
+                continue;
+            }
             try {
                 if (command.equals("bye")) {
                     System.out.println(LINE);
@@ -80,6 +99,7 @@ public class MaggiGorengAyam {
                     if (description.isEmpty()) {
                         throw new MaggiGorengAyamException("What TODO you want bro, I'll give you maggi goreng ayam");
                     }
+                    requireNoPipeCharacter(description, "task description");
                     tasks.add(new ToDo(description));
                     if (!saveTasks(storage, tasks)) {
                         continue;
@@ -105,6 +125,8 @@ public class MaggiGorengAyam {
                     if (by.isEmpty()) {
                         throw new MaggiGorengAyamException("No deadline?? say that to your gf thanks");
                     }
+                    requireNoPipeCharacter(description, "task description");
+                    requireNoPipeCharacter(by, "deadline");
                     tasks.add(new Deadline(description, by));
                     if (!saveTasks(storage, tasks)) {
                         continue;
@@ -142,6 +164,9 @@ public class MaggiGorengAyam {
                     if (to.isEmpty()) {
                         throw new MaggiGorengAyamException("To what?? Specify an end time after '/to'.");
                     }
+                    requireNoPipeCharacter(description, "task description");
+                    requireNoPipeCharacter(from, "start time");
+                    requireNoPipeCharacter(to, "end time");
                     tasks.add(new Event(description, from, to));
                     if (!saveTasks(storage, tasks)) {
                         continue;
@@ -173,9 +198,26 @@ public class MaggiGorengAyam {
             return true;
         } catch (IOException e) {
             System.out.println(LINE);
-            System.out.println(" OOPS!!! I couldn't save the task list to disk: " + e.getMessage());
+            System.out.println(" OOPS!!! I couldn't save the task list to disk. Your change is only in memory for now.");
             System.out.println(LINE);
             return false;
+        }
+    }
+
+    /**
+     * Rejects a task field (description/date) that contains the '|'
+     * character, since that character is the field delimiter used by
+     * {@link Task#toSaveFormat()}/{@link Storage}. Without this check, a
+     * field containing " | " would be split into the wrong number of parts
+     * on the next load and the whole task would be silently dropped -
+     * this check turns that silent data loss into an immediate, explicit
+     * error at the point the user enters the offending text.
+     */
+    private static void requireNoPipeCharacter(String field, String fieldLabel) throws MaggiGorengAyamException {
+        if (field.contains("|")) {
+            throw new MaggiGorengAyamException(
+                    "Sorry, the '|' character can't be used in a " + fieldLabel
+                            + " because it's used internally to save your tasks. Please remove it and try again.");
         }
     }
 

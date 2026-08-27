@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public class Task {
     protected String description;
     protected boolean isDone;
@@ -38,6 +40,15 @@ public class Task {
      */
     public String toSaveFormat() {
         throw new UnsupportedOperationException("Task subclasses must override toSaveFormat()");
+    }
+
+    /**
+     * Whether this task occurs on the given date, used by the `on <date>`
+     * command. A plain Task/ToDo has no date, so it never matches; Deadline
+     * and Event override this with their own date(s).
+     */
+    public boolean occursOn(LocalDate date) {
+        return false;
     }
 
     @Override

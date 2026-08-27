@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -61,6 +63,31 @@ public class MaggiGorengAyam {
                     System.out.println(LINE);
                     continue;
                 }
+                if (command.equals("on") || command.startsWith("on ")) {
+                    String dateArg = command.substring(2).trim();
+                    if (dateArg.isEmpty()) {
+                        throw new MaggiGorengAyamException("Which date? e.g. 'on 2019-12-02'.");
+                    }
+                    LocalDate queryDate;
+                    try {
+                        queryDate = DateTimeUtil.parseDateOnly(dateArg);
+                    } catch (DateTimeParseException e) {
+                        throw new MaggiGorengAyamException(
+                                "I don't understand '" + dateArg
+                                        + "' as a date. Please use yyyy-MM-dd, e.g. 'on 2019-12-02'.");
+                    }
+                    System.out.println(LINE);
+                    System.out.println(" Here are the tasks on " + DateTimeUtil.formatDateOnlyForDisplay(queryDate) + ":");
+                    int count = 0;
+                    for (Task task : tasks) {
+                        if (task.occursOn(queryDate)) {
+                            count++;
+                            System.out.println(" " + count + "." + task);
+                        }
+                    }
+                    System.out.println(LINE);
+                    continue;
+                }
                 if (command.equals("mark") || command.startsWith("mark ")) {
                     int index = parseTaskIndex(command.substring(4).trim(), tasks.size(), "mark");
                     tasks.get(index).markAsDone();
@@ -99,7 +126,7 @@ public class MaggiGorengAyam {
                     if (description.isEmpty()) {
                         throw new MaggiGorengAyamException("What TODO you want bro, I'll give you maggi goreng ayam");
                     }
-                    requireNoPipeCharacter(description, "task description");
+                    requireNoPipeCharacter(description);
                     tasks.add(new ToDo(description));
                     if (!saveTasks(storage, tasks)) {
                         continue;
@@ -125,9 +152,9 @@ public class MaggiGorengAyam {
                     if (by.isEmpty()) {
                         throw new MaggiGorengAyamException("No deadline?? say that to your gf thanks");
                     }
-                    requireNoPipeCharacter(description, "task description");
-                    requireNoPipeCharacter(by, "deadline");
-                    tasks.add(new Deadline(description, by));
+                    requireNoPipeCharacter(description);
+                    DateTimeUtil.ParsedDateTime parsedBy = parseDateField(by, "deadline date");
+                    tasks.add(new Deadline(description, parsedBy.date, parsedBy.time));
                     if (!saveTasks(storage, tasks)) {
                         continue;
                     }
@@ -164,10 +191,10 @@ public class MaggiGorengAyam {
                     if (to.isEmpty()) {
                         throw new MaggiGorengAyamException("To what?? Specify an end time after '/to'.");
                     }
-                    requireNoPipeCharacter(description, "task description");
-                    requireNoPipeCharacter(from, "start time");
-                    requireNoPipeCharacter(to, "end time");
-                    tasks.add(new Event(description, from, to));
+                    requireNoPipeCharacter(description);
+                    DateTimeUtil.ParsedDateTime parsedFrom = parseDateField(from, "start date/time");
+                    DateTimeUtil.ParsedDateTime parsedTo = parseDateField(to, "end date/time");
+                    tasks.add(new Event(description, parsedFrom.date, parsedFrom.time, parsedTo.date, parsedTo.time));
                     if (!saveTasks(storage, tasks)) {
                         continue;
                     }
@@ -205,19 +232,39 @@ public class MaggiGorengAyam {
     }
 
     /**
-     * Rejects a task field (description/date) that contains the '|'
-     * character, since that character is the field delimiter used by
+     * Rejects a task description that contains the '|' character, since
+     * that character is the field delimiter used by
      * {@link Task#toSaveFormat()}/{@link Storage}. Without this check, a
-     * field containing " | " would be split into the wrong number of parts
-     * on the next load and the whole task would be silently dropped -
+     * description containing " | " would be split into the wrong number of
+     * parts on the next load and the whole task would be silently dropped -
      * this check turns that silent data loss into an immediate, explicit
-     * error at the point the user enters the offending text.
+     * error at the point the user enters the offending text. (Dates/times
+     * don't need this check: {@link #parseDateField} already rejects any
+     * text that isn't a valid date, which includes anything containing '|'.)
      */
-    private static void requireNoPipeCharacter(String field, String fieldLabel) throws MaggiGorengAyamException {
-        if (field.contains("|")) {
+    private static void requireNoPipeCharacter(String description) throws MaggiGorengAyamException {
+        if (description.contains("|")) {
             throw new MaggiGorengAyamException(
-                    "Sorry, the '|' character can't be used in a " + fieldLabel
+                    "Sorry, the '|' character can't be used in a task description"
                             + " because it's used internally to save your tasks. Please remove it and try again.");
+        }
+    }
+
+    /**
+     * Parses a "yyyy-MM-dd" or "yyyy-MM-dd HHmm" value typed after `/by`,
+     * `/from`, or `/to`, converting an unparseable value into a friendly
+     * {@link MaggiGorengAyamException} instead of a raw
+     * {@link DateTimeParseException}.
+     */
+    private static DateTimeUtil.ParsedDateTime parseDateField(String value, String fieldLabel)
+            throws MaggiGorengAyamException {
+        try {
+            return DateTimeUtil.parse(value);
+        } catch (DateTimeParseException e) {
+            throw new MaggiGorengAyamException(
+                    "I don't understand '" + value + "' as a " + fieldLabel
+                            + ". Please use yyyy-MM-dd, optionally followed by a 24-hour time,"
+                            + " e.g. '2019-12-02' or '2019-12-02 1800'.");
         }
     }
 

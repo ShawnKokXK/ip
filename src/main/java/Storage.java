@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,13 +88,24 @@ public class Storage {
             if (parts.length != 4) {
                 return null;
             }
-            task = new Deadline(description, parts[3]);
+            try {
+                DateTimeUtil.ParsedDateTime by = DateTimeUtil.parse(parts[3]);
+                task = new Deadline(description, by.date, by.time);
+            } catch (DateTimeParseException e) {
+                return null;
+            }
             break;
         case "E":
             if (parts.length != 5) {
                 return null;
             }
-            task = new Event(description, parts[3], parts[4]);
+            try {
+                DateTimeUtil.ParsedDateTime from = DateTimeUtil.parse(parts[3]);
+                DateTimeUtil.ParsedDateTime to = DateTimeUtil.parse(parts[4]);
+                task = new Event(description, from.date, from.time, to.date, to.time);
+            } catch (DateTimeParseException e) {
+                return null;
+            }
             break;
         default:
             return null;

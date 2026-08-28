@@ -1,8 +1,6 @@
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class MaggiGorengAyam {
@@ -24,10 +22,10 @@ public class MaggiGorengAyam {
         Storage storage = new Storage(DATA_FILE_PATH);
         // Tasks saved by a previous run (if any) are loaded back in here;
         // a missing/first-time data file just means an empty starting list.
-        List<Task> tasks;
+        TaskList tasks;
         try {
             Storage.LoadResult result = storage.load();
-            tasks = result.tasks;
+            tasks = new TaskList(result.tasks);
             if (result.skippedLineCount > 0) {
                 System.out.println(LINE);
                 System.out.println(" OOPS!!! " + result.skippedLineCount
@@ -38,7 +36,7 @@ public class MaggiGorengAyam {
             System.out.println(LINE);
             System.out.println(" OOPS!!! I couldn't load saved tasks from disk. Starting with an empty list.");
             System.out.println(LINE);
-            tasks = new ArrayList<>();
+            tasks = new TaskList();
         }
 
         Scanner scanner = new Scanner(System.in);
@@ -79,7 +77,7 @@ public class MaggiGorengAyam {
                     System.out.println(LINE);
                     System.out.println(" Here are the tasks on " + DateTimeUtil.formatDateOnlyForDisplay(queryDate) + ":");
                     int count = 0;
-                    for (Task task : tasks) {
+                    for (Task task : tasks.getAll()) {
                         if (task.occursOn(queryDate)) {
                             count++;
                             System.out.println(" " + count + "." + task);
@@ -219,9 +217,9 @@ public class MaggiGorengAyam {
      * @return true if the save succeeded, false if it failed and an error
      *         was already printed.
      */
-    private static boolean saveTasks(Storage storage, List<Task> tasks) {
+    private static boolean saveTasks(Storage storage, TaskList tasks) {
         try {
-            storage.save(tasks);
+            storage.save(tasks.getAll());
             return true;
         } catch (IOException e) {
             System.out.println(LINE);

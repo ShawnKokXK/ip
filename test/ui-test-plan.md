@@ -2442,3 +2442,97 @@ ____________________________________________________________
  Bye. Hope to see you again soon!
 ____________________________________________________________
 ```
+
+---
+
+## TC31: `find <keyword>` searches task descriptions
+
+**Aim:** Verify `find <keyword>` shows only the tasks (of any type) whose
+description contains the keyword, numbered from 1 in list order, with
+their current done/not-done status and full display formatting (e.g. a
+`Deadline`'s "by" date) preserved; that matching is case-insensitive; that
+a keyword with no matches shows just the header with no rows; that a
+missing keyword is rejected with a specific error; and that `find` never
+changes the underlying list, confirmed by a final `list` showing all
+tasks unchanged and still correctly numbered.
+
+**Input:**
+```
+todo read book
+deadline return book /by 2019-06-06
+event borrow laptop /from 2019-06-06 1400 /to 2019-06-06 1600
+mark 1
+mark 2
+find book
+find BOOK
+find laptop
+find xyz
+find
+list
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [T][ ] read book
+ Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [D][ ] return book (by: Jun 6 2019)
+ Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [E][ ] borrow laptop (from: Jun 6 2019, 2pm to: Jun 6 2019, 4pm)
+ Now you have 3 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Nice! I've marked this task as done:
+   [T][X] read book
+____________________________________________________________
+____________________________________________________________
+ Nice! I've marked this task as done:
+   [D][X] return book (by: Jun 6 2019)
+____________________________________________________________
+____________________________________________________________
+ Here are the matching tasks in your list:
+ 1.[T][X] read book
+ 2.[D][X] return book (by: Jun 6 2019)
+____________________________________________________________
+____________________________________________________________
+ Here are the matching tasks in your list:
+ 1.[T][X] read book
+ 2.[D][X] return book (by: Jun 6 2019)
+____________________________________________________________
+____________________________________________________________
+ Here are the matching tasks in your list:
+ 1.[E][ ] borrow laptop (from: Jun 6 2019, 2pm to: Jun 6 2019, 4pm)
+____________________________________________________________
+____________________________________________________________
+ Here are the matching tasks in your list:
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! What word do you want me to find? e.g. 'find book'.
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks in your list:
+ 1.[T][X] read book
+ 2.[D][X] return book (by: Jun 6 2019)
+ 3.[E][ ] borrow laptop (from: Jun 6 2019, 2pm to: Jun 6 2019, 4pm)
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```

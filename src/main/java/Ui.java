@@ -8,6 +8,14 @@ import java.util.Scanner;
  * handling talks to this instead of calling System.out/Scanner directly,
  * so "how things look on screen" has one home and can change without
  * touching command logic.
+ *
+ * <p>Most show* methods print only their message, with no leading/trailing
+ * divider line: the main loop now brackets every command's output with one
+ * {@link #showLine()} before and one after (see MaggiGorengAyam.main()), so
+ * a command's own output doesn't need to draw its own divider. The
+ * exceptions are {@link #showWelcome()}, {@link #showLoadWarning(int)}, and
+ * {@link #showLoadingError()}, which are printed once during startup,
+ * outside that per-command bracket, and so still draw their own.
  */
 public class Ui {
     private static final String LINE = "____________________________________________________________";
@@ -31,6 +39,11 @@ public class Ui {
         scanner.close();
     }
 
+    /** Prints the divider line shown before and after every command's output. */
+    public void showLine() {
+        System.out.println(LINE);
+    }
+
     public void showWelcome() {
         System.out.println(LINE + "\n" +
                 "  __  __  _____    _    \n" +
@@ -44,17 +57,14 @@ public class Ui {
     }
 
     public void showGoodbye() {
-        System.out.println(LINE);
         System.out.println(" Bye. Hope to see you again soon!");
-        System.out.println(LINE);
     }
 
     public void showError(String message) {
-        System.out.println(LINE);
         System.out.println(" OOPS!!! " + message);
-        System.out.println(LINE);
     }
 
+    /** Printed during startup, outside the per-command bracket - see the class doc. */
     public void showLoadWarning(int skippedLineCount) {
         System.out.println(LINE);
         System.out.println(" OOPS!!! " + skippedLineCount
@@ -62,6 +72,7 @@ public class Ui {
         System.out.println(LINE);
     }
 
+    /** Printed during startup, outside the per-command bracket - see the class doc. */
     public void showLoadingError() {
         System.out.println(LINE);
         System.out.println(" OOPS!!! I couldn't load saved tasks from disk. Starting with an empty list.");
@@ -69,58 +80,44 @@ public class Ui {
     }
 
     public void showSaveError() {
-        System.out.println(LINE);
         System.out.println(" OOPS!!! I couldn't save the task list to disk. Your change is only in memory for now.");
-        System.out.println(LINE);
     }
 
     public void showTaskList(TaskList tasks) {
-        System.out.println(LINE);
         System.out.println(" Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
             System.out.println(" " + (i + 1) + "." + tasks.get(i));
         }
-        System.out.println(LINE);
     }
 
     public void showTasksOn(String dateLabel, List<Task> matches) {
-        System.out.println(LINE);
         System.out.println(" Here are the tasks on " + dateLabel + ":");
         int count = 0;
         for (Task task : matches) {
             count++;
             System.out.println(" " + count + "." + task);
         }
-        System.out.println(LINE);
     }
 
     public void showAdded(Task task, int taskCount) {
-        System.out.println(LINE);
         System.out.println(" Got it. I've added this task:");
         System.out.println("   " + task);
         System.out.println(" Now you have " + taskCount + " tasks in the list.");
-        System.out.println(LINE);
     }
 
     public void showRemoved(Task task, int taskCount) {
-        System.out.println(LINE);
         System.out.println(" Noted. I've removed this task:");
         System.out.println("   " + task);
         System.out.println(" Now you have " + taskCount + " tasks in the list.");
-        System.out.println(LINE);
     }
 
     public void showMarked(Task task) {
-        System.out.println(LINE);
         System.out.println(" Nice! I've marked this task as done:");
         System.out.println("   " + task);
-        System.out.println(LINE);
     }
 
     public void showUnmarked(Task task) {
-        System.out.println(LINE);
         System.out.println(" OK, I've marked this task as not done yet:");
         System.out.println("   " + task);
-        System.out.println(LINE);
     }
 }

@@ -1,4 +1,12 @@
+package maggigorengayam;
+
 import java.io.IOException;
+
+import maggigorengayam.command.Command;
+import maggigorengayam.parser.Parser;
+import maggigorengayam.storage.Storage;
+import maggigorengayam.tasklist.TaskList;
+import maggigorengayam.ui.Ui;
 
 public class MaggiGorengAyam {
     private static final String DATA_FILE_PATH = "data/maggigorengayam.txt";

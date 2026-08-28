@@ -1,11 +1,18 @@
+package maggigorengayam.command;
+
 import java.io.IOException;
 
+import maggigorengayam.MaggiGorengAyamException;
+import maggigorengayam.storage.Storage;
+import maggigorengayam.tasklist.TaskList;
+import maggigorengayam.ui.Ui;
+
 /**
- * One user command, already understood by {@link Parser} and ready to run
- * against the live task list. Each kind of command (add, mark, delete,
- * list, ...) is its own subclass, so MaggiGorengAyam's main loop no longer
- * needs to know how any particular command works - it just calls
- * {@link #execute}.
+ * One user command, already understood by {@link maggigorengayam.parser.Parser}
+ * and ready to run against the live task list. Each kind of command (add,
+ * mark, delete, list, ...) is its own subclass, so MaggiGorengAyam's main
+ * loop no longer needs to know how any particular command works - it just
+ * calls {@link #execute}.
  */
 public abstract class Command {
     /**

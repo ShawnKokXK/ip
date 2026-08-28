@@ -1,3 +1,10 @@
+package maggigorengayam.command;
+
+import maggigorengayam.MaggiGorengAyamException;
+import maggigorengayam.storage.Storage;
+import maggigorengayam.tasklist.TaskList;
+import maggigorengayam.ui.Ui;
+
 /** The `mark <n>` command: marks the n-th task (1-indexed) as done. */
 public class MarkCommand extends Command {
     private final int taskNumber;

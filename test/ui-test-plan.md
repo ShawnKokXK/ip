@@ -7,17 +7,18 @@ full console output is compared against the expected output.
 
 ## How to run the program under test
 
-- Entry point: `MaggiGorengAyam` (default package)
-- Sources: `src/main/java/*.java`
-- Compile: `javac -d out src/main/java/*.java`
+- Entry point: `maggigorengayam.MaggiGorengAyam`
+- Sources: `src/main/java/maggigorengayam/**/*.java`
+- Compile: `javac -d out -sourcepath src/main/java src/main/java/maggigorengayam/MaggiGorengAyam.java`
 - The program saves tasks to, and loads them from, `data/maggigorengayam.txt`
   (relative to the current working directory) so the task list survives
   between runs. **Before every test case** (unless the test case says
   otherwise), delete the `data/` directory if it exists, so the run starts
   from a genuinely empty task list, matching the "independent session"
   assumption below.
-- Run: `java -cp out MaggiGorengAyam`, feeding the test case's `Input` lines
-  to stdin in order (one command per line), then closing stdin.
+- Run: `java -cp out maggigorengayam.MaggiGorengAyam`, feeding the test
+  case's `Input` lines to stdin in order (one command per line), then
+  closing stdin.
 
 ## Comparison rules
 

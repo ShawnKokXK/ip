@@ -1,3 +1,11 @@
+package maggigorengayam.command;
+
+import maggigorengayam.MaggiGorengAyamException;
+import maggigorengayam.storage.Storage;
+import maggigorengayam.task.Task;
+import maggigorengayam.tasklist.TaskList;
+import maggigorengayam.ui.Ui;
+
 /** The `delete <n>` command: removes the n-th task (1-indexed) from the list. */
 public class DeleteCommand extends Command {
     private final int taskNumber;

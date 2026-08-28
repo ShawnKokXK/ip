@@ -1,5 +1,9 @@
+package maggigorengayam.tasklist;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import maggigorengayam.task.Task;
 
 /**
  * Holds the in-memory task list and the operations that add to, remove

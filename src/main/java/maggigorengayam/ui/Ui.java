@@ -1,5 +1,10 @@
+package maggigorengayam.ui;
+
 import java.util.List;
 import java.util.Scanner;
+
+import maggigorengayam.task.Task;
+import maggigorengayam.tasklist.TaskList;
 
 /**
  * Handles all interaction with the user: reading command lines from

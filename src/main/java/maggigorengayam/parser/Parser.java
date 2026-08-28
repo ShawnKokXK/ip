@@ -27,6 +27,13 @@ import maggigorengayam.util.DateTimeUtil;
  * the command's own execute(), once it has a live TaskList.
  */
 public class Parser {
+    /**
+     * Parses one raw command line typed by the user into the
+     * {@link Command} that should run for it.
+     *
+     * @throws MaggiGorengAyamException if the command is unrecognized or
+     *         its arguments are malformed.
+     */
     public static Command parse(String command) throws MaggiGorengAyamException {
         if (command.equals("bye")) {
             return new ExitCommand();
@@ -58,6 +65,7 @@ public class Parser {
         throw new MaggiGorengAyamException("Huhhh???");
     }
 
+    /** Parses the argument after {@code on} into an {@link OnCommand}. */
     private static Command parseOn(String command) throws MaggiGorengAyamException {
         String dateArg = command.substring(2).trim();
         if (dateArg.isEmpty()) {
@@ -71,6 +79,7 @@ public class Parser {
         }
     }
 
+    /** Parses the description after {@code todo} into a {@link ToDo}. */
     private static Task parseTodo(String command) throws MaggiGorengAyamException {
         String description = command.substring(4).trim();
         if (description.isEmpty()) {
@@ -80,6 +89,7 @@ public class Parser {
         return new ToDo(description);
     }
 
+    /** Parses the description and {@code /by} date after {@code deadline} into a {@link Deadline}. */
     private static Task parseDeadline(String command) throws MaggiGorengAyamException {
         String rest = command.substring(8).trim();
         if (rest.isEmpty()) {
@@ -103,6 +113,7 @@ public class Parser {
         return new Deadline(description, parsedBy.date, parsedBy.time);
     }
 
+    /** Parses the description and {@code /from}/{@code /to} dates after {@code event} into an {@link Event}. */
     private static Task parseEvent(String command) throws MaggiGorengAyamException {
         String rest = command.substring(5).trim();
         if (rest.isEmpty()) {

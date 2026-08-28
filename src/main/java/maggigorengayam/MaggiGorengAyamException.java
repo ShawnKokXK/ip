@@ -6,6 +6,7 @@ package maggigorengayam;
  * programming error.
  */
 public class MaggiGorengAyamException extends Exception {
+    /** Creates the exception with the given user-facing message. */
     public MaggiGorengAyamException(String message) {
         super(message);
     }

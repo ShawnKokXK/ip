@@ -95,37 +95,37 @@ public class Storage {
         String description = parts[2];
         Task task;
         switch (type) {
-        case "T":
-            if (parts.length != 3) {
+            case "T":
+                if (parts.length != 3) {
+                    return null;
+                }
+                task = new ToDo(description);
+                break;
+            case "D":
+                if (parts.length != 4) {
+                    return null;
+                }
+                try {
+                    DateTimeUtil.ParsedDateTime by = DateTimeUtil.parse(parts[3]);
+                    task = new Deadline(description, by.date, by.time);
+                } catch (DateTimeParseException e) {
+                    return null;
+                }
+                break;
+            case "E":
+                if (parts.length != 5) {
+                    return null;
+                }
+                try {
+                    DateTimeUtil.ParsedDateTime from = DateTimeUtil.parse(parts[3]);
+                    DateTimeUtil.ParsedDateTime to = DateTimeUtil.parse(parts[4]);
+                    task = new Event(description, from.date, from.time, to.date, to.time);
+                } catch (DateTimeParseException e) {
+                    return null;
+                }
+                break;
+            default:
                 return null;
-            }
-            task = new ToDo(description);
-            break;
-        case "D":
-            if (parts.length != 4) {
-                return null;
-            }
-            try {
-                DateTimeUtil.ParsedDateTime by = DateTimeUtil.parse(parts[3]);
-                task = new Deadline(description, by.date, by.time);
-            } catch (DateTimeParseException e) {
-                return null;
-            }
-            break;
-        case "E":
-            if (parts.length != 5) {
-                return null;
-            }
-            try {
-                DateTimeUtil.ParsedDateTime from = DateTimeUtil.parse(parts[3]);
-                DateTimeUtil.ParsedDateTime to = DateTimeUtil.parse(parts[4]);
-                task = new Event(description, from.date, from.time, to.date, to.time);
-            } catch (DateTimeParseException e) {
-                return null;
-            }
-            break;
-        default:
-            return null;
         }
         if (isDone) {
             task.markAsDone();

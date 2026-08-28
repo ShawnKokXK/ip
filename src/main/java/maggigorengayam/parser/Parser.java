@@ -93,11 +93,13 @@ public class Parser {
     private static Task parseDeadline(String command) throws MaggiGorengAyamException {
         String rest = command.substring(8).trim();
         if (rest.isEmpty()) {
-            throw new MaggiGorengAyamException("Woah I don't know how to read mind bro, please type in ur description and deadline");
+            throw new MaggiGorengAyamException(
+                    "Woah I don't know how to read mind bro, please type in ur description and deadline");
         }
         if (!rest.contains(" /by ")) {
             throw new MaggiGorengAyamException(
-                    "Yo, put the deadline using '/by', e.g. 'deadline return book /by Sunday'. Dont make me put the deadline next min.");
+                    "Yo, put the deadline using '/by', e.g. 'deadline return book /by Sunday'. "
+                            + "Dont make me put the deadline next min.");
         }
         String[] parts = rest.split(" /by ", 2);
         String description = parts[0].trim();

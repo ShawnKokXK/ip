@@ -21,6 +21,7 @@ import maggigorengayam.util.DateTimeUtil;
 public class Storage {
     private final String filePath;
 
+    /** Points this Storage at the given file path (not read/written until {@link #load()}/{@link #save}). */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
@@ -37,6 +38,7 @@ public class Storage {
         public final List<Task> tasks;
         public final int skippedLineCount;
 
+        /** Pairs the successfully-parsed tasks with how many lines were skipped. */
         public LoadResult(List<Task> tasks, int skippedLineCount) {
             this.tasks = tasks;
             this.skippedLineCount = skippedLineCount;
@@ -76,6 +78,13 @@ public class Storage {
         return new LoadResult(tasks, skippedLineCount);
     }
 
+    /**
+     * Parses one save-file line ("T"/"D"/"E" followed by its
+     * {@code |}-separated fields) back into a {@link Task}, or returns
+     * {@code null} if the type letter, field count, or a date value is
+     * invalid - the caller counts a {@code null} as a skipped line rather
+     * than failing the whole load.
+     */
     private Task parseLine(String line) {
         String[] parts = line.split(" \\| ");
         if (parts.length < 3) {

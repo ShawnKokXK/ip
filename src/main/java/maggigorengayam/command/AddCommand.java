@@ -9,10 +9,12 @@ import maggigorengayam.ui.Ui;
 public class AddCommand extends Command {
     private final Task taskToAdd;
 
+    /** Wraps the already-built task to be added once {@link #execute} runs. */
     public AddCommand(Task taskToAdd) {
         this.taskToAdd = taskToAdd;
     }
 
+    /** Adds {@code taskToAdd} to {@code tasks}, saves, and reports the addition. */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         tasks.add(taskToAdd);

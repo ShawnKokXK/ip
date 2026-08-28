@@ -6,8 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
- * Parses and formats the dates/times used by {@link Deadline} and
- * {@link Event}. User input and the on-disk save format both use the same
+ * Parses and formats the dates/times used by {@link maggigorengayam.task.Deadline}
+ * and {@link maggigorengayam.task.Event}. User input and the on-disk save format both use the same
  * "yyyy-MM-dd" (optionally followed by a space and a 24-hour "HHmm" time)
  * shape, e.g. "2019-12-02" or "2019-12-02 1800" - so save/load can reuse
  * {@link #parse(String)} directly instead of needing a separate format.
@@ -25,6 +25,7 @@ public class DateTimeUtil {
         public final LocalDate date;
         public final LocalTime time;
 
+        /** Pairs a parsed date with its optional time. */
         public ParsedDateTime(LocalDate date, LocalTime time) {
             this.date = date;
             this.time = time;
@@ -65,6 +66,7 @@ public class DateTimeUtil {
         return datePart + ", " + formatTimeForDisplay(time);
     }
 
+    /** Formats a date-only value for console display, e.g. "Dec 2 2019". */
     public static String formatDateOnlyForDisplay(LocalDate date) {
         return date.format(DISPLAY_DATE_FORMAT);
     }

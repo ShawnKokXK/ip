@@ -8,9 +8,20 @@ import maggigorengayam.storage.Storage;
 import maggigorengayam.tasklist.TaskList;
 import maggigorengayam.ui.Ui;
 
+/**
+ * Entry point for the Maggi Goreng Ayam task-list chatbot. Wires together
+ * the {@link Ui}, {@link Storage}, and {@link Parser}, then runs the
+ * read-parse-execute loop until an {@code ExitCommand} is parsed or input
+ * runs out.
+ */
 public class MaggiGorengAyam {
     private static final String DATA_FILE_PATH = "data/maggigorengayam.txt";
 
+    /**
+     * Loads any previously saved tasks, then repeatedly reads a command
+     * line, parses it, and executes it against the live task list until
+     * the user types {@code bye} or standard input is exhausted.
+     */
     public static void main(String[] args) {
         Ui ui = new Ui();
         ui.showWelcome();

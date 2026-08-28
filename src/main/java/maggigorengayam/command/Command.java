@@ -48,8 +48,8 @@ public abstract class Command {
     }
 
     /**
-     * Converts a 1-indexed task number that {@link Parser} already
-     * confirmed is a well-formed whole number into a valid 0-based index
+     * Converts a 1-indexed task number that {@link maggigorengayam.parser.Parser}
+     * already confirmed is a well-formed whole number into a valid 0-based index
      * into the current task list, or reports it as out of range. This is
      * a range check against live list state, which is why it lives here
      * rather than in Parser (which never sees the TaskList). Shared by

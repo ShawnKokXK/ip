@@ -97,12 +97,15 @@ ____________________________________________________________
 
 ## TC3: Add a deadline
 
-**Aim:** Verify `deadline <description> /by <when>` adds a `Deadline` task
-with the description and the "by" field parsed and rendered correctly.
+**Aim:** Verify `deadline <description> /by <date>` adds a `Deadline` task,
+that the date is understood as an actual date (parsed as a `LocalDate`)
+rather than stored as a raw string, and rendered in the "MMM d yyyy"
+display format (e.g. an input of `2019-12-02` displays as `Dec 2 2019`) -
+note the day is not zero-padded, matching `2` rather than `02`.
 
 **Input:**
 ```
-deadline return book /by Sunday
+deadline return book /by 2019-12-02
 bye
 ```
 
@@ -119,7 +122,7 @@ What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
  Got it. I've added this task:
-   [D][ ] return book (by: Sunday)
+   [D][ ] return book (by: Dec 2 2019)
  Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -131,13 +134,15 @@ ____________________________________________________________
 
 ## TC4: Add an event
 
-**Aim:** Verify `event <description> /from <start> /to <end>` adds an
-`Event` task with the description, "from" and "to" fields parsed and
-rendered correctly.
+**Aim:** Verify `event <description> /from <date> /to <date>` adds an
+`Event` task with "from"/"to" understood as actual dates/times (each
+optionally carrying a 24-hour `HHmm` time after the date), rendered in
+"MMM d yyyy[, h[:mm]a]" display format - e.g. `2019-12-02 1400` displays
+as `Dec 2 2019, 2pm` (no ":00" clutter when minutes are zero).
 
 **Input:**
 ```
-event project meeting /from Mon 2pm /to 4pm
+event project meeting /from 2019-12-02 1400 /to 2019-12-02 1600
 bye
 ```
 
@@ -154,7 +159,7 @@ What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
  Got it. I've added this task:
-   [E][ ] project meeting (from: Mon 2pm to: 4pm)
+   [E][ ] project meeting (from: Dec 2 2019, 2pm to: Dec 2 2019, 4pm)
  Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -172,8 +177,8 @@ with the correct type icon (`[T]`/`[D]`/`[E]`) and status icon.
 **Input:**
 ```
 todo read book
-deadline return book /by June 6th
-event project meeting /from Aug 6th 2pm /to 4pm
+deadline return book /by 2019-12-06
+event project meeting /from 2019-12-06 1400 /to 2019-12-06 1600
 list
 bye
 ```
@@ -196,19 +201,19 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  Got it. I've added this task:
-   [D][ ] return book (by: June 6th)
+   [D][ ] return book (by: Dec 6 2019)
  Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
  Got it. I've added this task:
-   [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+   [E][ ] project meeting (from: Dec 6 2019, 2pm to: Dec 6 2019, 4pm)
  Now you have 3 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
  1.[T][ ] read book
- 2.[D][ ] return book (by: June 6th)
- 3.[E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+ 2.[D][ ] return book (by: Dec 6 2019)
+ 3.[E][ ] project meeting (from: Dec 6 2019, 2pm to: Dec 6 2019, 4pm)
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -671,17 +676,17 @@ ____________________________________________________________
 
 ## TC15: Whitespace-tolerant parsing (extra internal/trailing spaces)
 
-**Aim:** Verify that extra spaces around `/by`, `/from`, `/to`, and around
-the description itself are trimmed away cleanly (each field ends up
-containing no leading/trailing whitespace), while spaces that are genuinely
-part of a `todo` description (no delimiter to trim around) are preserved
-as-is.
+**Aim:** Verify that extra spaces around `/by`, `/from`, `/to`, around the
+description itself, and around/within the date-time value (between the
+date and the time), are trimmed away cleanly, while spaces that are
+genuinely part of a `todo` description (no delimiter to trim around) are
+preserved as-is.
 
 **Input:**
 ```
 todo   buy   milk
-deadline   return book   /by   Sunday
-event   meet friend   /from   2pm   /to   4pm
+deadline   return book   /by   2019-12-02   1800
+event   meet friend   /from   2019-12-02   1400   /to   2019-12-02   1600
 list
 bye
 ```
@@ -704,19 +709,19 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  Got it. I've added this task:
-   [D][ ] return book (by: Sunday)
+   [D][ ] return book (by: Dec 2 2019, 6pm)
  Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
  Got it. I've added this task:
-   [E][ ] meet friend (from: 2pm to: 4pm)
+   [E][ ] meet friend (from: Dec 2 2019, 2pm to: Dec 2 2019, 4pm)
  Now you have 3 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
  1.[T][ ] buy   milk
- 2.[D][ ] return book (by: Sunday)
- 3.[E][ ] meet friend (from: 2pm to: 4pm)
+ 2.[D][ ] return book (by: Dec 2 2019, 6pm)
+ 3.[E][ ] meet friend (from: Dec 2 2019, 2pm to: Dec 2 2019, 4pm)
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -1604,10 +1609,10 @@ successfully-added tasks are present, correctly numbered, with none of the
 ```
 todo read book
 todo
-deadline return book /by Monday
+deadline return book /by 2019-12-09
 deadline
 deadline return book
-event project meeting /from Mon 2pm /to 4pm
+event project meeting /from 2019-12-02 1400 /to 2019-12-02 1600
 event
 event meeting
 event meeting /from Mon
@@ -1636,7 +1641,7 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  Got it. I've added this task:
-   [D][ ] return book (by: Monday)
+   [D][ ] return book (by: Dec 9 2019)
  Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -1647,7 +1652,7 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  Got it. I've added this task:
-   [E][ ] project meeting (from: Mon 2pm to: 4pm)
+   [E][ ] project meeting (from: Dec 2 2019, 2pm to: Dec 2 2019, 4pm)
  Now you have 3 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -1662,8 +1667,8 @@ ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
  1.[T][ ] read book
- 2.[D][ ] return book (by: Monday)
- 3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+ 2.[D][ ] return book (by: Dec 9 2019)
+ 3.[E][ ] project meeting (from: Dec 2 2019, 2pm to: Dec 2 2019, 4pm)
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -1682,8 +1687,8 @@ appears afterward.
 **Input:**
 ```
 todo read book
-deadline return book /by June 6th
-event project meeting /from Aug 6th 2pm /to 4pm
+deadline return book /by 2019-12-06
+event project meeting /from 2019-12-06 1400 /to 2019-12-06 1600
 todo join sports club
 todo borrow book
 mark 1
@@ -1712,12 +1717,12 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  Got it. I've added this task:
-   [D][ ] return book (by: June 6th)
+   [D][ ] return book (by: Dec 6 2019)
  Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
  Got it. I've added this task:
-   [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+   [E][ ] project meeting (from: Dec 6 2019, 2pm to: Dec 6 2019, 4pm)
  Now you have 3 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -1736,7 +1741,7 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  Nice! I've marked this task as done:
-   [D][X] return book (by: June 6th)
+   [D][X] return book (by: Dec 6 2019)
 ____________________________________________________________
 ____________________________________________________________
  Nice! I've marked this task as done:
@@ -1745,14 +1750,14 @@ ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
  1.[T][X] read book
- 2.[D][X] return book (by: June 6th)
- 3.[E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+ 2.[D][X] return book (by: Dec 6 2019)
+ 3.[E][ ] project meeting (from: Dec 6 2019, 2pm to: Dec 6 2019, 4pm)
  4.[T][X] join sports club
  5.[T][ ] borrow book
 ____________________________________________________________
 ____________________________________________________________
  Noted. I've removed this task:
-   [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+   [E][ ] project meeting (from: Dec 6 2019, 2pm to: Dec 6 2019, 4pm)
  Now you have 4 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -1882,10 +1887,12 @@ ____________________________________________________________
 
 ## TC21: Task list persists across separate program runs
 
-**Aim:** Verify that tasks (including done/not-done status) are saved to
-`data/maggigorengayam.txt` as they are added/marked, and are correctly
-loaded back when the program is started again in a fresh process, without
-the user re-entering anything.
+**Aim:** Verify that tasks (including done/not-done status and, since a
+`Deadline`'s date is now a `LocalDate`/`LocalTime` rather than a raw
+string, its date-with-time value) are saved to `data/maggigorengayam.txt`
+as they are added/marked, and are correctly loaded back — reformatted
+correctly, not just echoed as text — when the program is started again in
+a fresh process, without the user re-entering anything.
 
 **Special setup for this test case only:** delete the `data/` directory
 before **Run 1**, but do **not** delete it between Run 1 and Run 2 — Run 2
@@ -1895,7 +1902,7 @@ where state intentionally carries over between runs.
 **Run 1 — Input:**
 ```
 todo read book
-deadline return book /by June 6th
+deadline return book /by 2019-12-06 1800
 mark 1
 bye
 ```
@@ -1918,7 +1925,7 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  Got it. I've added this task:
-   [D][ ] return book (by: June 6th)
+   [D][ ] return book (by: Dec 6 2019, 6pm)
  Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -1950,7 +1957,7 @@ ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
  1.[T][X] read book
- 2.[D][ ] return book (by: June 6th)
+ 2.[D][ ] return book (by: Dec 6 2019, 6pm)
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -2055,23 +2062,24 @@ ____________________________________________________________
 
 ---
 
-## TC24: `|` character rejected in task fields (save-format delimiter clash)
+## TC24: `|` character rejected in task descriptions (save-format delimiter clash)
 
 **Aim:** Tasks are saved to disk as `|`-delimited lines (e.g.
-`D | 0 | return book | June 6th`), so a task field that itself contains
-`" | "` would be split into the wrong number of parts on the next load
-and silently dropped (see TC22's skipped-line warning). Verify that
-`todo`, `deadline`, and `event` each reject a `|` character anywhere in a
-user-supplied field — description, deadline, start time, end time — with
-a clear OOPS message, and add nothing to the list, rather than allowing
-data that would later be silently lost.
+`D | 0 | return book | 2019-12-02`), so a description that itself contains
+`" | "` would be split into the wrong number of parts on the next load and
+silently dropped (see TC22's skipped-line warning). Verify that `todo`,
+`deadline`, and `event` each reject a `|` character in the description
+with a clear OOPS message, and add nothing to the list, rather than
+allowing data that would later be silently lost. (The `/by`, `/from`,
+`/to` date fields don't need this check anymore, now that they're parsed
+as actual dates: any text containing `|` already fails as "not a valid
+date" - see TC28.)
 
 **Input:**
 ```
 todo buy a | b
-deadline return book /by June | 6th
-event meet friend /from Mon | 2pm /to 4pm
-event meet friend /from Mon 2pm /to 4 | pm
+deadline return book | urgent /by 2019-12-02
+event meet friend | urgent /from 2019-12-02 1400 /to 2019-12-02 1600
 list
 bye
 ```
@@ -2091,13 +2099,10 @@ ____________________________________________________________
  OOPS!!! Sorry, the '|' character can't be used in a task description because it's used internally to save your tasks. Please remove it and try again.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Sorry, the '|' character can't be used in a deadline because it's used internally to save your tasks. Please remove it and try again.
+ OOPS!!! Sorry, the '|' character can't be used in a task description because it's used internally to save your tasks. Please remove it and try again.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Sorry, the '|' character can't be used in a start time because it's used internally to save your tasks. Please remove it and try again.
-____________________________________________________________
-____________________________________________________________
- OOPS!!! Sorry, the '|' character can't be used in a end time because it's used internally to save your tasks. Please remove it and try again.
+ OOPS!!! Sorry, the '|' character can't be used in a task description because it's used internally to save your tasks. Please remove it and try again.
 ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
@@ -2191,6 +2196,246 @@ ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
  1.[T][ ] new task
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC27: Deadline/Event dates accept an optional 24-hour time
+
+**Aim:** Verify that `/by`, `/from`, and `/to` each accept either a
+date-only value (`yyyy-MM-dd`) or a date followed by a single space and a
+4-digit 24-hour time (`yyyy-MM-dd HHmm`), and that both are understood as
+actual dates/times (not raw strings) and displayed in "MMM d yyyy" format,
+with ", h[:mm]a" appended when a time was given - e.g. `1800` displays as
+`6pm` (no ":00" clutter), while `0930` displays as `9:30am` (minutes kept
+when non-zero).
+
+**Input:**
+```
+deadline return book /by 2019-12-02
+deadline submit report /by 2019-12-02 1800
+event project meeting /from 2019-12-02 1400 /to 2019-12-02 1600
+list
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [D][ ] return book (by: Dec 2 2019)
+ Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [D][ ] submit report (by: Dec 2 2019, 6pm)
+ Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [E][ ] project meeting (from: Dec 2 2019, 2pm to: Dec 2 2019, 4pm)
+ Now you have 3 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks in your list:
+ 1.[D][ ] return book (by: Dec 2 2019)
+ 2.[D][ ] submit report (by: Dec 2 2019, 6pm)
+ 3.[E][ ] project meeting (from: Dec 2 2019, 2pm to: Dec 2 2019, 4pm)
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC28: Invalid date/time values are rejected with a clear error
+
+**Aim:** Verify that `deadline`'s `/by` and `event`'s `/from`/`/to` reject
+text that doesn't parse as `yyyy-MM-dd[ HHmm]`, rather than silently
+accepting it as a free-form string the way the pre-dates-and-times version
+of this program did. Covers: a non-date word (`Sunday`), a date with
+non-zero-padded month/day (`2019-2-3` - the parser requires exactly 2
+digits for month and day), and a time value with the wrong digit count
+(`999`). None of these should add anything to the list.
+
+**Input:**
+```
+deadline return book /by Sunday
+deadline return book /by 2019-2-3
+deadline return book /by 2019-12-02 999
+event meet friend /from Mon 2pm /to 2019-12-02 1600
+list
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! I don't understand 'Sunday' as a deadline date. Please use yyyy-MM-dd, optionally followed by a 24-hour time, e.g. '2019-12-02' or '2019-12-02 1800'.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! I don't understand '2019-2-3' as a deadline date. Please use yyyy-MM-dd, optionally followed by a 24-hour time, e.g. '2019-12-02' or '2019-12-02 1800'.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! I don't understand '2019-12-02 999' as a deadline date. Please use yyyy-MM-dd, optionally followed by a 24-hour time, e.g. '2019-12-02' or '2019-12-02 1800'.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! I don't understand 'Mon 2pm' as a start date/time. Please use yyyy-MM-dd, optionally followed by a 24-hour time, e.g. '2019-12-02' or '2019-12-02 1800'.
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks in your list:
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC29: `on <date>` finds deadlines/events occurring on a given date
+
+**Aim:** Stretch-goal command: verify `on <yyyy-MM-dd>` lists only the
+deadlines whose date matches, and events whose `[from, to]` date range
+covers the given date (inclusive on both ends, so a multi-day event shows
+up for every date it spans, not just its start date) - numbered `1.`, `2.`
+... within the filtered results, not by their position in the full list.
+`todo`s never match (they have no date). Also verifies: a date with no
+matching tasks prints an empty list (not an error), and a missing/invalid
+date argument is rejected the same way other commands validate their
+arguments.
+
+**Input:**
+```
+todo buy milk
+deadline return book /by 2019-12-02
+event conference /from 2019-12-01 /to 2019-12-03
+deadline submit report /by 2019-12-05
+on 2019-12-02
+on 2019-12-05
+on 2019-12-10
+on
+on abc
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [T][ ] buy milk
+ Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [D][ ] return book (by: Dec 2 2019)
+ Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [E][ ] conference (from: Dec 1 2019 to: Dec 3 2019)
+ Now you have 3 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [D][ ] submit report (by: Dec 5 2019)
+ Now you have 4 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks on Dec 2 2019:
+ 1.[D][ ] return book (by: Dec 2 2019)
+ 2.[E][ ] conference (from: Dec 1 2019 to: Dec 3 2019)
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks on Dec 5 2019:
+ 1.[D][ ] submit report (by: Dec 5 2019)
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks on Dec 10 2019:
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Which date? e.g. 'on 2019-12-02'.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! I don't understand 'abc' as a date. Please use yyyy-MM-dd, e.g. 'on 2019-12-02'.
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC30: A corrupted date value in the save file is skipped, not crashed on
+
+**Aim:** Extends TC22's "corrupted line" handling to specifically cover a
+line that is otherwise well-formed (right type letter, right number of
+`|`-separated fields) but whose date field isn't a valid date - e.g. hand
+edited into an invalid state. Verify it's counted and skipped exactly like
+any other corrupted line, rather than crashing the whole load.
+
+**Special setup for this test case only:** delete the `data/` directory,
+then create `data/maggigorengayam.txt` by hand with exactly this content:
+```
+T | 1 | good task
+D | 0 | bad deadline | not-a-date
+E | 0 | bad event | 2019-12-01 | not-a-date
+```
+
+**Input:**
+```
+list
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! 2 saved task(s) in the data file could not be read and were skipped.
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks in your list:
+ 1.[T][X] good task
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!

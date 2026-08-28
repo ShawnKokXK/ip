@@ -1,24 +1,38 @@
-public class Event extends Task {
-    protected String from;
-    protected String to;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
-    public Event(String description, String from, String to) {
+public class Event extends Task {
+    protected LocalDate fromDate;
+    protected LocalTime fromTime;
+    protected LocalDate toDate;
+    protected LocalTime toTime;
+
+    public Event(String description, LocalDate fromDate, LocalTime fromTime, LocalDate toDate, LocalTime toTime) {
         super(description);
-        this.from = from;
-        this.to = to;
+        this.fromDate = fromDate;
+        this.fromTime = fromTime;
+        this.toDate = toDate;
+        this.toTime = toTime;
+    }
+
+    @Override
+    public boolean occursOn(LocalDate date) {
+        return !date.isBefore(fromDate) && !date.isAfter(toDate);
     }
 
     @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: "
-                + this.from
+                + DateTimeUtil.formatForDisplay(fromDate, fromTime)
                 + " to: "
-                + this.to
+                + DateTimeUtil.formatForDisplay(toDate, toTime)
                 + ")";
     }
 
     @Override
     public String toSaveFormat() {
-        return "E | " + getStatusFlag() + " | " + description + " | " + from + " | " + to;
+        return "E | " + getStatusFlag() + " | " + description + " | "
+                + DateTimeUtil.formatForSave(fromDate, fromTime) + " | "
+                + DateTimeUtil.formatForSave(toDate, toTime);
     }
 }

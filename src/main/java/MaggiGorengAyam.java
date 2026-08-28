@@ -1,23 +1,15 @@
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MaggiGorengAyam {
-    private static final String LINE = "____________________________________________________________";
     private static final String DATA_FILE_PATH = "data/maggigorengayam.txt";
 
     public static void main(String[] args) {
-        String banner = LINE + "\n" +
-                "  __  __  _____    _    \n" +
-                " |  \\/  |/ ____|  / \\   \n" +
-                " | \\  / ||   __  / _ \\  \n" +
-                " | |\\/| ||  |_ |/ ___ \\ \n" +
-                " |_|  |_|\\_____/_/   \\_\\\n" +
-                "Hello! I'm Maggi Goreng Ayam.\n" +
-                "What can I do for you?\n" +
-                LINE;
-        System.out.println(banner);
+        Ui ui = new Ui();
+        ui.showWelcome();
 
         Storage storage = new Storage(DATA_FILE_PATH);
         // Tasks saved by a previous run (if any) are loaded back in here;
@@ -27,38 +19,25 @@ public class MaggiGorengAyam {
             Storage.LoadResult result = storage.load();
             tasks = new TaskList(result.tasks);
             if (result.skippedLineCount > 0) {
-                System.out.println(LINE);
-                System.out.println(" OOPS!!! " + result.skippedLineCount
-                        + " saved task(s) in the data file could not be read and were skipped.");
-                System.out.println(LINE);
+                ui.showLoadWarning(result.skippedLineCount);
             }
         } catch (IOException e) {
-            System.out.println(LINE);
-            System.out.println(" OOPS!!! I couldn't load saved tasks from disk. Starting with an empty list.");
-            System.out.println(LINE);
+            ui.showLoadingError();
             tasks = new TaskList();
         }
 
-        Scanner scanner = new Scanner(System.in);
-        while (scanner.hasNextLine()) {
-            String command = scanner.nextLine().trim();
+        while (ui.hasNextCommand()) {
+            String command = ui.readCommand();
             if (command.isEmpty()) {
                 continue;
             }
             try {
                 if (command.equals("bye")) {
-                    System.out.println(LINE);
-                    System.out.println(" Bye. Hope to see you again soon!");
-                    System.out.println(LINE);
+                    ui.showGoodbye();
                     break;
                 }
                 if (command.equals("list")) {
-                    System.out.println(LINE);
-                    System.out.println(" Here are the tasks in your list:");
-                    for (int i = 0; i < tasks.size(); i++) {
-                        System.out.println(" " + (i + 1) + "." + tasks.get(i));
-                    }
-                    System.out.println(LINE);
+                    ui.showTaskList(tasks);
                     continue;
                 }
                 if (command.equals("on") || command.startsWith("on ")) {
@@ -74,49 +53,40 @@ public class MaggiGorengAyam {
                                 "I don't understand '" + dateArg
                                         + "' as a date. Please use yyyy-MM-dd, e.g. 'on 2019-12-02'.");
                     }
-                    System.out.println(LINE);
-                    System.out.println(" Here are the tasks on " + DateTimeUtil.formatDateOnlyForDisplay(queryDate) + ":");
-                    int count = 0;
+                    List<Task> matches = new ArrayList<>();
                     for (Task task : tasks.getAll()) {
                         if (task.occursOn(queryDate)) {
-                            count++;
-                            System.out.println(" " + count + "." + task);
+                            matches.add(task);
                         }
                     }
-                    System.out.println(LINE);
+                    ui.showTasksOn(DateTimeUtil.formatDateOnlyForDisplay(queryDate), matches);
                     continue;
                 }
                 if (command.equals("mark") || command.startsWith("mark ")) {
                     int index = parseTaskIndex(command.substring(4).trim(), tasks.size(), "mark");
                     tasks.get(index).markAsDone();
-                    if (!saveTasks(storage, tasks)) {
+                    if (!saveTasks(storage, tasks, ui)) {
                         continue;
                     }
-                    System.out.println(LINE);
-                    System.out.println(" Nice! I've marked this task as done:");
-                    System.out.println("   " + tasks.get(index));
-                    System.out.println(LINE);
+                    ui.showMarked(tasks.get(index));
                     continue;
                 }
                 if (command.equals("unmark") || command.startsWith("unmark ")) {
                     int index = parseTaskIndex(command.substring(6).trim(), tasks.size(), "unmark");
                     tasks.get(index).markAsNotDone();
-                    if (!saveTasks(storage, tasks)) {
+                    if (!saveTasks(storage, tasks, ui)) {
                         continue;
                     }
-                    System.out.println(LINE);
-                    System.out.println(" OK, I've marked this task as not done yet:");
-                    System.out.println("   " + tasks.get(index));
-                    System.out.println(LINE);
+                    ui.showUnmarked(tasks.get(index));
                     continue;
                 }
                 if (command.equals("delete") || command.startsWith("delete ")) {
                     int index = parseTaskIndex(command.substring(6).trim(), tasks.size(), "delete");
                     Task removed = tasks.remove(index);
-                    if (!saveTasks(storage, tasks)) {
+                    if (!saveTasks(storage, tasks, ui)) {
                         continue;
                     }
-                    printRemoved(removed, tasks.size());
+                    ui.showRemoved(removed, tasks.size());
                     continue;
                 }
                 if (command.equals("todo") || command.startsWith("todo ")) {
@@ -126,10 +96,10 @@ public class MaggiGorengAyam {
                     }
                     requireNoPipeCharacter(description);
                     tasks.add(new ToDo(description));
-                    if (!saveTasks(storage, tasks)) {
+                    if (!saveTasks(storage, tasks, ui)) {
                         continue;
                     }
-                    printAdded(tasks.get(tasks.size() - 1), tasks.size());
+                    ui.showAdded(tasks.get(tasks.size() - 1), tasks.size());
                     continue;
                 }
                 if (command.equals("deadline") || command.startsWith("deadline ")) {
@@ -153,10 +123,10 @@ public class MaggiGorengAyam {
                     requireNoPipeCharacter(description);
                     DateTimeUtil.ParsedDateTime parsedBy = parseDateField(by, "deadline date");
                     tasks.add(new Deadline(description, parsedBy.date, parsedBy.time));
-                    if (!saveTasks(storage, tasks)) {
+                    if (!saveTasks(storage, tasks, ui)) {
                         continue;
                     }
-                    printAdded(tasks.get(tasks.size() - 1), tasks.size());
+                    ui.showAdded(tasks.get(tasks.size() - 1), tasks.size());
                     continue;
                 }
                 if (command.equals("event") || command.startsWith("event ")) {
@@ -193,20 +163,18 @@ public class MaggiGorengAyam {
                     DateTimeUtil.ParsedDateTime parsedFrom = parseDateField(from, "start date/time");
                     DateTimeUtil.ParsedDateTime parsedTo = parseDateField(to, "end date/time");
                     tasks.add(new Event(description, parsedFrom.date, parsedFrom.time, parsedTo.date, parsedTo.time));
-                    if (!saveTasks(storage, tasks)) {
+                    if (!saveTasks(storage, tasks, ui)) {
                         continue;
                     }
-                    printAdded(tasks.get(tasks.size() - 1), tasks.size());
+                    ui.showAdded(tasks.get(tasks.size() - 1), tasks.size());
                     continue;
                 }
                 throw new MaggiGorengAyamException("Huhhh???");
             } catch (MaggiGorengAyamException e) {
-                System.out.println(LINE);
-                System.out.println(" OOPS!!! " + e.getMessage());
-                System.out.println(LINE);
+                ui.showError(e.getMessage());
             }
         }
-        scanner.close();
+        ui.close();
     }
 
     /**
@@ -217,14 +185,12 @@ public class MaggiGorengAyam {
      * @return true if the save succeeded, false if it failed and an error
      *         was already printed.
      */
-    private static boolean saveTasks(Storage storage, TaskList tasks) {
+    private static boolean saveTasks(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks.getAll());
             return true;
         } catch (IOException e) {
-            System.out.println(LINE);
-            System.out.println(" OOPS!!! I couldn't save the task list to disk. Your change is only in memory for now.");
-            System.out.println(LINE);
+            ui.showSaveError();
             return false;
         }
     }
@@ -287,21 +253,5 @@ public class MaggiGorengAyam {
                     "Task number " + number + " does not exist. You have " + taskCount + " task(s) in the list.");
         }
         return number - 1;
-    }
-
-    private static void printAdded(Task task, int taskCount) {
-        System.out.println(LINE);
-        System.out.println(" Got it. I've added this task:");
-        System.out.println("   " + task);
-        System.out.println(" Now you have " + taskCount + " tasks in the list.");
-        System.out.println(LINE);
-    }
-
-    private static void printRemoved(Task task, int taskCount) {
-        System.out.println(LINE);
-        System.out.println(" Noted. I've removed this task:");
-        System.out.println("   " + task);
-        System.out.println(" Now you have " + taskCount + " tasks in the list.");
-        System.out.println(LINE);
     }
 }

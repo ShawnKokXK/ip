@@ -5,14 +5,16 @@ import maggigorengayam.storage.Storage;
 import maggigorengayam.tasklist.TaskList;
 import maggigorengayam.ui.Ui;
 
-/** The `mark <n>` command: marks the n-th task (1-indexed) as done. */
+/** The {@code mark <n>} command: marks the n-th task (1-indexed) as done. */
 public class MarkCommand extends Command {
     private final int taskNumber;
 
+    /** Marks the task at the given 1-indexed position as done once {@link #execute} runs. */
     public MarkCommand(int taskNumber) {
         this.taskNumber = taskNumber;
     }
 
+    /** Marks the task at {@code taskNumber} as done, saves, and reports it. */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws MaggiGorengAyamException {
         int index = toValidIndex(taskNumber, tasks.size());

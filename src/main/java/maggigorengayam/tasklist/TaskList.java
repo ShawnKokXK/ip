@@ -14,26 +14,32 @@ import maggigorengayam.task.Task;
 public class TaskList {
     private final List<Task> tasks;
 
+    /** Creates an empty task list. */
     public TaskList() {
         this.tasks = new ArrayList<>();
     }
 
+    /** Wraps the given list directly (not copied) as the task list's backing storage. */
     public TaskList(List<Task> tasks) {
         this.tasks = tasks;
     }
 
+    /** Appends {@code task} to the end of the list. */
     public void add(Task task) {
         tasks.add(task);
     }
 
+    /** Removes and returns the task at {@code index}, shifting later tasks down by one. */
     public Task remove(int index) {
         return tasks.remove(index);
     }
 
+    /** Returns the task at {@code index}. */
     public Task get(int index) {
         return tasks.get(index);
     }
 
+    /** The number of tasks currently in the list. */
     public int size() {
         return tasks.size();
     }

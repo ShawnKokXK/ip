@@ -2,27 +2,37 @@ package maggigorengayam.task;
 
 import java.time.LocalDate;
 
+/**
+ * A single to-do item shared by every task type: a description and a
+ * done/not-done status. {@link ToDo}/{@link Deadline}/{@link Event} each
+ * add their own date(s) on top of this.
+ */
 public class Task {
     protected String description;
     protected boolean isDone;
 
+    /** Creates a not-done task with the given description. */
     public Task(String description) {
         this.description = description;
         this.isDone = false;
     }
 
+    /** The task's description, as typed by the user. */
     public String getDescription() {
         return description;
     }
 
+    /** "X" if done, otherwise a blank space - the console display icon. */
     public String getStatusIcon() {
         return (isDone ? "X" : " "); // mark done task with X
     }
 
+    /** Marks this task as done. */
     public void markAsDone() {
         isDone = true;
     }
 
+    /** Marks this task as not done. */
     public void markAsNotDone() {
         isDone = false;
     }
@@ -45,14 +55,16 @@ public class Task {
     }
 
     /**
-     * Whether this task occurs on the given date, used by the `on <date>`
-     * command. A plain Task/ToDo has no date, so it never matches; Deadline
-     * and Event override this with their own date(s).
+     * Whether this task occurs on the given date, used by the
+     * {@code on <date>} command. A plain Task/ToDo has no date, so it
+     * never matches; Deadline and Event override this with their own
+     * date(s).
      */
     public boolean occursOn(LocalDate date) {
         return false;
     }
 
+    /** e.g. "[ ] read book" or "[X] read book" - each task type prepends its own type-letter prefix to this. */
     @Override
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;

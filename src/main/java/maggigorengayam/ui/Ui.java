@@ -104,6 +104,16 @@ public class Ui {
         }
     }
 
+    /** Prints {@code matches}, numbered from 1, as the tasks found by the {@code find} command. */
+    public void showMatchingTasks(List<Task> matches) {
+        System.out.println(" Here are the matching tasks in your list:");
+        int count = 0;
+        for (Task task : matches) {
+            count++;
+            System.out.println(" " + count + "." + task);
+        }
+    }
+
     public void showAdded(Task task, int taskCount) {
         System.out.println(" Got it. I've added this task:");
         System.out.println("   " + task);

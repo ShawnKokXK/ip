@@ -7,6 +7,7 @@ import maggigorengayam.command.AddCommand;
 import maggigorengayam.command.Command;
 import maggigorengayam.command.DeleteCommand;
 import maggigorengayam.command.ExitCommand;
+import maggigorengayam.command.FindCommand;
 import maggigorengayam.command.ListCommand;
 import maggigorengayam.command.MarkCommand;
 import maggigorengayam.command.OnCommand;
@@ -36,6 +37,9 @@ public class Parser {
         }
         if (command.equals("on") || command.startsWith("on ")) {
             return parseOn(command);
+        }
+        if (command.equals("find") || command.startsWith("find ")) {
+            return parseFind(command);
         }
         if (command.equals("mark") || command.startsWith("mark ")) {
             return new MarkCommand(parseTaskNumber(command.substring(4).trim(), "mark"));
@@ -69,6 +73,15 @@ public class Parser {
             throw new MaggiGorengAyamException(
                     "I don't understand '" + dateArg + "' as a date. Please use yyyy-MM-dd, e.g. 'on 2019-12-02'.");
         }
+    }
+
+    /** Parses the keyword after {@code find} into a {@link FindCommand}. */
+    private static Command parseFind(String command) throws MaggiGorengAyamException {
+        String keyword = command.substring(4).trim();
+        if (keyword.isEmpty()) {
+            throw new MaggiGorengAyamException("What word do you want me to find? e.g. 'find book'.");
+        }
+        return new FindCommand(keyword);
     }
 
     private static Task parseTodo(String command) throws MaggiGorengAyamException {

@@ -54,15 +54,15 @@ public class Ui {
 
     /** Prints the startup welcome banner. */
     public void showWelcome() {
-        System.out.println(LINE + "\n" +
-                "  __  __  _____    _    \n" +
-                " |  \\/  |/ ____|  / \\   \n" +
-                " | \\  / ||   __  / _ \\  \n" +
-                " | |\\/| ||  |_ |/ ___ \\ \n" +
-                " |_|  |_|\\_____/_/   \\_\\\n" +
-                "Hello! I'm Maggi Goreng Ayam.\n" +
-                "What can I do for you?\n" +
-                LINE);
+        System.out.println(LINE + "\n"
+                + "  __  __  _____    _    \n"
+                + " |  \\/  |/ ____|  / \\   \n"
+                + " | \\  / ||   __  / _ \\  \n"
+                + " | |\\/| ||  |_ |/ ___ \\ \n"
+                + " |_|  |_|\\_____/_/   \\_\\\n"
+                + "Hello! I'm Maggi Goreng Ayam.\n"
+                + "What can I do for you?\n"
+                + LINE);
     }
 
     /** Prints the farewell message shown when the program exits. */
@@ -124,6 +124,7 @@ public class Ui {
         }
     }
 
+    /** Prints confirmation that {@code task} was added, and the new task count. */
     public void showAdded(Task task, int taskCount) {
         System.out.println(" Got it. I've added this task:");
         System.out.println("   " + task);

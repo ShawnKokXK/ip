@@ -24,7 +24,7 @@ public class MaggiGorengAyam {
      */
     public static void main(String[] args) {
         Ui ui = new Ui();
-        ui.showWelcome();
+        System.out.println(ui.showWelcome());
 
         Storage storage = new Storage(DATA_FILE_PATH);
         // Tasks saved by a previous run (if any) are loaded back in here;
@@ -34,10 +34,10 @@ public class MaggiGorengAyam {
             Storage.LoadResult result = storage.load();
             tasks = new TaskList(result.tasks);
             if (result.skippedLineCount > 0) {
-                ui.showLoadWarning(result.skippedLineCount);
+                System.out.println(ui.showLoadWarning(result.skippedLineCount));
             }
         } catch (IOException e) {
-            ui.showLoadingError();
+            System.out.println(ui.showLoadingError());
             tasks = new TaskList();
         }
 
@@ -52,14 +52,14 @@ public class MaggiGorengAyam {
                 continue;
             }
             try {
-                ui.showLine();
+                System.out.println(ui.showLine());
                 Command c = Parser.parse(command);
-                c.execute(tasks, ui, storage);
+                System.out.println(c.execute(tasks, ui, storage));
                 isExit = c.isExit();
             } catch (MaggiGorengAyamException e) {
-                ui.showError(e.getMessage());
+                System.out.println(ui.showError(e.getMessage()));
             } finally {
-                ui.showLine();
+                System.out.println(ui.showLine());
             }
         }
         ui.close();

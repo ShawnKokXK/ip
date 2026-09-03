@@ -14,13 +14,14 @@ public class MarkCommand extends Command {
         this.taskNumber = taskNumber;
     }
 
-    /** Marks the task at {@code taskNumber} as done, saves, and reports it. */
+    /** Marks the task at {@code taskNumber} as done, saves, and returns a message reporting it. */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws MaggiGorengAyamException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws MaggiGorengAyamException {
         int index = toValidIndex(taskNumber, tasks.size());
         tasks.get(index).markAsDone();
-        if (saveTasks(storage, tasks, ui)) {
-            ui.showMarked(tasks.get(index));
+        if (saveTasks(storage, tasks)) {
+            return ui.showMarked(tasks.get(index));
         }
+        return ui.showSaveError();
     }
 }

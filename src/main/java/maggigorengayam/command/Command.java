@@ -17,10 +17,10 @@ import maggigorengayam.ui.Ui;
 public abstract class Command {
     /**
      * Carries out this command: mutating {@code tasks} if needed, saving
-     * to {@code storage} if the mutation should persist, and reporting
-     * the result through {@code ui}.
+     * to {@code storage} if the mutation should persist, and returning
+     * the result message (built via {@code ui}) for the caller to display.
      */
-    public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws MaggiGorengAyamException;
+    public abstract String execute(TaskList tasks, Ui ui, Storage storage) throws MaggiGorengAyamException;
 
     /** Whether this command should end the program's main loop. Only ExitCommand overrides this. */
     public boolean isExit() {
@@ -28,21 +28,19 @@ public abstract class Command {
     }
 
     /**
-     * Saves the current task list to disk, reporting an OOPS message on
-     * failure (e.g. the data directory could not be created/written to)
-     * instead of letting an IOException crash the whole program. Shared by
-     * every command that mutates the task list.
+     * Saves the current task list to disk, instead of letting an
+     * IOException crash the whole program. Shared by every command that
+     * mutates the task list.
      *
-     * @return true if the save succeeded, false if it failed and an error
-     *         was already shown - callers should skip their normal success
-     *         message in that case.
+     * @return true if the save succeeded, false if it failed - callers
+     *         should return {@link Ui#showSaveError()} instead of their
+     *         normal success message in that case.
      */
-    protected static boolean saveTasks(Storage storage, TaskList tasks, Ui ui) {
+    protected static boolean saveTasks(Storage storage, TaskList tasks) {
         try {
             storage.save(tasks.getAll());
             return true;
         } catch (IOException e) {
-            ui.showSaveError();
             return false;
         }
     }

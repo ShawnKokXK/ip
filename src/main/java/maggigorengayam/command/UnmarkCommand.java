@@ -14,13 +14,14 @@ public class UnmarkCommand extends Command {
         this.taskNumber = taskNumber;
     }
 
-    /** Marks the task at {@code taskNumber} as not done, saves, and reports it. */
+    /** Marks the task at {@code taskNumber} as not done, saves, and returns a message reporting it. */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws MaggiGorengAyamException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws MaggiGorengAyamException {
         int index = toValidIndex(taskNumber, tasks.size());
         tasks.get(index).markAsNotDone();
-        if (saveTasks(storage, tasks, ui)) {
-            ui.showUnmarked(tasks.get(index));
+        if (saveTasks(storage, tasks)) {
+            return ui.showUnmarked(tasks.get(index));
         }
+        return ui.showSaveError();
     }
 }

@@ -19,16 +19,16 @@ public class FindCommand extends Command {
 
     /**
      * Filters {@code tasks} down to those whose description contains
-     * {@code keyword} (case-insensitive) and shows them.
+     * {@code keyword} (case-insensitive) and returns them as a message.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
         List<Task> matches = new ArrayList<>();
         for (Task task : tasks.getAll()) {
             if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
                 matches.add(task);
             }
         }
-        ui.showMatchingTasks(matches);
+        return ui.showMatchingTasks(matches);
     }
 }

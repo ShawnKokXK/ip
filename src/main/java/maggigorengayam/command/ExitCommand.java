@@ -6,10 +6,10 @@ import maggigorengayam.ui.Ui;
 
 /** The {@code bye} command: says goodbye and signals the main loop to stop. */
 public class ExitCommand extends Command {
-    /** Prints the farewell message; the loop itself exits via {@link #isExit}. */
+    /** Returns the farewell message; the loop itself exits via {@link #isExit}. */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
-        ui.showGoodbye();
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
+        return ui.showGoodbye();
     }
 
     /** Always {@code true}: this is the one command that ends the main loop. */

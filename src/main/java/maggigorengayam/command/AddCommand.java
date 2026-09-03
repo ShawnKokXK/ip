@@ -14,12 +14,13 @@ public class AddCommand extends Command {
         this.taskToAdd = taskToAdd;
     }
 
-    /** Adds {@code taskToAdd} to {@code tasks}, saves, and reports the addition. */
+    /** Adds {@code taskToAdd} to {@code tasks}, saves, and returns a message reporting the addition. */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
         tasks.add(taskToAdd);
-        if (saveTasks(storage, tasks, ui)) {
-            ui.showAdded(tasks.get(tasks.size() - 1), tasks.size());
+        if (saveTasks(storage, tasks)) {
+            return ui.showAdded(tasks.get(tasks.size() - 1), tasks.size());
         }
+        return ui.showSaveError();
     }
 }

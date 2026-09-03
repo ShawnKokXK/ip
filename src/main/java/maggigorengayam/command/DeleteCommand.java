@@ -15,13 +15,14 @@ public class DeleteCommand extends Command {
         this.taskNumber = taskNumber;
     }
 
-    /** Removes the task at {@code taskNumber}, saves, and reports the removal. */
+    /** Removes the task at {@code taskNumber}, saves, and returns a message reporting the removal. */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws MaggiGorengAyamException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws MaggiGorengAyamException {
         int index = toValidIndex(taskNumber, tasks.size());
         Task removed = tasks.remove(index);
-        if (saveTasks(storage, tasks, ui)) {
-            ui.showRemoved(removed, tasks.size());
+        if (saveTasks(storage, tasks)) {
+            return ui.showRemoved(removed, tasks.size());
         }
+        return ui.showSaveError();
     }
 }

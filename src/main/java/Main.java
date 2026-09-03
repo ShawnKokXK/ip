@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -10,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
+/** JavaFX entry point: builds the chat window and forwards user input to a {@link MaggiGorengAyamBot}. */
 public class Main extends Application {
 
     private ScrollPane scrollPane;
@@ -17,6 +19,9 @@ public class Main extends Application {
     private TextField userInput;
     private Button sendButton;
     private Scene scene;
+    private Image userImage;
+    private Image maggigorengayamImage;
+    private MaggiGorengAyamBot bot;
 
     @Override
     public void start(Stage stage) {
@@ -32,12 +37,10 @@ public class Main extends Application {
         AnchorPane mainLayout = new AnchorPane();
         mainLayout.getChildren().addAll(scrollPane, userInput, sendButton);
 
-        Image userImage = new Image(this.getClass()
+        userImage = new Image(this.getClass()
                 .getResourceAsStream("/images/brother.png"));
-        Image maggigorengayamImage = new Image(this.getClass()
+        maggigorengayamImage = new Image(this.getClass()
                 .getResourceAsStream("/images/maggigorengayam.png"));
-        DialogBox dialogBox = new DialogBox("Hello!", userImage);
-        dialogContainer.getChildren().addAll(dialogBox);
 
         scene = new Scene(mainLayout);
 
@@ -45,8 +48,8 @@ public class Main extends Application {
 
         //Formatting the window to look as expected
 
-        stage.setTitle("Duke");
-        stage.setResizable(false);
+        stage.setTitle("Maggi Goreng Ayam");
+        stage.setResizable(true);
         stage.setMinHeight(600.0);
         stage.setMinWidth(400.0);
 
@@ -73,8 +76,35 @@ public class Main extends Application {
         AnchorPane.setLeftAnchor(userInput, 1.0);
         AnchorPane.setBottomAnchor(userInput, 1.0);
 
-        stage.show();
+        dialogContainer.heightProperty().addListener((observable) -> scrollPane.setVvalue(1.0));
 
-        //More code to be added here later
+        sendButton.setOnMouseClicked((event) -> {
+            handleUserInput();
+        });
+        userInput.setOnAction((event) -> {
+            handleUserInput();
+        });
+
+        bot = new MaggiGorengAyamBot();
+        dialogContainer.getChildren().addAll(
+                DialogBox.getMaggiGorengAyamDialog(bot.getStartupMessage(), maggigorengayamImage));
+
+        stage.show();
+    }
+
+    private void handleUserInput() {
+        String userText = userInput.getText();
+        if (userText.isBlank()) {
+            return;
+        }
+        String response = bot.getResponse(userText);
+        dialogContainer.getChildren().addAll(
+                DialogBox.getUserDialog(userText, userImage),
+                DialogBox.getMaggiGorengAyamDialog(response, maggigorengayamImage)
+        );
+        userInput.clear();
+        if (bot.isExit()) {
+            Platform.exit();
+        }
     }
 }

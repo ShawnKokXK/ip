@@ -1,7 +1,5 @@
 package maggigorengayam;
 
-import java.io.IOException;
-
 import maggigorengayam.command.Command;
 import maggigorengayam.parser.Parser;
 import maggigorengayam.storage.Storage;
@@ -29,16 +27,10 @@ public class MaggiGorengAyam {
         Storage storage = new Storage(DATA_FILE_PATH);
         // Tasks saved by a previous run (if any) are loaded back in here;
         // a missing/first-time data file just means an empty starting list.
-        TaskList tasks;
-        try {
-            Storage.LoadResult result = storage.load();
-            tasks = new TaskList(result.tasks);
-            if (result.skippedLineCount > 0) {
-                System.out.println(ui.showLoadWarning(result.skippedLineCount));
-            }
-        } catch (IOException e) {
-            System.out.println(ui.showLoadingError());
-            tasks = new TaskList();
+        Storage.StartupResult startup = storage.loadOrEmpty(ui);
+        TaskList tasks = startup.tasks;
+        if (startup.message != null) {
+            System.out.println(startup.message);
         }
 
         boolean isExit = false;

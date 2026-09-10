@@ -1,8 +1,8 @@
 package maggigorengayam.command;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import maggigorengayam.storage.Storage;
 import maggigorengayam.task.Task;
@@ -22,12 +22,9 @@ public class OnCommand extends Command {
     /** Filters {@code tasks} down to those occurring on {@code date} and returns them as a message. */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) {
-        List<Task> matches = new ArrayList<>();
-        for (Task task : tasks.getAll()) {
-            if (task.occursOn(date)) {
-                matches.add(task);
-            }
-        }
+        List<Task> matches = tasks.getAll().stream()
+                .filter(task -> task.occursOn(date))
+                .collect(Collectors.toList());
         return ui.showTasksOn(DateTimeUtil.formatDateOnlyForDisplay(date), matches);
     }
 }

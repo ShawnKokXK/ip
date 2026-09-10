@@ -7,6 +7,9 @@ import java.nio.file.Files;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import maggigorengayam.task.Deadline;
 import maggigorengayam.task.Event;
@@ -58,23 +61,19 @@ public class Storage {
      *         this is distinct from "no file yet", which is not an error.
      */
     public LoadResult load() throws IOException {
-        List<Task> tasks = new ArrayList<>();
-        int skippedLineCount = 0;
         File file = new File(filePath);
         if (!file.exists()) {
-            return new LoadResult(tasks, 0);
+            return new LoadResult(new ArrayList<>(), 0);
         }
-        for (String line : Files.readAllLines(file.toPath())) {
-            if (line.isBlank()) {
-                continue;
-            }
-            Task task = parseLine(line);
-            if (task != null) {
-                tasks.add(task);
-            } else {
-                skippedLineCount++;
-            }
-        }
+        // Each line becomes either a successfully-parsed Task or null (unparseable);
+        // partitioningBy splits them into the two groups in a single pass, with the
+        // null/non-null test doubling as the "did this line parse?" check.
+        Map<Boolean, List<Task>> parsedByIsSkipped = Files.readAllLines(file.toPath()).stream()
+                .filter(line -> !line.isBlank())
+                .map(this::parseLine)
+                .collect(Collectors.partitioningBy(Objects::isNull));
+        List<Task> tasks = parsedByIsSkipped.get(false);
+        int skippedLineCount = parsedByIsSkipped.get(true).size();
         return new LoadResult(tasks, skippedLineCount);
     }
 
@@ -144,10 +143,11 @@ public class Storage {
         if (parent != null && !parent.exists()) {
             parent.mkdirs();
         }
+        String content = tasks.stream()
+                .map(task -> task.toSaveFormat() + System.lineSeparator())
+                .collect(Collectors.joining());
         try (FileWriter writer = new FileWriter(file)) {
-            for (Task task : tasks) {
-                writer.write(task.toSaveFormat() + System.lineSeparator());
-            }
+            writer.write(content);
         }
     }
 }

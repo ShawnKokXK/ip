@@ -1,7 +1,7 @@
 package maggigorengayam.command;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import maggigorengayam.storage.Storage;
 import maggigorengayam.task.Task;
@@ -23,12 +23,9 @@ public class FindCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) {
-        List<Task> matches = new ArrayList<>();
-        for (Task task : tasks.getAll()) {
-            if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
-                matches.add(task);
-            }
-        }
+        List<Task> matches = tasks.getAll().stream()
+                .filter(task -> task.getDescription().toLowerCase().contains(keyword.toLowerCase()))
+                .collect(Collectors.toList());
         return ui.showMatchingTasks(matches);
     }
 }

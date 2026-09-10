@@ -27,6 +27,11 @@ public class MainWindow extends AnchorPane {
     /** Called by the FXML loader once the view's fields are injected; keeps the view scrolled to the bottom. */
     @FXML
     public void initialize() {
+        // Each @FXML field is injected by FXMLLoader matching fx:id in MainWindow.fxml;
+        // a null here means the FXML and this controller have drifted out of sync (e.g.
+        // a renamed fx:id), which would otherwise only surface later as a confusing NPE.
+        assert scrollPane != null && dialogContainer != null && userInput != null && sendButton != null
+                : "FXML injection failed for one or more @FXML fields";
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 

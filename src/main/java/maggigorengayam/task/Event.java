@@ -15,6 +15,10 @@ public class Event extends Task {
     /** Creates an event with the given description and from/to dates; either time may be {@code null}. */
     public Event(String description, LocalDate fromDate, LocalTime fromTime, LocalDate toDate, LocalTime toTime) {
         super(description);
+        // Unlike fromTime/toTime, both dates are required: both call sites (Parser, Storage)
+        // only ever reach this constructor with dates DateTimeUtil#parse already succeeded on.
+        assert fromDate != null && toDate != null
+                : "fromDate and toDate must not be null; only the times are optional";
         this.fromDate = fromDate;
         this.fromTime = fromTime;
         this.toDate = toDate;

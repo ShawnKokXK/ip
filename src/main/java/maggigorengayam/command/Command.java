@@ -58,6 +58,11 @@ public abstract class Command {
             throw new MaggiGorengAyamException(
                     "Task number " + number + " does not exist. You have " + taskCount + " task(s) in the list.");
         }
-        return number - 1;
+        int index = number - 1;
+        // Postcondition this method promises to TaskList#get/remove, which assume
+        // a pre-validated index and no longer range-check it themselves.
+        assert index >= 0 && index < taskCount
+                : "computed index " + index + " out of bounds for count " + taskCount;
+        return index;
     }
 }

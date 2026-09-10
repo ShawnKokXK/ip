@@ -29,6 +29,9 @@ public class DialogBox extends HBox {
             throw new IllegalStateException("Could not load view/DialogBox.fxml", e);
         }
 
+        // Same FXML-injection contract as MainWindow: a null field here means
+        // DialogBox.fxml and this controller have drifted out of sync.
+        assert dialog != null && displayPicture != null : "FXML injection failed for one or more @FXML fields";
         dialog.setText(text);
         displayPicture.setImage(img);
     }

@@ -59,6 +59,9 @@ public class DateTimeUtil {
 
     /** Formats for console display, e.g. "Dec 2 2019" or "Dec 2 2019, 6pm". */
     public static String formatForDisplay(LocalDate date, LocalTime time) {
+        // date is required by every caller (Deadline/Event always have one); only time
+        // is legitimately optional, so a null date here signals a caller bug, not bad input.
+        assert date != null : "date must not be null";
         String datePart = date.format(DISPLAY_DATE_FORMAT);
         if (time == null) {
             return datePart;
@@ -76,6 +79,8 @@ public class DateTimeUtil {
      * the save file can be re-loaded with no separate serialization format.
      */
     public static String formatForSave(LocalDate date, LocalTime time) {
+        // Same required-date contract as formatForDisplay.
+        assert date != null : "date must not be null";
         String datePart = date.format(INPUT_DATE_FORMAT);
         if (time == null) {
             return datePart;

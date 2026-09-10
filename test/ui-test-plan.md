@@ -31,6 +31,16 @@ full console output is compared against the expected output.
   this test plan.
 - A trailing newline difference at the very end of the output does not count
   as a mismatch; everything else must match exactly.
+- **Exception - `freetime`:** unlike every other command, `freetime` reads
+  the real system date/time (`LocalDate.now()`/`LocalTime.now()`), so its
+  successful-match test cases (TC33-TC35) can't have a fixed expected date.
+  Those test cases mark every date-dependent value with a `{TODAY}` /
+  `{TOMORROW}` placeholder in both `Input` and `Expected Output` - before
+  running, substitute `{TODAY}` with the actual current date (`yyyy-MM-dd`
+  in `Input`, `MMM d yyyy` in `Expected Output`) and `{TOMORROW}` with the
+  day after, consistently throughout that test case. This does not apply to
+  TC32, which only exercises `freetime`'s argument validation and needs no
+  date substitution.
 
 ---
 
@@ -2531,6 +2541,238 @@ ____________________________________________________________
  1.[T][X] read book
  2.[D][X] return book (by: Jun 6 2019)
  3.[E][ ] borrow laptop (from: Jun 6 2019, 2pm to: Jun 6 2019, 4pm)
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC32: `freetime` argument validation
+
+**Aim:** Verify `freetime <hours> <windowStartHHmm> <windowEndHHmm>`
+rejects, with a specific error each: no arguments at all; the wrong number
+of arguments; a non-numeric duration; a duration of exactly 0; a negative
+duration; a malformed window time; a window end not later than the window
+start (including exactly equal); and a duration longer than the window
+itself can ever hold. This test case is fully deterministic - none of these
+inputs are valid enough to reach the system-date-dependent search logic.
+
+**Input:**
+```
+freetime
+freetime 4 0900
+freetime abc 0900 1800
+freetime 0 0900 1800
+freetime -1 0900 1800
+freetime 4 not-a-time 1800
+freetime 4 1800 0900
+freetime 4 0900 0900
+freetime 10 0900 1800
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Usage: 'freetime <hours> <windowStartHHmm> <windowEndHHmm>', e.g. 'freetime 4 0900 1800'.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Usage: 'freetime <hours> <windowStartHHmm> <windowEndHHmm>', e.g. 'freetime 4 0900 1800'.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! The duration must be a number of hours, e.g. 'freetime 4 0900 1800'.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! The duration must be more than 0 hours.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! The duration must be more than 0 hours.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! I don't understand 'not-a-time' as the window start. Please use a 24-hour HHmm time, e.g. '0900'.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! The window end (0900) must be later than the window start (1800).
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! The window end (0900) must be later than the window start (0900).
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! A 10-hour slot can't ever fit in a 0900-1800 window.
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC33: `freetime` finds a slot on an empty list
+
+**Aim:** Verify `freetime <hours> <windowStartHHmm> <windowEndHHmm>` on an
+empty task list reports a slot starting at the window start on `{TODAY}`
+(see the date-substitution note in "Comparison rules" above), running for
+exactly the requested duration.
+
+**Input:**
+```
+freetime 4 0900 1800
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Found it! You're free on {TODAY}, from 9am to 1pm.
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC34: `freetime` rolls to the next day when today's window is fully booked
+
+**Aim:** Verify that an `Event` occupying the entire requested window on
+`{TODAY}` pushes the reported slot to `{TOMORROW}`, starting at the window
+start (since `{TOMORROW}` isn't constrained by the current time of day the
+way `{TODAY}` is).
+
+**Input:**
+```
+event all day meeting /from {TODAY} 0900 /to {TODAY} 1800
+freetime 4 0900 1800
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [E][ ] all day meeting (from: {TODAY}, 9am to: {TODAY}, 6pm)
+ Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Found it! You're free on {TOMORROW}, from 9am to 1pm.
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC35: `freetime` reports no slot found within the 30-day search horizon
+
+**Aim:** Verify that an `Event` spanning every day of the 30-day search
+horizon (and beyond) results in the "couldn't find" message rather than an
+error or an incorrect match. In addition to `{TODAY}`, this test case needs
+a date 40 days after `{TODAY}` - substitute `{TODAY+40d}` the same way as
+`{TODAY}`, just 40 days later (e.g. via `date -d "+40 days" +%Y-%m-%d` or
+equivalent).
+
+**Input:**
+```
+event long busy /from {TODAY} /to {TODAY+40d}
+freetime 1 0900 1800
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [E][ ] long busy (from: {TODAY} to: {TODAY+40d})
+ Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Couldn't find a free slot that long in the next 30 days. Try a shorter one?
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC36: `help` lists every supported command
+
+**Aim:** Verify `help` prints every supported command with its syntax and a
+short description, plus a closing note on the date/time format, and that
+this output doesn't depend on the task list's contents. Fully
+deterministic - no date substitution needed.
+
+**Input:**
+```
+help
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Here's what I can do:
+ todo <description> - add a to-do task
+ deadline <description> /by <date>[ time] - add a task with a due date
+ event <description> /from <date>[ time] /to <date>[ time] - add a task spanning a time range
+ list - show every task
+ mark <n> - mark task n as done
+ unmark <n> - mark task n as not done
+ delete <n> - remove task n
+ find <keyword> - find tasks whose description contains keyword
+ on <date> - show deadlines/events occurring on a date
+ freetime <hours> <windowStartHHmm> <windowEndHHmm> - find the nearest free slot
+ help - show this list
+ bye - exit
+ Dates are yyyy-MM-dd (e.g. 2019-12-02); times are 24-hour HHmm (e.g. 1800).
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!

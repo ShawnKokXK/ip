@@ -1,5 +1,6 @@
 package maggigorengayam.parser;
 
+import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 
 import maggigorengayam.MaggiGorengAyamException;
@@ -8,6 +9,8 @@ import maggigorengayam.command.Command;
 import maggigorengayam.command.DeleteCommand;
 import maggigorengayam.command.ExitCommand;
 import maggigorengayam.command.FindCommand;
+import maggigorengayam.command.FreeTimeCommand;
+import maggigorengayam.command.HelpCommand;
 import maggigorengayam.command.ListCommand;
 import maggigorengayam.command.MarkCommand;
 import maggigorengayam.command.OnCommand;
@@ -42,11 +45,17 @@ public class Parser {
         if (command.equals("list")) {
             return new ListCommand();
         }
+        if (command.equals("help")) {
+            return new HelpCommand();
+        }
         if (command.equals("on") || command.startsWith("on ")) {
             return parseOn(command);
         }
         if (command.equals("find") || command.startsWith("find ")) {
             return parseFind(command);
+        }
+        if (command.equals("freetime") || command.startsWith("freetime ")) {
+            return parseFreeTime(command);
         }
         if (command.equals("mark") || command.startsWith("mark ")) {
             return new MarkCommand(parseTaskNumber(command.substring(4).trim(), "mark"));
@@ -90,6 +99,63 @@ public class Parser {
             throw new MaggiGorengAyamException("What word do you want me to find? e.g. 'find book'.");
         }
         return new FindCommand(keyword);
+    }
+
+    /**
+     * Parses the duration and working-hours window after {@code freetime}
+     * into a {@link FreeTimeCommand}, e.g. {@code freetime 4 0900 1800}.
+     */
+    private static Command parseFreeTime(String command) throws MaggiGorengAyamException {
+        String rest = command.substring(8).trim();
+        String[] tokens = rest.isEmpty() ? new String[0] : rest.split("\\s+");
+        if (tokens.length != 3) {
+            throw new MaggiGorengAyamException(
+                    "Usage: 'freetime <hours> <windowStartHHmm> <windowEndHHmm>', "
+                            + "e.g. 'freetime 4 0900 1800'.");
+        }
+        int durationMinutes = parseDurationMinutes(tokens[0]);
+        LocalTime windowStart = parseWindowTime(tokens[1], "window start");
+        LocalTime windowEnd = parseWindowTime(tokens[2], "window end");
+        if (!windowEnd.isAfter(windowStart)) {
+            throw new MaggiGorengAyamException(
+                    "The window end (" + tokens[2] + ") must be later than the window start (" + tokens[1] + ").");
+        }
+        int windowMinutes = (windowEnd.toSecondOfDay() - windowStart.toSecondOfDay()) / 60;
+        if (durationMinutes > windowMinutes) {
+            throw new MaggiGorengAyamException(
+                    "A " + tokens[0] + "-hour slot can't ever fit in a " + tokens[1] + "-" + tokens[2] + " window.");
+        }
+        return new FreeTimeCommand(durationMinutes, windowStart, windowEnd);
+    }
+
+    /** Parses the duration argument to {@code freetime} (hours, possibly decimal) into whole minutes. */
+    private static int parseDurationMinutes(String value) throws MaggiGorengAyamException {
+        double hours;
+        try {
+            hours = Double.parseDouble(value);
+        } catch (NumberFormatException e) {
+            throw new MaggiGorengAyamException(
+                    "The duration must be a number of hours, e.g. 'freetime 4 0900 1800'.");
+        }
+        int durationMinutes = (int) Math.round(hours * 60);
+        if (durationMinutes <= 0) {
+            throw new MaggiGorengAyamException("The duration must be more than 0 hours.");
+        }
+        return durationMinutes;
+    }
+
+    /**
+     * Parses an {@code HHmm} window-boundary argument to {@code freetime},
+     * labelling errors with {@code fieldLabel}.
+     */
+    private static LocalTime parseWindowTime(String value, String fieldLabel) throws MaggiGorengAyamException {
+        try {
+            return DateTimeUtil.parseTimeOnly(value);
+        } catch (DateTimeParseException e) {
+            throw new MaggiGorengAyamException(
+                    "I don't understand '" + value + "' as the " + fieldLabel
+                            + ". Please use a 24-hour HHmm time, e.g. '0900'.");
+        }
     }
 
     private static Task parseTodo(String command) throws MaggiGorengAyamException {

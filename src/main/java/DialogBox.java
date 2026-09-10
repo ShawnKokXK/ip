@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
 
 /** One chat bubble, loaded from {@code view/DialogBox.fxml}: a message label next to a speaker avatar. */
 public class DialogBox extends HBox {
@@ -34,6 +35,13 @@ public class DialogBox extends HBox {
         assert dialog != null && displayPicture != null : "FXML injection failed for one or more @FXML fields";
         dialog.setText(text);
         displayPicture.setImage(img);
+        clipToCircle(displayPicture);
+    }
+
+    /** Clips {@code imageView} to a circle inscribed in its fit bounds, for a round avatar. */
+    private static void clipToCircle(ImageView imageView) {
+        double radius = Math.min(imageView.getFitWidth(), imageView.getFitHeight()) / 2;
+        imageView.setClip(new Circle(radius, radius, radius));
     }
 
     /** Mirrors this bubble to the top-left by reversing its children's order and alignment. */
@@ -46,12 +54,15 @@ public class DialogBox extends HBox {
 
     /** Returns a bubble for a message the user typed, aligned to the top-right. */
     public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);
+        DialogBox db = new DialogBox(text, img);
+        db.dialog.getStyleClass().add("bubble-user");
+        return db;
     }
 
     /** Returns a bubble for a Maggi Goreng Ayam response, aligned to the top-left. */
     public static DialogBox getMaggiGorengAyamDialog(String text, Image img) {
         var db = new DialogBox(text, img);
+        db.dialog.getStyleClass().add("bubble-bot");
         db.flip();
         return db;
     }

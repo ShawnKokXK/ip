@@ -7,6 +7,8 @@ import java.util.stream.IntStream;
 
 import maggigorengayam.task.Task;
 import maggigorengayam.tasklist.TaskList;
+import maggigorengayam.util.DateTimeUtil;
+import maggigorengayam.util.FreeTimeFinder.FreeSlot;
 
 /**
  * Builds every message the program shows to the user (the welcome banner,
@@ -73,6 +75,24 @@ public class Ui {
         return " OOPS!!! " + message;
     }
 
+    /** Returns the list of supported commands and their syntax, shown for the {@code help} command. */
+    public String showHelp() {
+        return " Here's what I can do:\n"
+                + " todo <description> - add a to-do task\n"
+                + " deadline <description> /by <date>[ time] - add a task with a due date\n"
+                + " event <description> /from <date>[ time] /to <date>[ time] - add a task spanning a time range\n"
+                + " list - show every task\n"
+                + " mark <n> - mark task n as done\n"
+                + " unmark <n> - mark task n as not done\n"
+                + " delete <n> - remove task n\n"
+                + " find <keyword> - find tasks whose description contains keyword\n"
+                + " on <date> - show deadlines/events occurring on a date\n"
+                + " freetime <hours> <windowStartHHmm> <windowEndHHmm> - find the nearest free slot\n"
+                + " help - show this list\n"
+                + " bye - exit\n"
+                + " Dates are yyyy-MM-dd (e.g. 2019-12-02); times are 24-hour HHmm (e.g. 1800).";
+    }
+
     /** Shown once during startup - see the class doc. */
     public String showLoadWarning(int skippedLineCount) {
         return LINE + "\n"
@@ -113,6 +133,19 @@ public class Ui {
         return IntStream.range(0, tasks.size())
                 .mapToObj(i -> "\n " + (i + 1) + "." + tasks.get(i))
                 .collect(Collectors.joining());
+    }
+
+    /** Returns confirmation that a free slot was found, with its exact date and start-end time. */
+    public String showFreeSlot(FreeSlot slot) {
+        return " Found it! You're free on " + DateTimeUtil.formatDateOnlyForDisplay(slot.date)
+                + ", from " + DateTimeUtil.formatTimeForDisplay(slot.start)
+                + " to " + DateTimeUtil.formatTimeForDisplay(slot.end) + ".";
+    }
+
+    /** Returns a message reporting that no free slot was found within the next {@code maxDaysAhead} days. */
+    public String showNoFreeSlot(int maxDaysAhead) {
+        return " OOPS!!! Couldn't find a free slot that long in the next "
+                + maxDaysAhead + " days. Try a shorter one?";
     }
 
     /** Returns confirmation that {@code task} was added, and the new task count. */

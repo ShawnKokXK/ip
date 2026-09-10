@@ -15,6 +15,8 @@ import maggigorengayam.MaggiGorengAyamException;
 import maggigorengayam.command.AddCommand;
 import maggigorengayam.command.Command;
 import maggigorengayam.command.ExitCommand;
+import maggigorengayam.command.FreeTimeCommand;
+import maggigorengayam.command.HelpCommand;
 import maggigorengayam.command.ListCommand;
 import maggigorengayam.command.OnCommand;
 import maggigorengayam.storage.Storage;
@@ -51,6 +53,14 @@ public class ParserTest {
         Command command = Parser.parse("list");
 
         assertInstanceOf(ListCommand.class, command);
+        assertFalse(command.isExit());
+    }
+
+    @Test
+    public void parse_help_returnsHelpCommandThatDoesNotSignalExit() throws MaggiGorengAyamException {
+        Command command = Parser.parse("help");
+
+        assertInstanceOf(HelpCommand.class, command);
         assertFalse(command.isExit());
     }
 
@@ -191,5 +201,65 @@ public class ParserTest {
     @Test
     public void parse_unknownCommand_throwsException() {
         assertThrows(MaggiGorengAyamException.class, () -> Parser.parse("blah"));
+    }
+
+    @Test
+    public void parse_validFreeTime_returnsFreeTimeCommand() throws MaggiGorengAyamException {
+        Command command = Parser.parse("freetime 4 0900 1800");
+
+        assertInstanceOf(FreeTimeCommand.class, command);
+        assertFalse(command.isExit());
+    }
+
+    @Test
+    public void parse_freeTimeDecimalHours_returnsFreeTimeCommand() throws MaggiGorengAyamException {
+        Command command = Parser.parse("freetime 2.5 0900 1800");
+
+        assertInstanceOf(FreeTimeCommand.class, command);
+    }
+
+    @Test
+    public void parse_freeTimeMissingArgs_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse("freetime 4 0900"));
+    }
+
+    @Test
+    public void parse_freeTimeNoArgsAtAll_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse("freetime"));
+    }
+
+    @Test
+    public void parse_freeTimeNonNumericDuration_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse("freetime abc 0900 1800"));
+    }
+
+    @Test
+    public void parse_freeTimeZeroDuration_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse("freetime 0 0900 1800"));
+    }
+
+    @Test
+    public void parse_freeTimeNegativeDuration_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse("freetime -1 0900 1800"));
+    }
+
+    @Test
+    public void parse_freeTimeInvalidWindowTime_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse("freetime 4 not-a-time 1800"));
+    }
+
+    @Test
+    public void parse_freeTimeWindowEndNotAfterStart_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse("freetime 4 1800 0900"));
+    }
+
+    @Test
+    public void parse_freeTimeWindowEndEqualsStart_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse("freetime 4 0900 0900"));
+    }
+
+    @Test
+    public void parse_freeTimeDurationLongerThanWindow_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse("freetime 10 0900 1800"));
     }
 }

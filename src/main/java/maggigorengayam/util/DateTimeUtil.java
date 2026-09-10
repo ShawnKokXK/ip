@@ -57,6 +57,11 @@ public class DateTimeUtil {
         return LocalDate.parse(input.trim(), INPUT_DATE_FORMAT);
     }
 
+    /** Parses a bare 24-hour "HHmm" value, e.g. the window start/end arguments to `freetime`. */
+    public static LocalTime parseTimeOnly(String input) throws DateTimeParseException {
+        return LocalTime.parse(input.trim(), INPUT_TIME_FORMAT);
+    }
+
     /** Formats for console display, e.g. "Dec 2 2019" or "Dec 2 2019, 6pm". */
     public static String formatForDisplay(LocalDate date, LocalTime time) {
         // date is required by every caller (Deadline/Event always have one); only time
@@ -89,7 +94,7 @@ public class DateTimeUtil {
     }
 
     /** e.g. 18:00 -> "6pm", 18:30 -> "6:30pm" (12-hour, lowercase, no leading zero). */
-    private static String formatTimeForDisplay(LocalTime time) {
+    public static String formatTimeForDisplay(LocalTime time) {
         int hour = time.getHour() % 12;
         if (hour == 0) {
             hour = 12;

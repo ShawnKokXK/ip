@@ -25,6 +25,26 @@ public class Event extends Task {
         this.toTime = toTime;
     }
 
+    /** The date this event starts on. */
+    public LocalDate getFromDate() {
+        return fromDate;
+    }
+
+    /** The time of day this event starts, or {@code null} if only a date was given. */
+    public LocalTime getFromTime() {
+        return fromTime;
+    }
+
+    /** The date this event ends on. */
+    public LocalDate getToDate() {
+        return toDate;
+    }
+
+    /** The time of day this event ends, or {@code null} if only a date was given. */
+    public LocalTime getToTime() {
+        return toTime;
+    }
+
     /** True when {@code date} falls within [fromDate, toDate], inclusive of both ends. */
     @Override
     public boolean occursOn(LocalDate date) {

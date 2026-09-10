@@ -13,6 +13,9 @@ public class Deadline extends Task {
     /** Creates a deadline with the given description and "by" date; {@code byTime} may be {@code null}. */
     public Deadline(String description, LocalDate byDate, LocalTime byTime) {
         super(description);
+        // Unlike byTime, byDate is required: both call sites (Parser, Storage) only ever
+        // reach this constructor with a date that DateTimeUtil#parse already succeeded on.
+        assert byDate != null : "byDate must not be null; only byTime is optional";
         this.byDate = byDate;
         this.byTime = byTime;
     }

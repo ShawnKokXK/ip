@@ -166,6 +166,9 @@ public class Storage {
             default:
                 return null;
         }
+        // Every case above either returns null (unparseable line) or assigns task;
+        // reaching here means a case fell through without doing either, which is a bug.
+        assert task != null : "task should have been assigned or this method should have returned null by now";
         if (isDone) {
             task.markAsDone();
         }

@@ -12,6 +12,8 @@ import maggigorengayam.task.Deadline;
 import maggigorengayam.task.Event;
 import maggigorengayam.task.Task;
 import maggigorengayam.task.ToDo;
+import maggigorengayam.tasklist.TaskList;
+import maggigorengayam.ui.Ui;
 import maggigorengayam.util.DateTimeUtil;
 
 /**
@@ -76,6 +78,43 @@ public class Storage {
             }
         }
         return new LoadResult(tasks, skippedLineCount);
+    }
+
+    /**
+     * The result of {@link #loadOrEmpty}: the {@link TaskList} to start the
+     * program with, plus a one-time startup message to show about it, or
+     * {@code null} if loading went by without anything worth mentioning
+     * (the common case).
+     */
+    public static class StartupResult {
+        public final TaskList tasks;
+        public final String message;
+
+        /** Pairs the starting task list with the (possibly {@code null}) message to show about it. */
+        public StartupResult(TaskList tasks, String message) {
+            this.tasks = tasks;
+            this.message = message;
+        }
+    }
+
+    /**
+     * Loads tasks for program startup and turns a load failure or skipped
+     * lines into a ready-to-show message via {@code ui}, instead of making
+     * every entry point (the CLI's {@code main}, the GUI's
+     * {@code MaggiGorengAyamBot}) repeat the same load/catch/warn sequence
+     * itself. On a hard failure ({@link #load()} throwing {@link IOException}),
+     * the returned tasks are an empty list rather than the failure propagating,
+     * since starting empty is preferable to the program not starting at all.
+     */
+    public StartupResult loadOrEmpty(Ui ui) {
+        try {
+            LoadResult result = load();
+            TaskList tasks = new TaskList(result.tasks);
+            String message = result.skippedLineCount > 0 ? ui.showLoadWarning(result.skippedLineCount) : null;
+            return new StartupResult(tasks, message);
+        } catch (IOException e) {
+            return new StartupResult(new TaskList(), ui.showLoadingError());
+        }
     }
 
     /**

@@ -1,5 +1,3 @@
-import java.io.IOException;
-
 import maggigorengayam.MaggiGorengAyamException;
 import maggigorengayam.command.Command;
 import maggigorengayam.parser.Parser;
@@ -26,20 +24,9 @@ public class MaggiGorengAyamBot {
     /** Loads any previously saved tasks, noting a startup message to show once the GUI opens. */
     public MaggiGorengAyamBot() {
         String welcome = ui.showWelcome();
-        TaskList loadedTasks;
-        String warning = null;
-        try {
-            Storage.LoadResult result = storage.load();
-            loadedTasks = new TaskList(result.tasks);
-            if (result.skippedLineCount > 0) {
-                warning = ui.showLoadWarning(result.skippedLineCount);
-            }
-        } catch (IOException e) {
-            warning = ui.showLoadingError();
-            loadedTasks = new TaskList();
-        }
-        this.tasks = loadedTasks;
-        this.startupMessage = warning == null ? welcome : welcome + "\n" + warning;
+        Storage.StartupResult startup = storage.loadOrEmpty(ui);
+        this.tasks = startup.tasks;
+        this.startupMessage = startup.message == null ? welcome : welcome + "\n" + startup.message;
     }
 
     /** Returns the message to show as soon as the GUI opens (welcome banner, plus any load warning). */

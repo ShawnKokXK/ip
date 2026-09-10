@@ -2,6 +2,8 @@ package maggigorengayam.ui;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import maggigorengayam.task.Task;
 import maggigorengayam.tasklist.TaskList;
@@ -93,33 +95,24 @@ public class Ui {
 
     /** Returns every task in {@code tasks}, numbered from 1. */
     public String showTaskList(TaskList tasks) {
-        StringBuilder result = new StringBuilder(" Here are the tasks in your list:");
-        for (int i = 0; i < tasks.size(); i++) {
-            result.append("\n ").append(i + 1).append(".").append(tasks.get(i));
-        }
-        return result.toString();
+        return " Here are the tasks in your list:" + numberedLines(tasks.getAll());
     }
 
     /** Returns {@code matches}, numbered from 1, under a header naming {@code dateLabel}. */
     public String showTasksOn(String dateLabel, List<Task> matches) {
-        StringBuilder result = new StringBuilder(" Here are the tasks on " + dateLabel + ":");
-        int count = 0;
-        for (Task task : matches) {
-            count++;
-            result.append("\n ").append(count).append(".").append(task);
-        }
-        return result.toString();
+        return " Here are the tasks on " + dateLabel + ":" + numberedLines(matches);
     }
 
     /** Returns {@code matches}, numbered from 1, as the tasks found by the {@code find} command. */
     public String showMatchingTasks(List<Task> matches) {
-        StringBuilder result = new StringBuilder(" Here are the matching tasks in your list:");
-        int count = 0;
-        for (Task task : matches) {
-            count++;
-            result.append("\n ").append(count).append(".").append(task);
-        }
-        return result.toString();
+        return " Here are the matching tasks in your list:" + numberedLines(matches);
+    }
+
+    /** e.g. "\n 1.[T][ ] read book\n 2.[D][ ] return book (...)" - one "\n {number}.{task}" line per task. */
+    private String numberedLines(List<Task> tasks) {
+        return IntStream.range(0, tasks.size())
+                .mapToObj(i -> "\n " + (i + 1) + "." + tasks.get(i))
+                .collect(Collectors.joining());
     }
 
     /** Returns confirmation that {@code task} was added, and the new task count. */

@@ -18,7 +18,7 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            stage.setTitle("Maggi Goreng Ayam");
+            stage.setTitle("Maggi Goreng Ayam");  // the name
             stage.setResizable(true);
             stage.setMinHeight(250);
             stage.setMinWidth(340);

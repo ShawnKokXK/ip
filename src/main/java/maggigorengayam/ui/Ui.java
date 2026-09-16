@@ -97,35 +97,35 @@ public class Ui {
     public String showLoadWarning(int skippedLineCount) {
         return LINE + "\n"
                 + " OOPS!!! " + skippedLineCount
-                + " saved task(s) in the data file could not be read and were skipped.\n"
+                + " of your saved task(s) rosak already, I skip lor.\n"
                 + LINE;
     }
 
     /** Shown once during startup - see the class doc. */
     public String showLoadingError() {
         return LINE + "\n"
-                + " OOPS!!! I couldn't load saved tasks from disk. Starting with an empty list.\n"
+                + " OOPS!!! Cannot load your saved tasks sia. Start with empty list first can.\n"
                 + LINE;
     }
 
     /** Returns a warning that a task-list save to disk failed. */
     public String showSaveError() {
-        return " OOPS!!! I couldn't save the task list to disk. Your change is only in memory for now.";
+        return " OOPS!!! Cannot save to disk leh. Your change stay in memory only ah, don't close the app.";
     }
 
     /** Returns every task in {@code tasks}, numbered from 1. */
     public String showTaskList(TaskList tasks) {
-        return " Here are the tasks in your list:" + numberedLines(tasks.getAll());
+        return " Here your list, see for yourself:" + numberedLines(tasks.getAll());
     }
 
     /** Returns {@code matches}, numbered from 1, under a header naming {@code dateLabel}. */
     public String showTasksOn(String dateLabel, List<Task> matches) {
-        return " Here are the tasks on " + dateLabel + ":" + numberedLines(matches);
+        return " On " + dateLabel + ", this is what you got:" + numberedLines(matches);
     }
 
     /** Returns {@code matches}, numbered from 1, as the tasks found by the {@code find} command. */
     public String showMatchingTasks(List<Task> matches) {
-        return " Here are the matching tasks in your list:" + numberedLines(matches);
+        return " I find already, these all u got:" + numberedLines(matches);
     }
 
     /** e.g. "\n 1.[T][ ] read book\n 2.[D][ ] return book (...)" - one "\n {number}.{task}" line per task. */
@@ -137,36 +137,36 @@ public class Ui {
 
     /** Returns confirmation that a free slot was found, with its exact date and start-end time. */
     public String showFreeSlot(FreeSlot slot) {
-        return " Found it! You're free on " + DateTimeUtil.formatDateOnlyForDisplay(slot.date)
+        return " Here, you free on " + DateTimeUtil.formatDateOnlyForDisplay(slot.date)
                 + ", from " + DateTimeUtil.formatTimeForDisplay(slot.start)
                 + " to " + DateTimeUtil.formatTimeForDisplay(slot.end) + ".";
     }
 
     /** Returns a message reporting that no free slot was found within the next {@code maxDaysAhead} days. */
     public String showNoFreeSlot(int maxDaysAhead) {
-        return " OOPS!!! Couldn't find a free slot that long in the next "
-                + maxDaysAhead + " days. Try a shorter one?";
+        return " OOPS!!! Cannot find that long a slot in next "
+                + maxDaysAhead + " days leh. Try shorter one can or not?";
     }
 
     /** Returns confirmation that {@code task} was added, and the new task count. */
     public String showAdded(Task task, int taskCount) {
-        return " Got it. I've added this task:\n   " + task
-                + "\n Now you have " + taskCount + " tasks in the list.";
+        return " Can can, added already:\n   " + task
+                + "\n Now you got " + taskCount + " task(s) in the list alr.";
     }
 
     /** Returns confirmation that {@code task} was removed, and the new task count. */
     public String showRemoved(Task task, int taskCount) {
-        return " Noted. I've removed this task:\n   " + task
-                + "\n Now you have " + taskCount + " tasks in the list.";
+        return " Okay noted, I throw away already:\n   " + task
+                + "\n Now you got " + taskCount + " task(s) in the list alr.";
     }
 
     /** Returns confirmation that {@code task} was marked as done. */
     public String showMarked(Task task) {
-        return " Nice! I've marked this task as done:\n   " + task;
+        return " Wah steady! Marked done already:\n   " + task;
     }
 
     /** Returns confirmation that {@code task} was marked as not done. */
     public String showUnmarked(Task task) {
-        return " OK, I've marked this task as not done yet:\n   " + task;
+        return " Okay lah, put back to not-done:\n   " + task;
     }
 }

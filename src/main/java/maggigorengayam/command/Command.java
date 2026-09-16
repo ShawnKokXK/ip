@@ -56,7 +56,7 @@ public abstract class Command {
     protected static int toValidIndex(int number, int taskCount) throws MaggiGorengAyamException {
         if (number < 1 || number > taskCount) {
             throw new MaggiGorengAyamException(
-                    "Task number " + number + " does not exist. You have " + taskCount + " task(s) in the list.");
+                    "No task number " + number + " lah, you only got " + taskCount + " task(s).");
         }
         int index = number - 1;
         // Postcondition this method promises to TaskList#get/remove, which assume

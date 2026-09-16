@@ -47,17 +47,27 @@ public class DateTimeUtilTest {
     }
 
     /**
-     * DateTimeFormatter.ofPattern defaults to ResolverStyle.SMART, which
-     * silently clamps an out-of-range day to the last valid day of the
-     * month instead of rejecting it - so "2019-02-30" resolves to Feb 28,
-     * not a thrown exception. This documents that actual (non-obvious)
-     * behavior rather than the stricter behavior one might expect.
+     * INPUT_DATE_FORMAT uses ResolverStyle.STRICT (rather than the default
+     * SMART, which would silently clamp an out-of-range day to the last
+     * valid day of the month), so a non-existent calendar date like
+     * "2019-02-30" (February only has 28/29 days) is rejected rather than
+     * silently becoming a different date the user never typed.
      */
     @Test
-    public void parse_dayOverflowInMonth_clampsToLastValidDayOfMonth() {
-        ParsedDateTime result = DateTimeUtil.parse("2019-02-30");
+    public void parse_dayOverflowInMonth_throwsDateTimeParseException() {
+        assertThrows(DateTimeParseException.class, () -> DateTimeUtil.parse("2019-02-30"));
+    }
 
-        assertEquals(LocalDate.of(2019, 2, 28), result.date);
+    @Test
+    public void parse_february29OnNonLeapYear_throwsDateTimeParseException() {
+        assertThrows(DateTimeParseException.class, () -> DateTimeUtil.parse("2019-02-29"));
+    }
+
+    @Test
+    public void parse_february29OnLeapYear_parsesSuccessfully() {
+        ParsedDateTime result = DateTimeUtil.parse("2020-02-29");
+
+        assertEquals(LocalDate.of(2020, 2, 29), result.date);
         assertNull(result.time);
     }
 

@@ -52,6 +52,11 @@ public class MaggiGorengAyamBot {
         } catch (MaggiGorengAyamException e) {
             isLastResponseError = true;
             return ui.showError(e.getMessage());
+        } catch (RuntimeException e) {
+            // Safety net against an unanticipated bug: without this, the GUI would
+            // otherwise fail this one message with no user-visible feedback at all.
+            isLastResponseError = true;
+            return ui.showError("something went wrong sia, can try that again?");
         }
     }
 

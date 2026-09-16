@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 /**
  * Parses and formats the dates/times used by {@link maggigorengayam.task.Deadline}
@@ -13,7 +14,13 @@ import java.time.format.DateTimeParseException;
  * {@link #parse(String)} directly instead of needing a separate format.
  */
 public class DateTimeUtil {
-    private static final DateTimeFormatter INPUT_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    // STRICT (rather than the default SMART) so a non-existent calendar date like
+    // "2019-02-30" is rejected outright instead of silently resolving to Feb 28.
+    // Pattern uses "uuuu" (proleptic year), not "yyyy" (year-of-era): under STRICT,
+    // "yyyy" needs an explicit era field to resolve, which this pattern doesn't have,
+    // and parsing would fail even for an otherwise-valid date like "2019-12-02".
+    private static final DateTimeFormatter INPUT_DATE_FORMAT = DateTimeFormatter.ofPattern("uuuu-MM-dd")
+            .withResolverStyle(ResolverStyle.STRICT);
     private static final DateTimeFormatter INPUT_TIME_FORMAT = DateTimeFormatter.ofPattern("HHmm");
     private static final DateTimeFormatter DISPLAY_DATE_FORMAT = DateTimeFormatter.ofPattern("MMM d yyyy");
 

@@ -20,8 +20,8 @@ public class Main extends Application {
             stage.setScene(scene);
             stage.setTitle("Maggi Goreng Ayam");
             stage.setResizable(true);
-            stage.setMinHeight(220);
-            stage.setMinWidth(417);
+            stage.setMinHeight(250);
+            stage.setMinWidth(340);
             fxmlLoader.<MainWindow>getController().setBot(bot);
             stage.show();
         } catch (IOException e) {

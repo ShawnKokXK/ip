@@ -20,6 +20,7 @@
     -fx-background-radius: 16;
     -fx-padding: 10 14 10 14;
     -fx-font-size: 13px;
+    -fx-line-spacing: 2px;
 }
 
 .bubble-user {
@@ -30,6 +31,15 @@
 .bubble-bot {
     -fx-background-color: #e5e5ea;
     -fx-text-fill: #1c1c1e;
+}
+
+.bubble-error {
+    -fx-background-color: #fdecea;
+    -fx-text-fill: #a4262c;
+    -fx-border-color: #f3b4b0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 16;
+    -fx-font-weight: bold;
 }
 
 #userInput {

@@ -75,20 +75,20 @@ public class Parser {
         if (command.equals("event") || command.startsWith("event ")) {
             return new AddCommand(parseEvent(command));
         }
-        throw new MaggiGorengAyamException("Huhhh???");
+        throw new MaggiGorengAyamException("Huh? What is that one, I don't understand leh.");
     }
 
     /** Parses the argument after {@code on} into an {@link OnCommand}. */
     private static Command parseOn(String command) throws MaggiGorengAyamException {
         String dateArg = command.substring(2).trim();
         if (dateArg.isEmpty()) {
-            throw new MaggiGorengAyamException("Which date? e.g. 'on 2019-12-02'.");
+            throw new MaggiGorengAyamException("Which date, you never say leh. Try like 'on 2019-12-02'.");
         }
         try {
             return new OnCommand(DateTimeUtil.parseDateOnly(dateArg));
         } catch (DateTimeParseException e) {
             throw new MaggiGorengAyamException(
-                    "I don't understand '" + dateArg + "' as a date. Please use yyyy-MM-dd, e.g. 'on 2019-12-02'.");
+                    "'" + dateArg + "' not a proper date leh. Use yyyy-MM-dd, like 'on 2019-12-02'.");
         }
     }
 
@@ -96,7 +96,7 @@ public class Parser {
     private static Command parseFind(String command) throws MaggiGorengAyamException {
         String keyword = command.substring(4).trim();
         if (keyword.isEmpty()) {
-            throw new MaggiGorengAyamException("What word do you want me to find? e.g. 'find book'.");
+            throw new MaggiGorengAyamException("Find what, you tell me what word first. Try 'find book'.");
         }
         return new FindCommand(keyword);
     }
@@ -110,7 +110,7 @@ public class Parser {
         String[] tokens = rest.isEmpty() ? new String[0] : rest.split("\\s+");
         if (tokens.length != 3) {
             throw new MaggiGorengAyamException(
-                    "Usage: 'freetime <hours> <windowStartHHmm> <windowEndHHmm>', "
+                    "Usage: 'freetime <hours> <windowStartHHmm> <windowEndHHmm>' lah, "
                             + "e.g. 'freetime 4 0900 1800'.");
         }
         int durationMinutes = parseDurationMinutes(tokens[0]);
@@ -118,12 +118,13 @@ public class Parser {
         LocalTime windowEnd = parseWindowTime(tokens[2], "window end");
         if (!windowEnd.isAfter(windowStart)) {
             throw new MaggiGorengAyamException(
-                    "The window end (" + tokens[2] + ") must be later than the window start (" + tokens[1] + ").");
+                    "Window end (" + tokens[2] + ") must be later than window start (" + tokens[1] + ") lah.");
         }
         int windowMinutes = (windowEnd.toSecondOfDay() - windowStart.toSecondOfDay()) / 60;
         if (durationMinutes > windowMinutes) {
             throw new MaggiGorengAyamException(
-                    "A " + tokens[0] + "-hour slot can't ever fit in a " + tokens[1] + "-" + tokens[2] + " window.");
+                    "Confirm cannot fit a " + tokens[0] + "-hour slot inside a "
+                            + tokens[1] + "-" + tokens[2] + " window lah.");
         }
         return new FreeTimeCommand(durationMinutes, windowStart, windowEnd);
     }
@@ -135,11 +136,11 @@ public class Parser {
             hours = Double.parseDouble(value);
         } catch (NumberFormatException e) {
             throw new MaggiGorengAyamException(
-                    "The duration must be a number of hours, e.g. 'freetime 4 0900 1800'.");
+                    "Duration must be a number leh, like 'freetime 4 0900 1800'.");
         }
         int durationMinutes = (int) Math.round(hours * 60);
         if (durationMinutes <= 0) {
-            throw new MaggiGorengAyamException("The duration must be more than 0 hours.");
+            throw new MaggiGorengAyamException("Duration must be more than 0 hours can or not.");
         }
         return durationMinutes;
     }
@@ -153,15 +154,14 @@ public class Parser {
             return DateTimeUtil.parseTimeOnly(value);
         } catch (DateTimeParseException e) {
             throw new MaggiGorengAyamException(
-                    "I don't understand '" + value + "' as the " + fieldLabel
-                            + ". Please use a 24-hour HHmm time, e.g. '0900'.");
+                    "'" + value + "' not a proper " + fieldLabel + " leh. Use 24-hour HHmm, like '0900'.");
         }
     }
 
     private static Task parseTodo(String command) throws MaggiGorengAyamException {
         String description = command.substring(4).trim();
         if (description.isEmpty()) {
-            throw new MaggiGorengAyamException("What TODO you want bro, I'll give you maggi goreng ayam");
+            throw new MaggiGorengAyamException("What todo you want, you never say leh. Try 'todo buy milk'.");
         }
         requireNoPipeCharacter(description);
         return new ToDo(description);
@@ -172,21 +172,20 @@ public class Parser {
         String rest = command.substring(8).trim();
         if (rest.isEmpty()) {
             throw new MaggiGorengAyamException(
-                    "Woah I don't know how to read mind bro, please type in ur description and deadline");
+                    "Wah, I cannot read mind one leh. Give me description and deadline can?");
         }
         if (!rest.contains(" /by ")) {
             throw new MaggiGorengAyamException(
-                    "Yo, put the deadline using '/by', e.g. 'deadline return book /by Sunday'. "
-                            + "Dont make me put the deadline next min.");
+                    "Eh, use '/by' for the deadline can. Like 'deadline return book /by Sunday'.");
         }
         String[] parts = rest.split(" /by ", 2);
         String description = parts[0].trim();
         String by = parts[1].trim();
         if (description.isEmpty()) {
-            throw new MaggiGorengAyamException("only date no description?? what you want bro?");
+            throw new MaggiGorengAyamException("Only date, no description? You want what sia?");
         }
         if (by.isEmpty()) {
-            throw new MaggiGorengAyamException("No deadline?? say that to your gf thanks");
+            throw new MaggiGorengAyamException("No deadline one? Then for what you calling it deadline.");
         }
         requireNoPipeCharacter(description);
         DateTimeUtil.ParsedDateTime parsedBy = parseDateField(by, "deadline date");
@@ -197,32 +196,32 @@ public class Parser {
     private static Task parseEvent(String command) throws MaggiGorengAyamException {
         String rest = command.substring(5).trim();
         if (rest.isEmpty()) {
-            throw new MaggiGorengAyamException("Huhhhh, sry i got no telepathy feature...");
+            throw new MaggiGorengAyamException("Huh, I no have telepathy leh, you must tell me properly.");
         }
         if (!rest.contains(" /from ")) {
             throw new MaggiGorengAyamException(
-                    "Please use '/from', e.g. "
+                    "Eh, use '/from' can. Like "
                             + "'event project meeting /from Mon 2pm /to 4pm'.");
         }
         String[] fromParts = rest.split(" /from ", 2);
         String description = fromParts[0].trim();
         String afterFrom = fromParts[1].trim();
         if (description.isEmpty()) {
-            throw new MaggiGorengAyamException("what u want? where is the description??");
+            throw new MaggiGorengAyamException("Description where? You want event about what?");
         }
         if (!afterFrom.contains(" /to ")) {
             throw new MaggiGorengAyamException(
-                    "Till when? forever? Please use '/to', e.g. "
+                    "Until when, you never say leh. Use '/to', like "
                             + "'event project meeting /from Mon 2pm /to 4pm'.");
         }
         String[] toParts = afterFrom.split(" /to ", 2);
         String from = toParts[0].trim();
         String to = toParts[1].trim();
         if (from.isEmpty()) {
-            throw new MaggiGorengAyamException("From what?? Specify a start time after '/from'.");
+            throw new MaggiGorengAyamException("From when, you never say leh. Give a start time after '/from'.");
         }
         if (to.isEmpty()) {
-            throw new MaggiGorengAyamException("To what?? Specify an end time after '/to'.");
+            throw new MaggiGorengAyamException("To when, you never say leh. Give an end time after '/to'.");
         }
         requireNoPipeCharacter(description);
         DateTimeUtil.ParsedDateTime parsedFrom = parseDateField(from, "start date/time");
@@ -239,12 +238,13 @@ public class Parser {
     private static int parseTaskNumber(String arg, String commandName) throws MaggiGorengAyamException {
         if (arg.isEmpty()) {
             throw new MaggiGorengAyamException(
-                    "Please specify which task to " + commandName + ", e.g. '" + commandName + " 2'.");
+                    "Which task you want to " + commandName + ", never say leh. Try '" + commandName + " 2'.");
         }
         try {
             return Integer.parseInt(arg);
         } catch (NumberFormatException e) {
-            throw new MaggiGorengAyamException("The task number must be a whole number, e.g. '" + commandName + " 2'.");
+            throw new MaggiGorengAyamException(
+                    "Task number must be whole number one lah. Try '" + commandName + " 2'.");
         }
     }
 
@@ -262,8 +262,7 @@ public class Parser {
     private static void requireNoPipeCharacter(String description) throws MaggiGorengAyamException {
         if (description.contains("|")) {
             throw new MaggiGorengAyamException(
-                    "Sorry, the '|' character can't be used in a task description"
-                            + " because it's used internally to save your tasks. Please remove it and try again.");
+                    "Eh cannot use '|' in the description leh, I need that one for saving. Take it out can?");
         }
     }
 
@@ -279,9 +278,8 @@ public class Parser {
             return DateTimeUtil.parse(value);
         } catch (DateTimeParseException e) {
             throw new MaggiGorengAyamException(
-                    "I don't understand '" + value + "' as a " + fieldLabel
-                            + ". Please use yyyy-MM-dd, optionally followed by a 24-hour time,"
-                            + " e.g. '2019-12-02' or '2019-12-02 1800'.");
+                    "'" + value + "' not a proper " + fieldLabel + " leh. Use yyyy-MM-dd,"
+                            + " can add 24-hour time also, like '2019-12-02' or '2019-12-02 1800'.");
         }
     }
 }

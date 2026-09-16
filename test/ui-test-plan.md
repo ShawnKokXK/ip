@@ -95,9 +95,9 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] borrow book
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -132,9 +132,9 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [D][ ] return book (by: Dec 2 2019)
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -169,9 +169,9 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [E][ ] project meeting (from: Dec 2 2019, 2pm to: Dec 2 2019, 4pm)
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -206,22 +206,22 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] read book
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [D][ ] return book (by: Dec 6 2019)
- Now you have 2 tasks in the list.
+ Now you got 2 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [E][ ] project meeting (from: Dec 6 2019, 2pm to: Dec 6 2019, 4pm)
- Now you have 3 tasks in the list.
+ Now you got 3 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][ ] read book
  2.[D][ ] return book (by: Dec 6 2019)
  3.[E][ ] project meeting (from: Dec 6 2019, 2pm to: Dec 6 2019, 4pm)
@@ -261,30 +261,30 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] read book
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] return book
- Now you have 2 tasks in the list.
+ Now you got 2 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Nice! I've marked this task as done:
+ Wah steady! Marked done already:
    [T][X] read book
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][X] read book
  2.[T][ ] return book
 ____________________________________________________________
 ____________________________________________________________
- OK, I've marked this task as not done yet:
+ Okay lah, put back to not-done:
    [T][ ] read book
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][ ] read book
  2.[T][ ] return book
 ____________________________________________________________
@@ -321,13 +321,13 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! What TODO you want bro, I'll give you maggi goreng ayam
+ OOPS!!! What todo you want, you never say leh. Try 'todo buy milk'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Woah I don't know how to read mind bro, please type in ur description and deadline
+ OOPS!!! Wah, I cannot read mind one leh. Give me description and deadline can?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Huhhhh, sry i got no telepathy feature...
+ OOPS!!! Huh, I no have telepathy leh, you must tell me properly.
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -339,7 +339,7 @@ ____________________________________________________________
 ## TC8: Unknown command
 
 **Aim:** Verify a command that isn't recognized (e.g. `blah`) produces the
-"Huhhh???" OOPS message instead of crashing or being silently ignored.
+"Huh? What is that one..." OOPS message instead of crashing or being silently ignored.
 
 **Input:**
 ```
@@ -359,7 +359,7 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Huhhh???
+ OOPS!!! Huh? What is that one, I don't understand leh.
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -397,10 +397,10 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Yo, put the deadline using '/by', e.g. 'deadline return book /by Sunday'. Dont make me put the deadline next min.
+ OOPS!!! Eh, use '/by' for the deadline can. Like 'deadline return book /by Sunday'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Yo, put the deadline using '/by', e.g. 'deadline return book /by Sunday'. Dont make me put the deadline next min.
+ OOPS!!! Eh, use '/by' for the deadline can. Like 'deadline return book /by Sunday'.
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -433,10 +433,10 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Please use '/from', e.g. 'event project meeting /from Mon 2pm /to 4pm'.
+ OOPS!!! Eh, use '/from' can. Like 'event project meeting /from Mon 2pm /to 4pm'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Till when? forever? Please use '/to', e.g. 'event project meeting /from Mon 2pm /to 4pm'.
+ OOPS!!! Until when, you never say leh. Use '/to', like 'event project meeting /from Mon 2pm /to 4pm'.
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -473,16 +473,16 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Please specify which task to mark, e.g. 'mark 2'.
+ OOPS!!! Which task you want to mark, never say leh. Try 'mark 2'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! The task number must be a whole number, e.g. 'mark 2'.
+ OOPS!!! Task number must be whole number one lah. Try 'mark 2'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Task number 5 does not exist. You have 0 task(s) in the list.
+ OOPS!!! No task number 5 lah, you only got 0 task(s).
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Task number 0 does not exist. You have 0 task(s) in the list.
+ OOPS!!! No task number 0 lah, you only got 0 task(s).
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -520,21 +520,21 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] buy milk
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! What TODO you want bro, I'll give you maggi goreng ayam
+ OOPS!!! What todo you want, you never say leh. Try 'todo buy milk'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Woah I don't know how to read mind bro, please type in ur description and deadline
+ OOPS!!! Wah, I cannot read mind one leh. Give me description and deadline can?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Yo, put the deadline using '/by', e.g. 'deadline return book /by Sunday'. Dont make me put the deadline next min.
+ OOPS!!! Eh, use '/by' for the deadline can. Like 'deadline return book /by Sunday'.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][ ] buy milk
 ____________________________________________________________
 ____________________________________________________________
@@ -579,47 +579,47 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task A
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task B
- Now you have 2 tasks in the list.
+ Now you got 2 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Task number 5 does not exist. You have 2 task(s) in the list.
+ OOPS!!! No task number 5 lah, you only got 2 task(s).
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! The task number must be a whole number, e.g. 'mark 2'.
+ OOPS!!! Task number must be whole number one lah. Try 'mark 2'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Task number 0 does not exist. You have 2 task(s) in the list.
+ OOPS!!! No task number 0 lah, you only got 2 task(s).
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][ ] task A
  2.[T][ ] task B
 ____________________________________________________________
 ____________________________________________________________
- Nice! I've marked this task as done:
+ Wah steady! Marked done already:
    [T][X] task B
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][ ] task A
  2.[T][X] task B
 ____________________________________________________________
 ____________________________________________________________
- OK, I've marked this task as not done yet:
+ Okay lah, put back to not-done:
    [T][ ] task B
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Task number 5 does not exist. You have 2 task(s) in the list.
+ OOPS!!! No task number 5 lah, you only got 2 task(s).
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][ ] task A
  2.[T][ ] task B
 ____________________________________________________________
@@ -661,21 +661,21 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Huhhh???
+ OOPS!!! Huh? What is that one, I don't understand leh.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Huhhh???
+ OOPS!!! Huh? What is that one, I don't understand leh.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Huhhh???
+ OOPS!!! Huh? What is that one, I don't understand leh.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] read book
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][ ] read book
 ____________________________________________________________
 ____________________________________________________________
@@ -714,22 +714,22 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] buy   milk
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [D][ ] return book (by: Dec 2 2019, 6pm)
- Now you have 2 tasks in the list.
+ Now you got 2 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [E][ ] meet friend (from: Dec 2 2019, 2pm to: Dec 2 2019, 4pm)
- Now you have 3 tasks in the list.
+ Now you got 3 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][ ] buy   milk
  2.[D][ ] return book (by: Dec 2 2019, 6pm)
  3.[E][ ] meet friend (from: Dec 2 2019, 2pm to: Dec 2 2019, 4pm)
@@ -779,48 +779,48 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] t1
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] t2
- Now you have 2 tasks in the list.
+ Now you got 2 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] t3
- Now you have 3 tasks in the list.
+ Now you got 3 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Nice! I've marked this task as done:
+ Wah steady! Marked done already:
    [T][X] t2
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][ ] t1
  2.[T][X] t2
  3.[T][ ] t3
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Task number -1 does not exist. You have 3 task(s) in the list.
+ OOPS!!! No task number -1 lah, you only got 3 task(s).
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! The task number must be a whole number, e.g. 'mark 2'.
+ OOPS!!! Task number must be whole number one lah. Try 'mark 2'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! The task number must be a whole number, e.g. 'mark 2'.
+ OOPS!!! Task number must be whole number one lah. Try 'mark 2'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! The task number must be a whole number, e.g. 'mark 2'.
+ OOPS!!! Task number must be whole number one lah. Try 'mark 2'.
 ____________________________________________________________
 ____________________________________________________________
- OK, I've marked this task as not done yet:
+ Okay lah, put back to not-done:
    [T][ ] t2
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][ ] t1
  2.[T][ ] t2
  3.[T][ ] t3
@@ -963,532 +963,532 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task1
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task2
- Now you have 2 tasks in the list.
+ Now you got 2 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task3
- Now you have 3 tasks in the list.
+ Now you got 3 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task4
- Now you have 4 tasks in the list.
+ Now you got 4 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task5
- Now you have 5 tasks in the list.
+ Now you got 5 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task6
- Now you have 6 tasks in the list.
+ Now you got 6 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task7
- Now you have 7 tasks in the list.
+ Now you got 7 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task8
- Now you have 8 tasks in the list.
+ Now you got 8 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task9
- Now you have 9 tasks in the list.
+ Now you got 9 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task10
- Now you have 10 tasks in the list.
+ Now you got 10 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task11
- Now you have 11 tasks in the list.
+ Now you got 11 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task12
- Now you have 12 tasks in the list.
+ Now you got 12 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task13
- Now you have 13 tasks in the list.
+ Now you got 13 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task14
- Now you have 14 tasks in the list.
+ Now you got 14 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task15
- Now you have 15 tasks in the list.
+ Now you got 15 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task16
- Now you have 16 tasks in the list.
+ Now you got 16 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task17
- Now you have 17 tasks in the list.
+ Now you got 17 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task18
- Now you have 18 tasks in the list.
+ Now you got 18 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task19
- Now you have 19 tasks in the list.
+ Now you got 19 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task20
- Now you have 20 tasks in the list.
+ Now you got 20 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task21
- Now you have 21 tasks in the list.
+ Now you got 21 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task22
- Now you have 22 tasks in the list.
+ Now you got 22 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task23
- Now you have 23 tasks in the list.
+ Now you got 23 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task24
- Now you have 24 tasks in the list.
+ Now you got 24 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task25
- Now you have 25 tasks in the list.
+ Now you got 25 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task26
- Now you have 26 tasks in the list.
+ Now you got 26 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task27
- Now you have 27 tasks in the list.
+ Now you got 27 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task28
- Now you have 28 tasks in the list.
+ Now you got 28 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task29
- Now you have 29 tasks in the list.
+ Now you got 29 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task30
- Now you have 30 tasks in the list.
+ Now you got 30 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task31
- Now you have 31 tasks in the list.
+ Now you got 31 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task32
- Now you have 32 tasks in the list.
+ Now you got 32 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task33
- Now you have 33 tasks in the list.
+ Now you got 33 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task34
- Now you have 34 tasks in the list.
+ Now you got 34 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task35
- Now you have 35 tasks in the list.
+ Now you got 35 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task36
- Now you have 36 tasks in the list.
+ Now you got 36 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task37
- Now you have 37 tasks in the list.
+ Now you got 37 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task38
- Now you have 38 tasks in the list.
+ Now you got 38 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task39
- Now you have 39 tasks in the list.
+ Now you got 39 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task40
- Now you have 40 tasks in the list.
+ Now you got 40 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task41
- Now you have 41 tasks in the list.
+ Now you got 41 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task42
- Now you have 42 tasks in the list.
+ Now you got 42 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task43
- Now you have 43 tasks in the list.
+ Now you got 43 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task44
- Now you have 44 tasks in the list.
+ Now you got 44 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task45
- Now you have 45 tasks in the list.
+ Now you got 45 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task46
- Now you have 46 tasks in the list.
+ Now you got 46 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task47
- Now you have 47 tasks in the list.
+ Now you got 47 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task48
- Now you have 48 tasks in the list.
+ Now you got 48 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task49
- Now you have 49 tasks in the list.
+ Now you got 49 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task50
- Now you have 50 tasks in the list.
+ Now you got 50 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task51
- Now you have 51 tasks in the list.
+ Now you got 51 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task52
- Now you have 52 tasks in the list.
+ Now you got 52 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task53
- Now you have 53 tasks in the list.
+ Now you got 53 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task54
- Now you have 54 tasks in the list.
+ Now you got 54 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task55
- Now you have 55 tasks in the list.
+ Now you got 55 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task56
- Now you have 56 tasks in the list.
+ Now you got 56 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task57
- Now you have 57 tasks in the list.
+ Now you got 57 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task58
- Now you have 58 tasks in the list.
+ Now you got 58 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task59
- Now you have 59 tasks in the list.
+ Now you got 59 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task60
- Now you have 60 tasks in the list.
+ Now you got 60 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task61
- Now you have 61 tasks in the list.
+ Now you got 61 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task62
- Now you have 62 tasks in the list.
+ Now you got 62 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task63
- Now you have 63 tasks in the list.
+ Now you got 63 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task64
- Now you have 64 tasks in the list.
+ Now you got 64 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task65
- Now you have 65 tasks in the list.
+ Now you got 65 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task66
- Now you have 66 tasks in the list.
+ Now you got 66 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task67
- Now you have 67 tasks in the list.
+ Now you got 67 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task68
- Now you have 68 tasks in the list.
+ Now you got 68 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task69
- Now you have 69 tasks in the list.
+ Now you got 69 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task70
- Now you have 70 tasks in the list.
+ Now you got 70 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task71
- Now you have 71 tasks in the list.
+ Now you got 71 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task72
- Now you have 72 tasks in the list.
+ Now you got 72 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task73
- Now you have 73 tasks in the list.
+ Now you got 73 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task74
- Now you have 74 tasks in the list.
+ Now you got 74 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task75
- Now you have 75 tasks in the list.
+ Now you got 75 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task76
- Now you have 76 tasks in the list.
+ Now you got 76 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task77
- Now you have 77 tasks in the list.
+ Now you got 77 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task78
- Now you have 78 tasks in the list.
+ Now you got 78 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task79
- Now you have 79 tasks in the list.
+ Now you got 79 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task80
- Now you have 80 tasks in the list.
+ Now you got 80 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task81
- Now you have 81 tasks in the list.
+ Now you got 81 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task82
- Now you have 82 tasks in the list.
+ Now you got 82 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task83
- Now you have 83 tasks in the list.
+ Now you got 83 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task84
- Now you have 84 tasks in the list.
+ Now you got 84 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task85
- Now you have 85 tasks in the list.
+ Now you got 85 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task86
- Now you have 86 tasks in the list.
+ Now you got 86 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task87
- Now you have 87 tasks in the list.
+ Now you got 87 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task88
- Now you have 88 tasks in the list.
+ Now you got 88 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task89
- Now you have 89 tasks in the list.
+ Now you got 89 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task90
- Now you have 90 tasks in the list.
+ Now you got 90 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task91
- Now you have 91 tasks in the list.
+ Now you got 91 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task92
- Now you have 92 tasks in the list.
+ Now you got 92 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task93
- Now you have 93 tasks in the list.
+ Now you got 93 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task94
- Now you have 94 tasks in the list.
+ Now you got 94 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task95
- Now you have 95 tasks in the list.
+ Now you got 95 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task96
- Now you have 96 tasks in the list.
+ Now you got 96 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task97
- Now you have 97 tasks in the list.
+ Now you got 97 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task98
- Now you have 98 tasks in the list.
+ Now you got 98 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task99
- Now you have 99 tasks in the list.
+ Now you got 99 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task100
- Now you have 100 tasks in the list.
+ Now you got 100 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task101
- Now you have 101 tasks in the list.
+ Now you got 101 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task102
- Now you have 102 tasks in the list.
+ Now you got 102 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task103
- Now you have 103 tasks in the list.
+ Now you got 103 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task104
- Now you have 104 tasks in the list.
+ Now you got 104 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] task105
- Now you have 105 tasks in the list.
+ Now you got 105 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][ ] task1
  2.[T][ ] task2
  3.[T][ ] task3
@@ -1643,40 +1643,40 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] read book
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! What TODO you want bro, I'll give you maggi goreng ayam
+ OOPS!!! What todo you want, you never say leh. Try 'todo buy milk'.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [D][ ] return book (by: Dec 9 2019)
- Now you have 2 tasks in the list.
+ Now you got 2 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Woah I don't know how to read mind bro, please type in ur description and deadline
+ OOPS!!! Wah, I cannot read mind one leh. Give me description and deadline can?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Yo, put the deadline using '/by', e.g. 'deadline return book /by Sunday'. Dont make me put the deadline next min.
+ OOPS!!! Eh, use '/by' for the deadline can. Like 'deadline return book /by Sunday'.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [E][ ] project meeting (from: Dec 2 2019, 2pm to: Dec 2 2019, 4pm)
- Now you have 3 tasks in the list.
+ Now you got 3 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Huhhhh, sry i got no telepathy feature...
+ OOPS!!! Huh, I no have telepathy leh, you must tell me properly.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Please use '/from', e.g. 'event project meeting /from Mon 2pm /to 4pm'.
+ OOPS!!! Eh, use '/from' can. Like 'event project meeting /from Mon 2pm /to 4pm'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Till when? forever? Please use '/to', e.g. 'event project meeting /from Mon 2pm /to 4pm'.
+ OOPS!!! Until when, you never say leh. Use '/to', like 'event project meeting /from Mon 2pm /to 4pm'.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][ ] read book
  2.[D][ ] return book (by: Dec 9 2019)
  3.[E][ ] project meeting (from: Dec 2 2019, 2pm to: Dec 2 2019, 4pm)
@@ -1691,7 +1691,7 @@ ____________________________________________________________
 ## TC19: Delete a task
 
 **Aim:** Verify `delete <n>` removes the n-th task (1-indexed) from the
-list, prints the "Noted. I've removed this task" confirmation showing
+list, prints the "Okay noted, I throw away already" confirmation showing
 the removed task and the updated count, and that the task no longer
 appears afterward.
 
@@ -1722,44 +1722,44 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] read book
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [D][ ] return book (by: Dec 6 2019)
- Now you have 2 tasks in the list.
+ Now you got 2 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [E][ ] project meeting (from: Dec 6 2019, 2pm to: Dec 6 2019, 4pm)
- Now you have 3 tasks in the list.
+ Now you got 3 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] join sports club
- Now you have 4 tasks in the list.
+ Now you got 4 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] borrow book
- Now you have 5 tasks in the list.
+ Now you got 5 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Nice! I've marked this task as done:
+ Wah steady! Marked done already:
    [T][X] read book
 ____________________________________________________________
 ____________________________________________________________
- Nice! I've marked this task as done:
+ Wah steady! Marked done already:
    [D][X] return book (by: Dec 6 2019)
 ____________________________________________________________
 ____________________________________________________________
- Nice! I've marked this task as done:
+ Wah steady! Marked done already:
    [T][X] join sports club
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][X] read book
  2.[D][X] return book (by: Dec 6 2019)
  3.[E][ ] project meeting (from: Dec 6 2019, 2pm to: Dec 6 2019, 4pm)
@@ -1767,9 +1767,9 @@ ____________________________________________________________
  5.[T][ ] borrow book
 ____________________________________________________________
 ____________________________________________________________
- Noted. I've removed this task:
+ Okay noted, I throw away already:
    [E][ ] project meeting (from: Dec 6 2019, 2pm to: Dec 6 2019, 4pm)
- Now you have 4 tasks in the list.
+ Now you got 4 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -1821,73 +1821,73 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] t1
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] t2
- Now you have 2 tasks in the list.
+ Now you got 2 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] t3
- Now you have 3 tasks in the list.
+ Now you got 3 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] t4
- Now you have 4 tasks in the list.
+ Now you got 4 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Task number 5 does not exist. You have 4 task(s) in the list.
+ OOPS!!! No task number 5 lah, you only got 4 task(s).
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! The task number must be a whole number, e.g. 'delete 2'.
+ OOPS!!! Task number must be whole number one lah. Try 'delete 2'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Task number 0 does not exist. You have 4 task(s) in the list.
+ OOPS!!! No task number 0 lah, you only got 4 task(s).
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][ ] t1
  2.[T][ ] t2
  3.[T][ ] t3
  4.[T][ ] t4
 ____________________________________________________________
 ____________________________________________________________
- Noted. I've removed this task:
+ Okay noted, I throw away already:
    [T][ ] t2
- Now you have 3 tasks in the list.
+ Now you got 3 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][ ] t1
  2.[T][ ] t3
  3.[T][ ] t4
 ____________________________________________________________
 ____________________________________________________________
- Noted. I've removed this task:
+ Okay noted, I throw away already:
    [T][ ] t1
- Now you have 2 tasks in the list.
+ Now you got 2 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Noted. I've removed this task:
+ Okay noted, I throw away already:
    [T][ ] t3
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][ ] t4
 ____________________________________________________________
 ____________________________________________________________
- Noted. I've removed this task:
+ Okay noted, I throw away already:
    [T][ ] t4
- Now you have 0 tasks in the list.
+ Now you got 0 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -1930,17 +1930,17 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] read book
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [D][ ] return book (by: Dec 6 2019, 6pm)
- Now you have 2 tasks in the list.
+ Now you got 2 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Nice! I've marked this task as done:
+ Wah steady! Marked done already:
    [T][X] read book
 ____________________________________________________________
 ____________________________________________________________
@@ -1966,7 +1966,7 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][X] read book
  2.[D][ ] return book (by: Dec 6 2019, 6pm)
 ____________________________________________________________
@@ -2016,10 +2016,10 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! 3 saved task(s) in the data file could not be read and were skipped.
+ OOPS!!! 3 of your saved task(s) rosak already, I skip lor.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][X] good task
 ____________________________________________________________
 ____________________________________________________________
@@ -2058,12 +2058,12 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] buy milk
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][ ] buy milk
 ____________________________________________________________
 ____________________________________________________________
@@ -2107,16 +2107,16 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Sorry, the '|' character can't be used in a task description because it's used internally to save your tasks. Please remove it and try again.
+ OOPS!!! Eh cannot use '|' in the description leh, I need that one for saving. Take it out can?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Sorry, the '|' character can't be used in a task description because it's used internally to save your tasks. Please remove it and try again.
+ OOPS!!! Eh cannot use '|' in the description leh, I need that one for saving. Take it out can?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Sorry, the '|' character can't be used in a task description because it's used internally to save your tasks. Please remove it and try again.
+ OOPS!!! Eh cannot use '|' in the description leh, I need that one for saving. Take it out can?
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -2155,10 +2155,10 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! I couldn't load saved tasks from disk. Starting with an empty list.
+ OOPS!!! Cannot load your saved tasks sia. Start with empty list first can.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -2202,10 +2202,10 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! I couldn't save the task list to disk. Your change is only in memory for now.
+ OOPS!!! Cannot save to disk leh. Your change stay in memory only ah, don't close the app.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][ ] new task
 ____________________________________________________________
 ____________________________________________________________
@@ -2246,22 +2246,22 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [D][ ] return book (by: Dec 2 2019)
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [D][ ] submit report (by: Dec 2 2019, 6pm)
- Now you have 2 tasks in the list.
+ Now you got 2 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [E][ ] project meeting (from: Dec 2 2019, 2pm to: Dec 2 2019, 4pm)
- Now you have 3 tasks in the list.
+ Now you got 3 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[D][ ] return book (by: Dec 2 2019)
  2.[D][ ] submit report (by: Dec 2 2019, 6pm)
  3.[E][ ] project meeting (from: Dec 2 2019, 2pm to: Dec 2 2019, 4pm)
@@ -2305,19 +2305,19 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! I don't understand 'Sunday' as a deadline date. Please use yyyy-MM-dd, optionally followed by a 24-hour time, e.g. '2019-12-02' or '2019-12-02 1800'.
+ OOPS!!! 'Sunday' not a proper deadline date leh. Use yyyy-MM-dd, can add 24-hour time also, like '2019-12-02' or '2019-12-02 1800'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! I don't understand '2019-2-3' as a deadline date. Please use yyyy-MM-dd, optionally followed by a 24-hour time, e.g. '2019-12-02' or '2019-12-02 1800'.
+ OOPS!!! '2019-2-3' not a proper deadline date leh. Use yyyy-MM-dd, can add 24-hour time also, like '2019-12-02' or '2019-12-02 1800'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! I don't understand '2019-12-02 999' as a deadline date. Please use yyyy-MM-dd, optionally followed by a 24-hour time, e.g. '2019-12-02' or '2019-12-02 1800'.
+ OOPS!!! '2019-12-02 999' not a proper deadline date leh. Use yyyy-MM-dd, can add 24-hour time also, like '2019-12-02' or '2019-12-02 1800'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! I don't understand 'Mon 2pm' as a start date/time. Please use yyyy-MM-dd, optionally followed by a 24-hour time, e.g. '2019-12-02' or '2019-12-02 1800'.
+ OOPS!!! 'Mon 2pm' not a proper start date/time leh. Use yyyy-MM-dd, can add 24-hour time also, like '2019-12-02' or '2019-12-02 1800'.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -2364,42 +2364,42 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] buy milk
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [D][ ] return book (by: Dec 2 2019)
- Now you have 2 tasks in the list.
+ Now you got 2 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [E][ ] conference (from: Dec 1 2019 to: Dec 3 2019)
- Now you have 3 tasks in the list.
+ Now you got 3 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [D][ ] submit report (by: Dec 5 2019)
- Now you have 4 tasks in the list.
+ Now you got 4 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks on Dec 2 2019:
+ On Dec 2 2019, this is what you got:
  1.[D][ ] return book (by: Dec 2 2019)
  2.[E][ ] conference (from: Dec 1 2019 to: Dec 3 2019)
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks on Dec 5 2019:
+ On Dec 5 2019, this is what you got:
  1.[D][ ] submit report (by: Dec 5 2019)
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks on Dec 10 2019:
+ On Dec 10 2019, this is what you got:
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Which date? e.g. 'on 2019-12-02'.
+ OOPS!!! Which date, you never say leh. Try like 'on 2019-12-02'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! I don't understand 'abc' as a date. Please use yyyy-MM-dd, e.g. 'on 2019-12-02'.
+ OOPS!!! 'abc' not a proper date leh. Use yyyy-MM-dd, like 'on 2019-12-02'.
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -2442,10 +2442,10 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! 2 saved task(s) in the data file could not be read and were skipped.
+ OOPS!!! 2 of your saved task(s) rosak already, I skip lor.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][X] good task
 ____________________________________________________________
 ____________________________________________________________
@@ -2494,50 +2494,50 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [T][ ] read book
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [D][ ] return book (by: Jun 6 2019)
- Now you have 2 tasks in the list.
+ Now you got 2 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [E][ ] borrow laptop (from: Jun 6 2019, 2pm to: Jun 6 2019, 4pm)
- Now you have 3 tasks in the list.
+ Now you got 3 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Nice! I've marked this task as done:
+ Wah steady! Marked done already:
    [T][X] read book
 ____________________________________________________________
 ____________________________________________________________
- Nice! I've marked this task as done:
+ Wah steady! Marked done already:
    [D][X] return book (by: Jun 6 2019)
 ____________________________________________________________
 ____________________________________________________________
- Here are the matching tasks in your list:
+ I find already, these all u got:
  1.[T][X] read book
  2.[D][X] return book (by: Jun 6 2019)
 ____________________________________________________________
 ____________________________________________________________
- Here are the matching tasks in your list:
+ I find already, these all u got:
  1.[T][X] read book
  2.[D][X] return book (by: Jun 6 2019)
 ____________________________________________________________
 ____________________________________________________________
- Here are the matching tasks in your list:
+ I find already, these all u got:
  1.[E][ ] borrow laptop (from: Jun 6 2019, 2pm to: Jun 6 2019, 4pm)
 ____________________________________________________________
 ____________________________________________________________
- Here are the matching tasks in your list:
+ I find already, these all u got:
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! What word do you want me to find? e.g. 'find book'.
+ OOPS!!! Find what, you tell me what word first. Try 'find book'.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here your list, see for yourself:
  1.[T][X] read book
  2.[D][X] return book (by: Jun 6 2019)
  3.[E][ ] borrow laptop (from: Jun 6 2019, 2pm to: Jun 6 2019, 4pm)
@@ -2585,31 +2585,31 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Usage: 'freetime <hours> <windowStartHHmm> <windowEndHHmm>', e.g. 'freetime 4 0900 1800'.
+ OOPS!!! Usage: 'freetime <hours> <windowStartHHmm> <windowEndHHmm>' lah, e.g. 'freetime 4 0900 1800'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Usage: 'freetime <hours> <windowStartHHmm> <windowEndHHmm>', e.g. 'freetime 4 0900 1800'.
+ OOPS!!! Usage: 'freetime <hours> <windowStartHHmm> <windowEndHHmm>' lah, e.g. 'freetime 4 0900 1800'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! The duration must be a number of hours, e.g. 'freetime 4 0900 1800'.
+ OOPS!!! Duration must be a number leh, like 'freetime 4 0900 1800'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! The duration must be more than 0 hours.
+ OOPS!!! Duration must be more than 0 hours can or not.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! The duration must be more than 0 hours.
+ OOPS!!! Duration must be more than 0 hours can or not.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! I don't understand 'not-a-time' as the window start. Please use a 24-hour HHmm time, e.g. '0900'.
+ OOPS!!! 'not-a-time' not a proper window start leh. Use 24-hour HHmm, like '0900'.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! The window end (0900) must be later than the window start (1800).
+ OOPS!!! Window end (0900) must be later than window start (1800) lah.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! The window end (0900) must be later than the window start (0900).
+ OOPS!!! Window end (0900) must be later than window start (0900) lah.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! A 10-hour slot can't ever fit in a 0900-1800 window.
+ OOPS!!! Confirm cannot fit a 10-hour slot inside a 0900-1800 window lah.
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -2643,7 +2643,7 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Found it! You're free on {TODAY}, from 9am to 1pm.
+ Here, you free on {TODAY}, from 9am to 1pm.
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -2678,12 +2678,12 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [E][ ] all day meeting (from: {TODAY}, 9am to: {TODAY}, 6pm)
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- Found it! You're free on {TOMORROW}, from 9am to 1pm.
+ Here, you free on {TOMORROW}, from 9am to 1pm.
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
@@ -2720,12 +2720,12 @@ Hello! I'm Maggi Goreng Ayam.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Can can, added already:
    [E][ ] long busy (from: {TODAY} to: {TODAY+40d})
- Now you have 1 tasks in the list.
+ Now you got 1 task(s) in the list alr.
 ____________________________________________________________
 ____________________________________________________________
- OOPS!!! Couldn't find a free slot that long in the next 30 days. Try a shorter one?
+ OOPS!!! Cannot find that long a slot in next 30 days leh. Try shorter one can or not?
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!

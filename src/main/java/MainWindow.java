@@ -20,7 +20,6 @@ public class MainWindow extends AnchorPane {
 
     private MaggiGorengAyamBot bot;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/brother.png"));
     private Image maggigorengayamImage = new Image(this.getClass()
             .getResourceAsStream("/images/maggigorengayam.png"));
 
@@ -38,8 +37,7 @@ public class MainWindow extends AnchorPane {
     /** Injects the bot instance and shows its startup message as the first chat bubble. */
     public void setBot(MaggiGorengAyamBot bot) {
         this.bot = bot;
-        dialogContainer.getChildren().addAll(
-                DialogBox.getMaggiGorengAyamDialog(bot.getStartupMessage(), maggigorengayamImage));
+        addDialog(DialogBox.getMaggiGorengAyamDialog(bot.getStartupMessage(), maggigorengayamImage, false));
     }
 
     /**
@@ -54,13 +52,17 @@ public class MainWindow extends AnchorPane {
             return;
         }
         String response = bot.getResponse(input);
-        dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(input, userImage),
-                DialogBox.getMaggiGorengAyamDialog(response, maggigorengayamImage)
-        );
+        addDialog(DialogBox.getUserDialog(input));
+        addDialog(DialogBox.getMaggiGorengAyamDialog(response, maggigorengayamImage, bot.isLastResponseError()));
         userInput.clear();
         if (bot.isExit()) {
             Platform.exit();
         }
+    }
+
+    /** Appends {@code dialogBox} to the conversation, letting its bubble width track the window's. */
+    private void addDialog(DialogBox dialogBox) {
+        dialogBox.bindMaxWidth(dialogContainer.widthProperty());
+        dialogContainer.getChildren().add(dialogBox);
     }
 }

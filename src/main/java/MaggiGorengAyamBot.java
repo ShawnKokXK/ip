@@ -20,6 +20,7 @@ public class MaggiGorengAyamBot {
     private final TaskList tasks;
     private final String startupMessage;
     private boolean isExit = false;
+    private boolean isLastResponseError = false;
 
     /** Loads any previously saved tasks, noting a startup message to show once the GUI opens. */
     public MaggiGorengAyamBot() {
@@ -37,15 +38,19 @@ public class MaggiGorengAyamBot {
     /**
      * Parses and executes {@code input} against the live task list, returning
      * the resulting message. {@link #isExit()} reports {@code true} after this
-     * returns from an exit command (e.g. {@code bye}).
+     * returns from an exit command (e.g. {@code bye}); {@link #isLastResponseError()}
+     * reports {@code true} after this returns from an unrecognized or malformed
+     * command, so the GUI can style that reply differently to catch the eye.
      */
     public String getResponse(String input) {
         try {
             Command c = Parser.parse(input);
             String response = c.execute(tasks, ui, storage);
             isExit = c.isExit();
+            isLastResponseError = false;
             return response;
         } catch (MaggiGorengAyamException e) {
+            isLastResponseError = true;
             return ui.showError(e.getMessage());
         }
     }
@@ -53,5 +58,10 @@ public class MaggiGorengAyamBot {
     /** Whether the most recently executed command should end the session (e.g. {@code bye}). */
     public boolean isExit() {
         return isExit;
+    }
+
+    /** Whether the most recent {@link #getResponse} call reported an invalid/unrecognized command. */
+    public boolean isLastResponseError() {
+        return isLastResponseError;
     }
 }

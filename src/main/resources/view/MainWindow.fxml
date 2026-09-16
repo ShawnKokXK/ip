@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
+<AnchorPane maxHeight="Infinity" maxWidth="Infinity"
             minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="600.0" prefWidth="400.0"
             xmlns="http://javafx.com/javafx/17"
@@ -16,6 +16,7 @@
     <children>
         <TextField fx:id="userInput"
                    onAction="#handleUserInput"
+                   promptText="Type a command (e.g. 'help')..."
                    prefHeight="38.0"
                    AnchorPane.bottomAnchor="10.0"
                    AnchorPane.leftAnchor="10.0"
@@ -38,9 +39,7 @@
                     AnchorPane.leftAnchor="0.0"
                     AnchorPane.rightAnchor="0.0">
             <content>
-                <VBox fx:id="dialogContainer"
-                      prefHeight="544.0"
-                      prefWidth="400.0" />
+                <VBox fx:id="dialogContainer" />
             </content>
         </ScrollPane>
     </children>

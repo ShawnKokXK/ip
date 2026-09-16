@@ -2280,14 +2280,18 @@ text that doesn't parse as `yyyy-MM-dd[ HHmm]`, rather than silently
 accepting it as a free-form string the way the pre-dates-and-times version
 of this program did. Covers: a non-date word (`Sunday`), a date with
 non-zero-padded month/day (`2019-2-3` - the parser requires exactly 2
-digits for month and day), and a time value with the wrong digit count
-(`999`). None of these should add anything to the list.
+digits for month and day), a time value with the wrong digit count
+(`999`), and a non-existent calendar date (`2019-02-30` - February only
+has 28/29 days; date parsing uses `ResolverStyle.STRICT` so this is
+rejected outright rather than silently resolving to Feb 28). None of these
+should add anything to the list.
 
 **Input:**
 ```
 deadline return book /by Sunday
 deadline return book /by 2019-2-3
 deadline return book /by 2019-12-02 999
+deadline return book /by 2019-02-30
 event meet friend /from Mon 2pm /to 2019-12-02 1600
 list
 bye
@@ -2312,6 +2316,9 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  OOPS!!! '2019-12-02 999' not a proper deadline date leh. Use yyyy-MM-dd, can add 24-hour time also, like '2019-12-02' or '2019-12-02 1800'.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! '2019-02-30' not a proper deadline date leh. Use yyyy-MM-dd, can add 24-hour time also, like '2019-12-02' or '2019-12-02 1800'.
 ____________________________________________________________
 ____________________________________________________________
  OOPS!!! 'Mon 2pm' not a proper start date/time leh. Use yyyy-MM-dd, can add 24-hour time also, like '2019-12-02' or '2019-12-02 1800'.
@@ -2778,3 +2785,156 @@ ____________________________________________________________
  Bye. Hope to see you again soon!
 ____________________________________________________________
 ```
+
+---
+
+## TC37: `event` rejects an end that's before or the same as its start
+
+**Aim:** Verify `event` rejects a `/to` that's chronologically before its
+`/from` (different dates), and separately a `/to` that's exactly equal to
+its `/from` (same date and time) - "later than or same as" is explicitly
+disallowed. Also verifies the deliberate exception: an all-day event
+(`/from`/`/to` on the same date, neither with a time) is still accepted,
+since a missing time is treated as the start of the day for `/from` and
+the end of the day for `/to`.
+
+**Input:**
+```
+event meeting /from 2019-12-05 /to 2019-12-01
+event meeting /from 2019-12-02 1400 /to 2019-12-02 1400
+event meeting /from 2019-12-02 1600 /to 2019-12-02 1400
+event all-day meeting /from 2019-12-02 /to 2019-12-02
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Eh, your event ends before (or same time as) it starts leh. Check your /from and /to again.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Eh, your event ends before (or same time as) it starts leh. Check your /from and /to again.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Eh, your event ends before (or same time as) it starts leh. Check your /from and /to again.
+____________________________________________________________
+____________________________________________________________
+ Can can, added already:
+   [E][ ] all-day meeting (from: Dec 2 2019 to: Dec 2 2019)
+ Now you got 1 task(s) in the list alr.
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC38: A duplicate task is rejected
+
+**Aim:** Verify that adding a task with the exact same type, description
+(case-insensitively), and date(s)/time(s) as one already in the list is
+rejected rather than silently added as a second copy - confirmed by a
+final `list` showing only the one original entry.
+
+**Input:**
+```
+todo read book
+todo read book
+todo READ BOOK
+list
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Can can, added already:
+   [T][ ] read book
+ Now you got 1 task(s) in the list alr.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Eh, you already have this exact task in your list leh, no need add twice.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Eh, you already have this exact task in your list leh, no need add twice.
+____________________________________________________________
+____________________________________________________________
+ Here your list, see for yourself:
+ 1.[T][ ] read book
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+## TC39: A repeated `/by`/`/from`/`/to` marker is rejected with a clear error
+
+**Aim:** Verify that specifying the same marker twice (`/by` twice for
+`deadline`; `/from` twice or `/to` twice for `event`) is rejected with a
+message naming the actual problem, rather than the marker's second
+occurrence silently becoming part of the date value and producing a
+confusing "not a proper date" error instead.
+
+**Input:**
+```
+deadline return book /by 2019-12-02 /by 2019-12-03
+event meeting /from 2019-12-02 /from 2019-12-03 /to 2019-12-04
+event meeting /from 2019-12-02 /to 2019-12-03 /to 2019-12-04
+bye
+```
+
+**Expected Output:**
+```
+____________________________________________________________
+  __  __  _____    _    
+ |  \/  |/ ____|  / \   
+ | \  / ||   __  / _ \  
+ | |\/| ||  |_ |/ ___ \ 
+ |_|  |_|\_____/_/   \_\
+Hello! I'm Maggi Goreng Ayam.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Only can use '/by' once leh, you got it twice.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Only can use '/from' once leh, you got it twice.
+____________________________________________________________
+____________________________________________________________
+ OOPS!!! Only can use '/to' once leh, you got it twice.
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+---
+
+Note: `requireNoReservedCharacters` also rejects an embedded newline/`\r`
+in a description (not just `|`), to protect the same line-based save
+format - but a line-based CLI session (this test plan's format) can never
+actually deliver a literal newline within a single typed command, so
+there's no way to express that case here. It's covered instead by
+`ParserTest.parse_todoDescriptionContainingNewline_throwsException`, which
+calls `Parser.parse(...)` directly with a string containing `\n`.

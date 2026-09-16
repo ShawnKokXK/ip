@@ -2,6 +2,7 @@ package maggigorengayam.task;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 import maggigorengayam.util.DateTimeUtil;
 
@@ -49,6 +50,17 @@ public class Event extends Task {
     @Override
     public boolean occursOn(LocalDate date) {
         return !date.isBefore(fromDate) && !date.isAfter(toDate);
+    }
+
+    /** Same as {@link Task#hasSameDetailsAs}, additionally requiring identical "from"/"to" dates and times. */
+    @Override
+    public boolean hasSameDetailsAs(Task other) {
+        if (!super.hasSameDetailsAs(other)) {
+            return false;
+        }
+        Event that = (Event) other;
+        return fromDate.equals(that.fromDate) && Objects.equals(fromTime, that.fromTime)
+                && toDate.equals(that.toDate) && Objects.equals(toTime, that.toTime);
     }
 
     /** e.g. "[E][ ] project meeting (from: Dec 2 2019, 2pm to: Dec 2 2019, 4pm)". */

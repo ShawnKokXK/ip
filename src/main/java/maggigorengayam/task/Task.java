@@ -69,4 +69,22 @@ public class Task {
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;
     }
+
+    /**
+     * Whether {@code other} has the same type and description as this task,
+     * used by {@code AddCommand} to reject adding an exact duplicate.
+     * Deliberately narrower than {@link Object#equals}: {@code isDone} is
+     * excluded (a completed task and a freshly-typed one with the same
+     * details are still "the same task" for duplicate-detection purposes),
+     * the description compares case-insensitively, and the type must match
+     * exactly ({@code getClass()}, not {@code instanceof}) so a to-do and a
+     * deadline with the same wording are never considered duplicates of
+     * each other. {@link Deadline}/{@link Event} extend this with their own
+     * date/time fields.
+     */
+    public boolean hasSameDetailsAs(Task other) {
+        return other != null
+                && getClass() == other.getClass()
+                && description.equalsIgnoreCase(other.description);
+    }
 }

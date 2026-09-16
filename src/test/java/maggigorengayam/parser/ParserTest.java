@@ -87,6 +87,30 @@ public class ParserTest {
     }
 
     @Test
+    public void parse_todoDescriptionContainingNewline_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse("todo buy\nmilk"));
+    }
+
+    @Test
+    public void parse_addingTaskWithSameDetailsAsExisting_throwsException() throws MaggiGorengAyamException {
+        TaskList tasks = new TaskList();
+        Parser.parse("todo read book").execute(tasks, new Ui(), newStorage());
+
+        Command duplicate = Parser.parse("todo read book");
+        assertThrows(MaggiGorengAyamException.class, () -> duplicate.execute(tasks, new Ui(), newStorage()));
+        assertEquals(1, tasks.size());
+    }
+
+    @Test
+    public void parse_addingTaskWithDifferentCaseDescription_stillTreatedAsDuplicate() throws MaggiGorengAyamException {
+        TaskList tasks = new TaskList();
+        Parser.parse("todo read book").execute(tasks, new Ui(), newStorage());
+
+        Command duplicate = Parser.parse("todo READ BOOK");
+        assertThrows(MaggiGorengAyamException.class, () -> duplicate.execute(tasks, new Ui(), newStorage()));
+    }
+
+    @Test
     public void parse_validDeadlineDateOnly_addsDeadlineWithGivenDateAndNoTime() throws MaggiGorengAyamException {
         Command command = Parser.parse("deadline return book /by 2019-12-02");
         TaskList tasks = new TaskList();
@@ -117,6 +141,22 @@ public class ParserTest {
     }
 
     @Test
+    public void parse_deadlineNonExistentDate_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse("deadline return book /by 2019-02-30"));
+    }
+
+    @Test
+    public void parse_deadlineDuplicateByMarker_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse(
+                "deadline return book /by 2019-12-02 /by 2019-12-03"));
+    }
+
+    @Test
+    public void parse_deadlineBackToBackDuplicateByMarker_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse("deadline return book /by /by 2019-12-02"));
+    }
+
+    @Test
     public void parse_validEvent_addsEventWithGivenFromAndTo() throws MaggiGorengAyamException {
         Command command = Parser.parse("event project meeting /from 2019-12-02 1400 /to 2019-12-02 1600");
         TaskList tasks = new TaskList();
@@ -134,6 +174,46 @@ public class ParserTest {
     @Test
     public void parse_eventMissingToMarker_throwsException() {
         assertThrows(MaggiGorengAyamException.class, () -> Parser.parse("event meeting /from Mon"));
+    }
+
+    @Test
+    public void parse_eventDuplicateFromMarker_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse(
+                "event meeting /from 2019-12-02 /from 2019-12-03 /to 2019-12-04"));
+    }
+
+    @Test
+    public void parse_eventDuplicateToMarker_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse(
+                "event meeting /from 2019-12-02 /to 2019-12-03 /to 2019-12-04"));
+    }
+
+    @Test
+    public void parse_eventEndDateBeforeStartDate_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse(
+                "event meeting /from 2019-12-05 /to 2019-12-01"));
+    }
+
+    @Test
+    public void parse_eventEndEqualsStartWithSameTime_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse(
+                "event meeting /from 2019-12-02 1400 /to 2019-12-02 1400"));
+    }
+
+    @Test
+    public void parse_eventEndTimeBeforeStartTimeSameDay_throwsException() {
+        assertThrows(MaggiGorengAyamException.class, () -> Parser.parse(
+                "event meeting /from 2019-12-02 1600 /to 2019-12-02 1400"));
+    }
+
+    @Test
+    public void parse_eventAllDaySameDateNoTimes_addsSuccessfully() throws MaggiGorengAyamException {
+        Command command = Parser.parse("event meeting /from 2019-12-02 /to 2019-12-02");
+        TaskList tasks = new TaskList();
+
+        command.execute(tasks, new Ui(), newStorage());
+
+        assertEquals(1, tasks.size());
     }
 
     @Test

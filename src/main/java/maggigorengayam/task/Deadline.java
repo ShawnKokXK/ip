@@ -2,6 +2,7 @@ package maggigorengayam.task;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 import maggigorengayam.util.DateTimeUtil;
 
@@ -24,6 +25,16 @@ public class Deadline extends Task {
     @Override
     public boolean occursOn(LocalDate date) {
         return byDate.equals(date);
+    }
+
+    /** Same as {@link Task#hasSameDetailsAs}, additionally requiring an identical "by" date and time. */
+    @Override
+    public boolean hasSameDetailsAs(Task other) {
+        if (!super.hasSameDetailsAs(other)) {
+            return false;
+        }
+        Deadline that = (Deadline) other;
+        return byDate.equals(that.byDate) && Objects.equals(byTime, that.byTime);
     }
 
     /** e.g. "[D][ ] return book (by: Dec 2 2019)" or "... (by: Dec 2 2019, 6pm)". */

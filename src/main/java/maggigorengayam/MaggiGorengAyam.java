@@ -50,6 +50,11 @@ public class MaggiGorengAyam {
                 isExit = c.isExit();
             } catch (MaggiGorengAyamException e) {
                 System.out.println(ui.showError(e.getMessage()));
+            } catch (RuntimeException e) {
+                // A safety net against an unanticipated bug, not a feature: keeps the
+                // session alive (and the already-saved data intact) instead of crashing
+                // the whole program with a raw stack trace on an unforeseen error.
+                System.out.println(ui.showError("something went wrong sia, can try that again?"));
             } finally {
                 System.out.println(ui.showLine());
             }

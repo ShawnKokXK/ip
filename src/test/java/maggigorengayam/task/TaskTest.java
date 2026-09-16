@@ -76,6 +76,39 @@ public class TaskTest {
         assertThrows(UnsupportedOperationException.class, task::toSaveFormat);
     }
 
+    @Test
+    public void hasSameDetailsAs_sameDescriptionSameType_returnsTrue() {
+        assertTrue(new Task("read book").hasSameDetailsAs(new Task("read book")));
+    }
+
+    @Test
+    public void hasSameDetailsAs_differentCaseDescription_returnsTrue() {
+        assertTrue(new Task("Read Book").hasSameDetailsAs(new Task("read book")));
+    }
+
+    @Test
+    public void hasSameDetailsAs_differentDescription_returnsFalse() {
+        assertFalse(new Task("read book").hasSameDetailsAs(new Task("return book")));
+    }
+
+    @Test
+    public void hasSameDetailsAs_oneMarkedDoneOtherNot_stillReturnsTrue() {
+        Task done = new Task("read book");
+        done.markAsDone();
+
+        assertTrue(done.hasSameDetailsAs(new Task("read book")));
+    }
+
+    @Test
+    public void hasSameDetailsAs_null_returnsFalse() {
+        assertFalse(new Task("read book").hasSameDetailsAs(null));
+    }
+
+    @Test
+    public void hasSameDetailsAs_differentTaskType_returnsFalse() {
+        assertFalse(new ToDo("read book").hasSameDetailsAs(new Task("read book")));
+    }
+
     // ---- ToDo ----
 
     @Test
@@ -144,6 +177,37 @@ public class TaskTest {
         assertEquals("D | 0 | return book | 2019-12-02 1800", deadline.toSaveFormat());
     }
 
+    @Test
+    public void hasSameDetailsAs_deadlineSameDateAndTime_returnsTrue() {
+        Deadline a = new Deadline("return book", LocalDate.of(2019, 12, 2), LocalTime.of(18, 0));
+        Deadline b = new Deadline("return book", LocalDate.of(2019, 12, 2), LocalTime.of(18, 0));
+
+        assertTrue(a.hasSameDetailsAs(b));
+    }
+
+    @Test
+    public void hasSameDetailsAs_deadlineDifferentByDate_returnsFalse() {
+        Deadline a = new Deadline("return book", LocalDate.of(2019, 12, 2), null);
+        Deadline b = new Deadline("return book", LocalDate.of(2019, 12, 3), null);
+
+        assertFalse(a.hasSameDetailsAs(b));
+    }
+
+    @Test
+    public void hasSameDetailsAs_deadlineDifferentByTime_returnsFalse() {
+        Deadline a = new Deadline("return book", LocalDate.of(2019, 12, 2), LocalTime.of(18, 0));
+        Deadline b = new Deadline("return book", LocalDate.of(2019, 12, 2), LocalTime.of(9, 0));
+
+        assertFalse(a.hasSameDetailsAs(b));
+    }
+
+    @Test
+    public void hasSameDetailsAs_deadlineVsToDoSameDescription_returnsFalse() {
+        Deadline deadline = new Deadline("return book", LocalDate.of(2019, 12, 2), null);
+
+        assertFalse(deadline.hasSameDetailsAs(new ToDo("return book")));
+    }
+
     // ---- Event ----
 
     @Test
@@ -197,5 +261,33 @@ public class TaskTest {
                 LocalDate.of(2019, 12, 2), LocalTime.of(16, 0));
 
         assertEquals("E | 0 | project meeting | 2019-12-02 1400 | 2019-12-02 1600", event.toSaveFormat());
+    }
+
+    @Test
+    public void hasSameDetailsAs_eventSameFromAndTo_returnsTrue() {
+        Event a = new Event("meeting", LocalDate.of(2019, 12, 2), LocalTime.of(14, 0),
+                LocalDate.of(2019, 12, 2), LocalTime.of(16, 0));
+        Event b = new Event("meeting", LocalDate.of(2019, 12, 2), LocalTime.of(14, 0),
+                LocalDate.of(2019, 12, 2), LocalTime.of(16, 0));
+
+        assertTrue(a.hasSameDetailsAs(b));
+    }
+
+    @Test
+    public void hasSameDetailsAs_eventDifferentFromDate_returnsFalse() {
+        Event a = new Event("meeting", LocalDate.of(2019, 12, 2), null, LocalDate.of(2019, 12, 4), null);
+        Event b = new Event("meeting", LocalDate.of(2019, 12, 3), null, LocalDate.of(2019, 12, 4), null);
+
+        assertFalse(a.hasSameDetailsAs(b));
+    }
+
+    @Test
+    public void hasSameDetailsAs_eventDifferentToTime_returnsFalse() {
+        Event a = new Event("meeting", LocalDate.of(2019, 12, 2), LocalTime.of(14, 0),
+                LocalDate.of(2019, 12, 2), LocalTime.of(16, 0));
+        Event b = new Event("meeting", LocalDate.of(2019, 12, 2), LocalTime.of(14, 0),
+                LocalDate.of(2019, 12, 2), LocalTime.of(17, 0));
+
+        assertFalse(a.hasSameDetailsAs(b));
     }
 }

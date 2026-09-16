@@ -1,5 +1,6 @@
 package maggigorengayam.parser;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 
@@ -163,7 +164,7 @@ public class Parser {
         if (description.isEmpty()) {
             throw new MaggiGorengAyamException("What todo you want, you never say leh. Try 'todo buy milk'.");
         }
-        requireNoPipeCharacter(description);
+        requireNoReservedCharacters(description);
         return new ToDo(description);
     }
 
@@ -178,6 +179,7 @@ public class Parser {
             throw new MaggiGorengAyamException(
                     "Eh, use '/by' for the deadline can. Like 'deadline return book /by Sunday'.");
         }
+        requireMarkerNotDuplicated(rest, " /by ", "'/by'");
         String[] parts = rest.split(" /by ", 2);
         String description = parts[0].trim();
         String by = parts[1].trim();
@@ -187,7 +189,7 @@ public class Parser {
         if (by.isEmpty()) {
             throw new MaggiGorengAyamException("No deadline one? Then for what you calling it deadline.");
         }
-        requireNoPipeCharacter(description);
+        requireNoReservedCharacters(description);
         DateTimeUtil.ParsedDateTime parsedBy = parseDateField(by, "deadline date");
         return new Deadline(description, parsedBy.date, parsedBy.time);
     }
@@ -203,6 +205,7 @@ public class Parser {
                     "Eh, use '/from' can. Like "
                             + "'event project meeting /from Mon 2pm /to 4pm'.");
         }
+        requireMarkerNotDuplicated(rest, " /from ", "'/from'");
         String[] fromParts = rest.split(" /from ", 2);
         String description = fromParts[0].trim();
         String afterFrom = fromParts[1].trim();
@@ -214,6 +217,7 @@ public class Parser {
                     "Until when, you never say leh. Use '/to', like "
                             + "'event project meeting /from Mon 2pm /to 4pm'.");
         }
+        requireMarkerNotDuplicated(afterFrom, " /to ", "'/to'");
         String[] toParts = afterFrom.split(" /to ", 2);
         String from = toParts[0].trim();
         String to = toParts[1].trim();
@@ -223,10 +227,45 @@ public class Parser {
         if (to.isEmpty()) {
             throw new MaggiGorengAyamException("To when, you never say leh. Give an end time after '/to'.");
         }
-        requireNoPipeCharacter(description);
+        requireNoReservedCharacters(description);
         DateTimeUtil.ParsedDateTime parsedFrom = parseDateField(from, "start date/time");
         DateTimeUtil.ParsedDateTime parsedTo = parseDateField(to, "end date/time");
+        requireToAfterFrom(parsedFrom, parsedTo);
         return new Event(description, parsedFrom.date, parsedFrom.time, parsedTo.date, parsedTo.time);
+    }
+
+    /**
+     * Rejects a marker (e.g. {@code /by}) that appears more than once in
+     * {@code text}. Without this, a repeated marker doesn't fail cleanly -
+     * the leftover second occurrence gets folded into the value after the
+     * first split, producing a confusing "not a proper date" error instead
+     * of naming the actual problem. Checked on the raw text (before
+     * splitting) so even back-to-back repeats (e.g. "/by /by") are caught,
+     * since the space between them would otherwise double as both markers'
+     * boundary and hide from a post-split check.
+     */
+    private static void requireMarkerNotDuplicated(String text, String marker, String markerLabel)
+            throws MaggiGorengAyamException {
+        if (text.indexOf(marker) != text.lastIndexOf(marker)) {
+            throw new MaggiGorengAyamException("Only can use " + markerLabel + " once leh, you got it twice.");
+        }
+    }
+
+    /**
+     * Rejects an event whose "to" is not strictly after its "from". A
+     * missing time is treated as the very start of its day for "from" and
+     * the very end of its day for "to", so an all-day same-day event (both
+     * times unspecified) still counts as valid, while an exactly-equal
+     * from/to (when both carry times) is correctly rejected.
+     */
+    private static void requireToAfterFrom(DateTimeUtil.ParsedDateTime from, DateTimeUtil.ParsedDateTime to)
+            throws MaggiGorengAyamException {
+        LocalDateTime effectiveFrom = LocalDateTime.of(from.date, from.time != null ? from.time : LocalTime.MIN);
+        LocalDateTime effectiveTo = LocalDateTime.of(to.date, to.time != null ? to.time : LocalTime.MAX);
+        if (!effectiveTo.isAfter(effectiveFrom)) {
+            throw new MaggiGorengAyamException(
+                    "Eh, your event ends before (or same time as) it starts leh. Check your /from and /to again.");
+        }
     }
 
     /**
@@ -249,20 +288,22 @@ public class Parser {
     }
 
     /**
-     * Rejects a task description that contains the '|' character, since
-     * that character is the field delimiter used by
-     * {@link Task#toSaveFormat()}/{@link Storage}. Without this check, a
-     * description containing " | " would be split into the wrong number of
-     * parts on the next load and the whole task would be silently dropped -
-     * this check turns that silent data loss into an immediate, explicit
-     * error at the point the user enters the offending text. (Dates/times
-     * don't need this check: {@link #parseDateField} already rejects any
-     * text that isn't a valid date, which includes anything containing '|'.)
+     * Rejects a task description containing a character that would corrupt
+     * the on-disk save format: {@code |} is the field delimiter used by
+     * {@link Task#toSaveFormat()}/{@link Storage}, and {@code \n}/{@code \r}
+     * would break the save file's one-task-per-line structure. Without this
+     * check, such a description would be silently mis-parsed (or the task
+     * silently dropped) on the next load - this check turns that silent
+     * data loss into an immediate, explicit error at the point the user
+     * enters the offending text. (Dates/times don't need this check:
+     * {@link #parseDateField} already rejects any text that isn't a valid
+     * date, which includes anything containing these characters.)
      */
-    private static void requireNoPipeCharacter(String description) throws MaggiGorengAyamException {
-        if (description.contains("|")) {
+    private static void requireNoReservedCharacters(String description) throws MaggiGorengAyamException {
+        if (description.contains("|") || description.contains("\n") || description.contains("\r")) {
             throw new MaggiGorengAyamException(
-                    "Eh cannot use '|' in the description leh, I need that one for saving. Take it out can?");
+                    "Eh cannot use '|' or a line break in the description leh, "
+                            + "I need those for saving. Take it out can?");
         }
     }
 
